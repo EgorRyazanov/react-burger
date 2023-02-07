@@ -1,26 +1,33 @@
 import React from 'react';
-
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingridients.module.css';
-import data from '../utils/data';
-
 import Card from '../card/card';
+
+const URL = 'https://norma.nomoreparties.space/api/ingredients';
 
 export default function BurgerIngridients(probs) {
     const [current, setCurrent] = React.useState('bun');
+    const [data, setData] = React.useState([]);
     const [ingridients, setIngridients] = React.useState({
         buns: [],
         sauces: [],
         main: [],
     });
-    const containerStyles = `pt-10 mr-10`;
 
     const handleTabScroll = (element) => {
         setCurrent(element);
         document.getElementById(element).scrollIntoView();
     };
 
+    const getData = async () => {
+        await fetch(URL)
+            .then((response) => response.json())
+            .then((result) => setData(result.data))
+            .catch((error) => console.log(error));
+    };
+
     React.useEffect(() => {
+        getData();
         const bunsContainer = [];
         const saucesContainer = [];
         const mainContainer = [];
@@ -43,10 +50,10 @@ export default function BurgerIngridients(probs) {
             sauces: saucesContainer,
             main: mainContainer,
         });
-    }, []);
+    }, [data]);
 
     return (
-        <div className={containerStyles} style={{ width: 600, height: 912 }}>
+        <div className="pt-10 mr-10" style={{ width: 600, height: 912 }}>
             <p className="text text_type_main-large mb-5">Соберите бургер</p>
             <div className="mb-10" style={{ display: 'flex' }}>
                 <Tab
