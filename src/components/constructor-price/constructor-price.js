@@ -4,6 +4,7 @@ import {
     Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './constructor-price.module.css';
+import PropTypes from 'prop-types';
 
 export default function ConstructorPrice(probs) {
     return (
@@ -20,3 +21,7 @@ export default function ConstructorPrice(probs) {
         </div>
     );
 }
+
+ConstructorPrice.propTypes = {
+    price: PropTypes.number.isRequired,
+};

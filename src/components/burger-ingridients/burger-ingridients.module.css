@@ -2,7 +2,3 @@
     overflow-y: scroll;
     scrollbar-width: thin;
 }
-
-.container {
-    flex-wrap: wrap;
-}

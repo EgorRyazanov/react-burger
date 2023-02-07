@@ -1,5 +1,6 @@
 import React from 'react';
 import style from './navbar-item.module.css';
+import PropTypes from 'prop-types';
 
 export default function NavbarItem(probs) {
     return (
@@ -9,3 +10,8 @@ export default function NavbarItem(probs) {
         </button>
     );
 }
+
+NavbarItem.propTypes = {
+    name: PropTypes.string.isRequired,
+    component: PropTypes.element.isRequired,
+};

@@ -4,9 +4,10 @@ import {
     ConstructorElement,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './constructor-component.module.css';
+import PropTypes from 'prop-types';
+import { dataElementProp } from '../../utils/prop-types';
 
 const ConstructorComponent = React.memo((probs) => {
-    console.log(probs.ingredients);
     return (
         <>
             {probs.ingredients.map((ingredient) => (
@@ -32,3 +33,7 @@ const ConstructorComponent = React.memo((probs) => {
 });
 
 export default ConstructorComponent;
+
+ConstructorComponent.propTypes = {
+    ingredients: PropTypes.arrayOf(dataElementProp).isRequired,
+};

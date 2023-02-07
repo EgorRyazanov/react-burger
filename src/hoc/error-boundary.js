@@ -18,7 +18,7 @@ export default class ErrorBoundary extends React.Component {
         if (this.state.hasError) {
             return (
                 <section>
-                    <h1>Что-то пошло не так :(</h1>
+                    <h1>Что-то пошло не так.</h1>
                     <p>
                         В приложении произошла ошибка. Пожалуйста, перезагрузите
                         страницу.

@@ -14,7 +14,7 @@ const data = [
         __v: 0,
     },
     {
-        _id: '60666c42cc7b410027a1a9b1',
+        _id: '60666c42cc7b410027a1a9g3',
         name: 'Краторная булка N-200i (низ)',
         type: 'bun',
         proteins: 80,
@@ -102,7 +102,7 @@ const data = [
         __v: 0,
     },
     {
-        _id: '60666c42cc7b410027a1a9bb',
+        _id: '60666c42cc7b410027a1a9bf',
         name: 'Хрустящие минеральные кольца',
         type: 'main',
         proteins: 808,

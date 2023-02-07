@@ -1,11 +1,11 @@
 import React from 'react';
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingridients.module.css';
-import Card from '../card/card';
+import TabComponent from '../tab-component/tab-component';
+import IngredientBlock from '../ingredient-block/ingredient-block';
 
 const URL = 'https://norma.nomoreparties.space/api/ingredients';
 
-export default function BurgerIngridients(probs) {
+export default function BurgerIngridients() {
     const [current, setCurrent] = React.useState('bun');
     const [data, setData] = React.useState([]);
     const [ingridients, setIngridients] = React.useState({
@@ -14,20 +14,12 @@ export default function BurgerIngridients(probs) {
         main: [],
     });
 
-    const handleTabScroll = (element) => {
+    const handleTabScroll = React.useCallback((element) => {
         setCurrent(element);
         document.getElementById(element).scrollIntoView();
-    };
-
-    const getData = async () => {
-        await fetch(URL)
-            .then((response) => response.json())
-            .then((result) => setData(result.data))
-            .catch((error) => console.log(error));
-    };
+    });
 
     React.useEffect(() => {
-        getData();
         const bunsContainer = [];
         const saucesContainer = [];
         const mainContainer = [];
@@ -52,57 +44,39 @@ export default function BurgerIngridients(probs) {
         });
     }, [data]);
 
+    React.useEffect(() => {
+        const getData = async () => {
+            try {
+                const response = await fetch(URL);
+                const result = await response.json();
+                setData(result.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getData();
+    }, []);
+
     return (
         <div className="pt-10 mr-10" style={{ width: 600, height: 912 }}>
             <p className="text text_type_main-large mb-5">Соберите бургер</p>
-            <div className="mb-10" style={{ display: 'flex' }}>
-                <Tab
-                    value="bun"
-                    active={current === 'bun'}
-                    onClick={handleTabScroll}
-                >
-                    Булки
-                </Tab>
-                <Tab
-                    value="sauce"
-                    active={current === 'sauce'}
-                    onClick={handleTabScroll}
-                >
-                    Соусы
-                </Tab>
-                <Tab
-                    value="main"
-                    active={current === 'main'}
-                    onClick={handleTabScroll}
-                >
-                    Начинки
-                </Tab>
-            </div>
+            <TabComponent current={current} handleTabScroll={handleTabScroll} />
             <div className={styles.scroll} style={{ height: 716 }}>
-                <div id="bun" className="mb-10">
-                    <p className="text text_type_main-large mb-2">Булки</p>
-                    <div className={`flex pt-6 pl-4 pr-2 ${styles.container}`}>
-                        {ingridients.buns.map((bun) => (
-                            <Card key={bun._id} element={bun} />
-                        ))}
-                    </div>
-                </div>
-                <div id="sauce" className="mb-10">
-                    <p className="text text_type_main-large mb-6">Соусы</p>
-                    <div className={`flex pt-6 pl-4 pr-2 ${styles.container}`}>
-                        {ingridients.sauces.map((sauce) => (
-                            <Card key={sauce._id} element={sauce} />
-                        ))}
-                    </div>
-                </div>
-                <div id="main">
-                    <p className="text text_type_main-large mb-6">Начинка</p>
-                    <div className={`flex pt-6 pl-4 pr-2 ${styles.container}`}>
-                        {ingridients.main.map((main) => (
-                            <Card key={main._id} element={main} />
-                        ))}
-                    </div>
-                </div>
+                <IngredientBlock
+                    id="bun"
+                    name="Булки"
+                    ingredients={ingridients.buns}
+                />
+                <IngredientBlock
+                    id="sauce"
+                    name="Соусы"
+                    ingredients={ingridients.sauces}
+                />
+                <IngredientBlock
+                    id="main"
+                    name="Начинка"
+                    ingredients={ingridients.main}
+                />
             </div>
         </div>
     );
