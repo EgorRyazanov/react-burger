@@ -7,10 +7,10 @@ import styles from './constructor-component.module.css';
 import PropTypes from 'prop-types';
 import { dataElementProp } from '../../utils/prop-types';
 
-const ConstructorComponent = React.memo((props) => {
+const ConstructorComponent = React.memo(({ ingredients }) => {
     return (
         <>
-            {props.ingredients.map((ingredient) => (
+            {ingredients.map((ingredient) => (
                 <div
                     key={ingredient._id}
                     className={`flex ${styles.container} ${styles.card}`}

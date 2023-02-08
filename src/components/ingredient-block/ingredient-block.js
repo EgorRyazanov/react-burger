@@ -15,6 +15,7 @@ const IngredientBlock = React.memo((props) => {
                         image={element.image}
                         price={element.price}
                         name={element.name}
+                        ingredient={element}
                     />
                 ))}
             </div>

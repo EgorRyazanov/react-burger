@@ -3,7 +3,6 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngridients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import ErrorBoundary from '../../hoc/error-boundary';
-import styles from './app.module.css';
 
 function App() {
     return (
