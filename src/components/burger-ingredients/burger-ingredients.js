@@ -1,23 +1,23 @@
 import React from 'react';
-import styles from './burger-ingridients.module.css';
+import styles from './burger-ingredients.module.css';
 import TabComponent from '../tab-component/tab-component';
 import IngredientBlock from '../ingredient-block/ingredient-block';
-
-const URL = 'https://norma.nomoreparties.space/api/ingredients';
+import { getData } from '../../utils/api';
+import { VALUE_BUN, VALUE_SAUCE, VALUE_MAIN } from '../../utils/constants';
 
 export default function BurgerIngridients() {
-    const [current, setCurrent] = React.useState('bun');
+    const [current, setCurrent] = React.useState(VALUE_BUN);
     const [data, setData] = React.useState([]);
-    const [ingridients, setIngridients] = React.useState({
+    const [ingredients, setIngridients] = React.useState({
         buns: [],
         sauces: [],
         main: [],
     });
 
-    const handleTabScroll = React.useCallback((element) => {
+    const handleTabScroll = (element) => {
         setCurrent(element);
         document.getElementById(element).scrollIntoView();
-    });
+    };
 
     React.useEffect(() => {
         const bunsContainer = [];
@@ -25,13 +25,13 @@ export default function BurgerIngridients() {
         const mainContainer = [];
         data.forEach((element) => {
             switch (element.type) {
-                case 'bun':
+                case VALUE_BUN:
                     bunsContainer.push(element);
                     break;
-                case 'sauce':
+                case VALUE_SAUCE:
                     saucesContainer.push(element);
                     break;
-                case 'main':
+                case VALUE_MAIN:
                     mainContainer.push(element);
                     break;
                 default:
@@ -45,16 +45,7 @@ export default function BurgerIngridients() {
     }, [data]);
 
     React.useEffect(() => {
-        const getData = async () => {
-            try {
-                const response = await fetch(URL);
-                const result = await response.json();
-                setData(result.data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        getData();
+        getData().then((result) => setData(result.data));
     }, []);
 
     return (
@@ -63,19 +54,19 @@ export default function BurgerIngridients() {
             <TabComponent current={current} handleTabScroll={handleTabScroll} />
             <div className={styles.scroll} style={{ height: 716 }}>
                 <IngredientBlock
-                    id="bun"
+                    id={VALUE_BUN}
                     name="Булки"
-                    ingredients={ingridients.buns}
+                    ingredients={ingredients.buns}
                 />
                 <IngredientBlock
-                    id="sauce"
+                    id={VALUE_SAUCE}
                     name="Соусы"
-                    ingredients={ingridients.sauces}
+                    ingredients={ingredients.sauces}
                 />
                 <IngredientBlock
-                    id="main"
+                    id={VALUE_MAIN}
                     name="Начинка"
-                    ingredients={ingridients.main}
+                    ingredients={ingredients.main}
                 />
             </div>
         </div>

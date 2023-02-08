@@ -1,28 +1,29 @@
 import React from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
+import { VALUE_BUN, VALUE_SAUCE, VALUE_MAIN } from '../../utils/constants';
 
-const TabComponent = (probs) => {
+const TabComponent = (props) => {
     return (
         <div className="mb-10" style={{ display: 'flex' }}>
             <Tab
-                value="bun"
-                active={probs.current === 'bun'}
-                onClick={probs.handleTabScroll}
+                value={VALUE_BUN}
+                active={props.current === 'bun'}
+                onClick={props.handleTabScroll}
             >
                 Булки
             </Tab>
             <Tab
-                value="sauce"
-                active={probs.current === 'sauce'}
-                onClick={probs.handleTabScroll}
+                value={VALUE_SAUCE}
+                active={props.current === 'sauce'}
+                onClick={props.handleTabScroll}
             >
                 Соусы
             </Tab>
             <Tab
-                value="main"
-                active={probs.current === 'main'}
-                onClick={probs.handleTabScroll}
+                value={VALUE_MAIN}
+                active={props.current === 'main'}
+                onClick={props.handleTabScroll}
             >
                 Начинки
             </Tab>

@@ -51,3 +51,8 @@ ul {
 ::-webkit-scrollbar-thumb {
     background-color: #8585ad;
 }
+
+a,
+a:visited {
+    text-decoration: none;
+}

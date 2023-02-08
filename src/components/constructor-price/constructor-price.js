@@ -6,12 +6,12 @@ import {
 import styles from './constructor-price.module.css';
 import PropTypes from 'prop-types';
 
-export default function ConstructorPrice(probs) {
+export default function ConstructorPrice(props) {
     return (
         <div className={styles.container}>
             <div className={`${styles.price} mr-10`}>
                 <p className="text text_type_digits-medium mr-2">
-                    {probs.price}
+                    {props.price}
                 </p>
                 <CurrencyIcon type="primary" />
             </div>

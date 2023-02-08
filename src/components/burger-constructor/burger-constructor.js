@@ -3,15 +3,21 @@ import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-comp
 
 import data from '../../utils/constructor-data';
 import styles from './burger-constructor.module.css';
-import ConstructorComponent from '../constructor-element/constructor-component';
+import ConstructorComponent from '../constructor-component/constructor-component';
 import ConstructorPrice from '../constructor-price/constructor-price';
+import { VALUE_BUN } from '../../utils/constants';
 
 export default function BurgerConstructor() {
-    const buns = data.filter((element) => element.type === 'bun');
-    const ingredients = data.filter((element) => element.type !== 'bun');
-    const [price, setPrice] = React.useState(0);
-    React.useEffect(() => {
-        setPrice(data.reduce((acc, current) => acc + current.price, 0));
+    const buns = React.useMemo(
+        () => data.filter((element) => element.type === VALUE_BUN),
+        [data]
+    );
+    const ingredients = React.useMemo(
+        () => data.filter((element) => element.type !== VALUE_BUN),
+        [data]
+    );
+    const price = React.useMemo(() => {
+        return data.reduce((acc, current) => acc + current.price, 0);
     }, [data]);
     return (
         <div className="pt-25 pl-4" style={{ width: 600, height: 912 }}>
