@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.scroll {
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    height: 464px;
+}

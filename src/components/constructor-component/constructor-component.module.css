@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    width: 568px;
+}
+
+.image {
+    align-self: center;
+}
+
+.card:not(:last-child) {
+    margin-bottom: 16px;
+}

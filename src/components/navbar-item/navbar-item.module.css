@@ -1,0 +1,6 @@
+.button {
+    display: flex;
+    color: white;
+    cursor: pointer;
+    border-radius: 40px;
+}
