@@ -21,5 +21,5 @@ export default IngredientBlock;
 
 IngredientBlock.propTypes = {
     id: PropTypes.string.isRequired,
-    ingredients: PropTypes.arrayOf(dataElementProp),
+    ingredients: PropTypes.arrayOf(dataElementProp.isRequired).isRequired,
 };
