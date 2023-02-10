@@ -9,14 +9,8 @@ const IngredientBlock = React.memo((props) => {
         <div id={props.id} className={styles.block}>
             <p className="text text_type_main-large mb-2">{props.name}</p>
             <div className={`flex pt-6 pl-4 pr-2 ${styles.container}`}>
-                {props.ingredients.map((element) => (
-                    <Card
-                        key={element._id}
-                        image={element.image}
-                        price={element.price}
-                        name={element.name}
-                        ingredient={element}
-                    />
+                {props.ingredients.map((ingredient) => (
+                    <Card key={ingredient._id} {...ingredient} />
                 ))}
             </div>
         </div>
@@ -27,5 +21,5 @@ export default IngredientBlock;
 
 IngredientBlock.propTypes = {
     id: PropTypes.string.isRequired,
-    ingredients: PropTypes.arrayOf(dataElementProp.isRequired).isRequired,
+    ingredients: PropTypes.arrayOf(dataElementProp),
 };

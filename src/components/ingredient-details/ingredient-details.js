@@ -4,7 +4,10 @@ import Modal from '../modal/modal';
 import styles from './ingredient-details.module.css';
 import { dataElementProp } from '../../utils/prop-types';
 
-export default function IngredientDetails({ ingredient, handleToggleModal }) {
+export default function IngredientDetails({
+    handleToggleModal,
+    ...ingredient
+}) {
     return (
         <Modal
             handleToggleModal={handleToggleModal}
@@ -82,7 +85,5 @@ export default function IngredientDetails({ ingredient, handleToggleModal }) {
 
 IngredientDetails.propTypes = {
     handleToggleModal: PropTypes.func.isRequired,
-    ingredient: PropTypes.object.isRequired, // знаю, что так неправильно, но не знаю, как фиксануть
-    // ingredient: PropTypes.objectOf(dataElementProp.isRequired).isRequired,
-    // Выводит: Failed prop type: Invalid prop `ingredient._id` of type `string` supplied to `Memo`, expected `object`.
+    ingredient: dataElementProp,
 };

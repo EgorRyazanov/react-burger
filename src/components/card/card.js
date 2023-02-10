@@ -38,7 +38,7 @@ const Card = React.memo((props) => {
             {active && (
                 <IngredientDetails
                     handleToggleModal={handleToggleModal}
-                    ingredient={props.ingredient}
+                    {...props}
                 />
             )}
         </div>
@@ -47,11 +47,4 @@ const Card = React.memo((props) => {
 
 export default Card;
 
-Card.propTypes = {
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    ingredient: PropTypes.object.isRequired, // знаю, что так неправильно, но не знаю, как фиксануть
-    // ingredient: PropTypes.objectOf(dataElementProp.isRequired).isRequired
-    // Выводит: Failed prop type: Invalid prop `ingredient._id` of type `string` supplied to `Memo`, expected `object`.
-};
+Card.propTypes = dataElementProp.propTypes;

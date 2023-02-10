@@ -9,18 +9,17 @@ const modalContainer = document.getElementById('modal-container');
 const body = document.body;
 
 export default function Modal({ children, handleToggleModal, ...props }) {
+    const handleEscPressed = (event) =>
+        event.code === 'Escape' ? handleToggleModal() : null;
+
     React.useEffect(() => {
         body.style.overflow = 'hidden';
         modalContainer.classList.add('modal-container--active');
-        document.addEventListener('keydown', (e) =>
-            e.code === 'Escape' ? handleToggleModal() : null
-        );
+        document.addEventListener('keydown', handleEscPressed);
         return () => {
             modalContainer.classList.remove('modal-container--active');
             body.style.overflow = 'auto';
-            document.removeEventListener('keydown', (e) =>
-                e.code === 'Escape' ? handleToggleModal() : null
-            );
+            document.removeEventListener('keydown', handleEscPressed);
         };
     }, []);
 
