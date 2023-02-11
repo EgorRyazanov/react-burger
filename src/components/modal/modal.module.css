@@ -1,0 +1,14 @@
+.card {
+    position: relative;
+}
+
+.title {
+    width: 580px;
+}
+
+.button {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    align-self: center;
+}
