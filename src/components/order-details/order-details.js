@@ -16,7 +16,7 @@ export default function OrderDetails(props) {
                 <p
                     className={`text text_type_digits-large mb-8 ${styles.text_center}`}
                 >
-                    034536
+                    {props.number}
                 </p>
                 <p
                     className={`text text_type_main-medium ${styles.text_center} mb-15`}
@@ -41,4 +41,5 @@ export default function OrderDetails(props) {
 
 OrderDetails.propTypes = {
     handleToggleModal: PropTypes.func.isRequired,
+    number: PropTypes.number,
 };

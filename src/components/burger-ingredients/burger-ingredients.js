@@ -2,12 +2,12 @@ import React from 'react';
 import styles from './burger-ingredients.module.css';
 import TabComponent from '../tab-component/tab-component';
 import IngredientBlock from '../ingredient-block/ingredient-block';
-import { getData } from '../../utils/api';
 import { VALUE_BUN, VALUE_SAUCE, VALUE_MAIN } from '../../utils/constants';
+import { ApiContext } from '../../services/apiContext';
 
 export default function BurgerIngridients() {
+    const { data } = React.useContext(ApiContext);
     const [current, setCurrent] = React.useState(VALUE_BUN);
-    const [data, setData] = React.useState([]);
     const [ingredients, setIngridients] = React.useState({
         buns: [],
         sauces: [],
@@ -43,10 +43,6 @@ export default function BurgerIngridients() {
             main: mainContainer,
         });
     }, [data]);
-
-    React.useEffect(() => {
-        getData().then((result) => setData(result.data));
-    }, []);
 
     return (
         <div className="pt-10 mr-10" style={{ width: 600, height: 912 }}>
