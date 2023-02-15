@@ -5,14 +5,13 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './card.module.css';
 import PropTypes from 'prop-types';
-import IngredientDetails from '../ingredient-details/ingredient-details';
 import { dataElementProp } from '../../utils/prop-types';
 
-const Card = React.memo((props) => {
+const Card = React.memo(({ ingredient, setModalData, setActive, active }) => {
     const [counter, setCounter] = React.useState(Math.round(Math.random()));
-    const [active, setActive] = React.useState(false);
     const handleToggleModal = () => {
         setActive(!active);
+        setModalData({ ...ingredient });
     };
 
     return (
@@ -24,27 +23,26 @@ const Card = React.memo((props) => {
                 {counter > 0 && (
                     <Counter count={counter} size="default" extraClass="m-1" />
                 )}
-                <img className="mb-1" src={props.image} alt="ингредиет" />
+                <img className="mb-1" src={ingredient.image} alt="ингредиет" />
                 <div className={`flex mb-1 ${styles.price}`}>
                     <p className="text text_type_digits-default mr-1">
-                        {props.price}
+                        {ingredient.price}
                     </p>
                     <CurrencyIcon type="primary" />
                 </div>
             </div>
             <p className={`text text_type_main-default ${styles.name}`}>
-                {props.name}
+                {ingredient.name}
             </p>
-            {active && (
-                <IngredientDetails
-                    handleToggleModal={handleToggleModal}
-                    {...props}
-                />
-            )}
         </div>
     );
 });
 
 export default Card;
 
-Card.propTypes = dataElementProp.propTypes;
+Card.propTypes = {
+    ingredient: dataElementProp.isRequired,
+    active: PropTypes.bool.isRequired,
+    setActive: PropTypes.func.isRequired,
+    setModalData: PropTypes.func.isRequired,
+};

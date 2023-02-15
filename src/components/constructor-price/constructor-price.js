@@ -7,6 +7,7 @@ import styles from './constructor-price.module.css';
 import PropTypes from 'prop-types';
 import OrderDetails from '../order-details/order-details';
 import { getOrder } from '../../utils/api';
+import Modal from '../modal/modal';
 
 export default function ConstructorPrice({ price, id }) {
     const [order, setOrder] = React.useState({
@@ -48,10 +49,13 @@ export default function ConstructorPrice({ price, id }) {
                 Оформить заказ
             </Button>
             {active && (
-                <OrderDetails
+                <Modal
                     handleToggleModal={handleToggleModal}
-                    number={order.order.number}
-                />
+                    title={''}
+                    container={styles.modal}
+                >
+                    <OrderDetails number={order.order.number} />
+                </Modal>
             )}
         </div>
     );

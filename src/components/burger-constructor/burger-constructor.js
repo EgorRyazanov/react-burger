@@ -38,16 +38,13 @@ export default function BurgerConstructor() {
             setLoading(false);
             priceDispatch();
         }
-    }, [data]); // данные отображаются не с первого раза (иногда нужно пару раз тыкать f5, как это фиксить?)
+    }, [data]);
 
     return (
-        <div className="pt-25 pl-4" style={{ width: 600, height: 912 }}>
+        <div className={`${styles.global} pt-25 pl-4`}>
             {!isLoading && (
                 <>
-                    <div
-                        style={{ width: 568 }}
-                        className={`flex ${styles.container} mb-4`}
-                    >
+                    <div className={`flex ${styles.container} mb-4`}>
                         <ConstructorElement
                             type="top"
                             isLocked={true}

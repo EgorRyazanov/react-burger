@@ -1,49 +1,35 @@
-import { URL_DATA, URL_ORDER } from '../utils/constants';
+import { BASE_URL } from '../utils/constants';
 
-export const getData = async () => {
-    try {
-        const response = await fetch(URL_DATA);
-        return response.ok
-            ? await response.json()
-            : response
-                  .json()
-                  .then((error) => Promise.reject(error))
-                  .catch(
-                      () =>
-                          new Error(
-                              'Ошибка при получении данных об ингредиентах - модуль utils/api'
-                          )
-                  );
-    } catch (error) {
-        new Error(
-            'Ошибка при получении данных об ингредиентах - модуль utils/api'
-        );
+const checkResponse = (res) => {
+    if (res.ok) {
+        return res.json();
     }
+    return Promise.reject(`Ошибка ${res.status}`);
 };
 
-export const getOrder = async (ingredients) => {
-    try {
-        const response = await fetch(URL_ORDER, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                ingredients: ingredients,
-            }),
-        });
-        return response.ok
-            ? await response.json()
-            : response
-                  .json()
-                  .then((error) => Promise.reject(error))
-                  .catch(
-                      () =>
-                          new Error(
-                              'Ошибка при получении данных об ингредиентах - модуль utils/api'
-                          )
-                  );
-    } catch (error) {
-        new Error('Ошибка при получении данных о заказе - модуль utils/api');
+const checkSuccess = (res) => {
+    if (res && res.success) {
+        return res;
     }
+
+    return Promise.reject(`Ответ не success: ${res}`);
 };
+
+const request = (endpoint, options) => {
+    return fetch(`${BASE_URL}${endpoint}`, options)
+        .then(checkResponse)
+        .then(checkSuccess)
+        .catch((err) => err);
+};
+
+export const getIngredients = () => request('ingredients');
+export const getOrder = (ingredients) =>
+    request('orders', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            ingredients: ingredients,
+        }),
+    });

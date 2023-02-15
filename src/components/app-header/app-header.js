@@ -17,23 +17,26 @@ export default function AppHeader() {
                     <ul className={styles.list}>
                         <li className="mr-2">
                             <NavbarItem
-                                component={<BurgerIcon />}
+                                component={<BurgerIcon type="primary" />}
                                 name="Конструктор"
+                                active={true}
                             />
                         </li>
-                        <li style={{ marginRight: 112 }}>
+                        <li className={styles.order}>
                             <NavbarItem
-                                component={<ListIcon />}
+                                component={<ListIcon type="secondary" />}
                                 name="Лента Заказов"
+                                active={false}
                             />
                         </li>
-                        <li style={{ marginRight: 288 }}>
+                        <li className={styles.logo}>
                             <Logo />
                         </li>
                         <li>
                             <NavbarItem
-                                component={<ProfileIcon />}
+                                component={<ProfileIcon type="secondary" />}
                                 name="Личный кабинет"
+                                active={false}
                             />
                         </li>
                     </ul>

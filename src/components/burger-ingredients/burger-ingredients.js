@@ -4,8 +4,15 @@ import TabComponent from '../tab-component/tab-component';
 import IngredientBlock from '../ingredient-block/ingredient-block';
 import { VALUE_BUN, VALUE_SAUCE, VALUE_MAIN } from '../../utils/constants';
 import { ApiContext } from '../../services/apiContext';
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import Modal from '../modal/modal';
 
 export default function BurgerIngridients() {
+    const [active, setActive] = React.useState(false);
+    const handleToggleModal = () => {
+        setActive(!active);
+    };
+    const [modalData, setModalData] = React.useState();
     const { data } = React.useContext(ApiContext);
     const [current, setCurrent] = React.useState(VALUE_BUN);
     const [ingredients, setIngridients] = React.useState({
@@ -16,7 +23,7 @@ export default function BurgerIngridients() {
 
     const handleTabScroll = (element) => {
         setCurrent(element);
-        document.getElementById(element).scrollIntoView();
+        document.getElementById(element).scrollIntoView({ behavior: 'smooth' });
     };
 
     React.useEffect(() => {
@@ -45,25 +52,43 @@ export default function BurgerIngridients() {
     }, [data]);
 
     return (
-        <div className="pt-10 mr-10" style={{ width: 600, height: 912 }}>
+        <div className={`pt-10 mr-10 ${styles.global}`}>
             <p className="text text_type_main-large mb-5">Соберите бургер</p>
             <TabComponent current={current} handleTabScroll={handleTabScroll} />
-            <div className={styles.scroll} style={{ height: 716 }}>
+            <div className={styles.scroll}>
                 <IngredientBlock
                     id={VALUE_BUN}
                     name="Булки"
                     ingredients={ingredients.buns}
+                    active={active}
+                    setActive={setActive}
+                    setModalData={setModalData}
                 />
                 <IngredientBlock
                     id={VALUE_SAUCE}
                     name="Соусы"
                     ingredients={ingredients.sauces}
+                    active={active}
+                    setActive={setActive}
+                    setModalData={setModalData}
                 />
                 <IngredientBlock
                     id={VALUE_MAIN}
                     name="Начинка"
                     ingredients={ingredients.main}
+                    active={active}
+                    setActive={setActive}
+                    setModalData={setModalData}
                 />
+                {active && (
+                    <Modal
+                        title={'Детали ингредиента'}
+                        container={styles.modal}
+                        handleToggleModal={handleToggleModal}
+                    >
+                        <IngredientDetails {...modalData} />
+                    </Modal>
+                )}
             </div>
         </div>
     );

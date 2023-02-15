@@ -4,12 +4,12 @@ import BurgerIngridients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import ErrorBoundary from '../../hoc/error-boundary';
 import { ApiContext } from '../../services/apiContext';
-import { getData } from '../../utils/api';
+import { getIngredients } from '../../utils/api';
 
 function App() {
     const [data, setData] = React.useState([]);
     React.useEffect(() => {
-        getData().then((result) => setData(result.data));
+        getIngredients().then((result) => setData(result.data));
     }, []);
 
     return (

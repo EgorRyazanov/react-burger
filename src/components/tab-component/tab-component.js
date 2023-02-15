@@ -5,7 +5,7 @@ import { VALUE_BUN, VALUE_SAUCE, VALUE_MAIN } from '../../utils/constants';
 
 const TabComponent = (props) => {
     return (
-        <div className="mb-10" style={{ display: 'flex' }}>
+        <div className="flex mb-10">
             <Tab
                 value={VALUE_BUN}
                 active={props.current === 'bun'}
