@@ -2,6 +2,12 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    width: 568px;
+}
+
+.global {
+    width: 600px;
+    height: 912px;
 }
 
 .scroll {

@@ -1,4 +1,15 @@
 .scroll {
     overflow-y: scroll;
     scrollbar-width: thin;
+    height: 716px;
+}
+
+.global {
+    width: 600px;
+    height: 912px;
+}
+
+.modal {
+    width: 720px;
+    height: 539px;
 }

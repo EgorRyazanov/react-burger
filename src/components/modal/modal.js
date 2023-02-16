@@ -25,15 +25,14 @@ export default function Modal({ children, handleToggleModal, ...props }) {
 
     return ReactDOM.createPortal(
         <div
-            className={`${styles.card} pt-10 pl-10 pb-10 pr-10`}
-            style={{ width: props.width, height: props.height }}
+            className={`${styles.modal} ${props.container} pt-10 pl-10 pb-10 pr-10`}
             onKeyDown={(event) => {
                 if (event.key === 'Enter') {
                     handleToggleModal();
                 }
             }}
         >
-            <ModalOverlay />
+            <ModalOverlay handleToggleModal={handleToggleModal} />
             <div className="flex">
                 <p className={`text text_type_main-large ${styles.title} mr-9`}>
                     {props.title || ''}
@@ -50,7 +49,6 @@ export default function Modal({ children, handleToggleModal, ...props }) {
 
 Modal.propTypes = {
     handleToggleModal: PropTypes.func.isRequired,
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
     title: PropTypes.string,
+    container: PropTypes.string.isRequired,
 };

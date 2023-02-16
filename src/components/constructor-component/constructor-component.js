@@ -14,13 +14,11 @@ const ConstructorComponent = React.memo(({ ingredients }) => {
                 <div
                     key={ingredient._id}
                     className={`flex ${styles.container} ${styles.card}`}
-                    style={{ height: 80 }}
                 >
                     <div className="pt-8 pb-8">
                         <DragIcon type="primary" />
                     </div>
                     <ConstructorElement
-                        type="top"
                         isLocked={false}
                         text={ingredient.name}
                         price={ingredient.price}

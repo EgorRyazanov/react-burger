@@ -19,3 +19,7 @@
 .data:not(:last-child) {
     margin-right: 20px;
 }
+
+.container {
+    width: 520px;
+}

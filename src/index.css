@@ -52,16 +52,6 @@ a:visited {
     text-decoration: none;
 }
 
-/* #modal-container {
-    display: block;
-    visibility: hidden;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-} */
-
 .modal-container--active {
     position: fixed;
     top: 0;
