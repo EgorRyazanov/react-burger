@@ -18,8 +18,7 @@ const checkSuccess = (res) => {
 const request = (endpoint, options) => {
     return fetch(`${BASE_URL}${endpoint}`, options)
         .then(checkResponse)
-        .then(checkSuccess)
-        .catch((err) => err);
+        .then(checkSuccess);
 };
 
 export const getIngredients = () => request('ingredients');

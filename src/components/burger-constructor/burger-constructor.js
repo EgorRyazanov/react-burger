@@ -9,14 +9,20 @@ import { ApiContext } from '../../services/apiContext';
 
 export default function BurgerConstructor() {
     const initialPrice = { price: 0 };
-    const reducer = () => {
-        return (
-            ingredients.others.reduce(
-                (acc, current) => acc + current.price,
-                0
-            ) +
-            ingredients.buns.price * 2
-        );
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case 'ADD': {
+                const price =
+                    ingredients.others.reduce(
+                        (acc, current) => acc + current.price,
+                        0
+                    ) +
+                    ingredients.buns.price * 2;
+                return { ...state, price };
+            }
+            default:
+                return { ...state };
+        }
     };
 
     const { data } = React.useContext(ApiContext);
@@ -26,7 +32,7 @@ export default function BurgerConstructor() {
         others: [],
     });
 
-    const [price, priceDispatch] = React.useReducer(reducer, initialPrice);
+    const [totalPrice, priceDispatch] = React.useReducer(reducer, initialPrice);
     React.useEffect(() => {
         setIngridients({
             buns: data.filter((element) => element.type === VALUE_BUN)[0],
@@ -36,7 +42,7 @@ export default function BurgerConstructor() {
         });
         if (ingredients.buns) {
             setLoading(false);
-            priceDispatch();
+            priceDispatch({ type: 'ADD' });
         }
     }, [data]);
 
@@ -58,10 +64,7 @@ export default function BurgerConstructor() {
                             ingredients={ingredients.others}
                         />
                     </div>
-                    <div
-                        style={{ width: 568 }}
-                        className={`flex ${styles.container} mb-10`}
-                    >
+                    <div className={`flex ${styles.container} mb-10`}>
                         <ConstructorElement
                             type="bottom"
                             isLocked={true}
@@ -71,7 +74,7 @@ export default function BurgerConstructor() {
                         />
                     </div>
                     <ConstructorPrice
-                        price={price}
+                        price={totalPrice.price}
                         id={[
                             ...ingredients.others.map((element) => element._id),
                             ingredients.buns._id,

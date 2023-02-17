@@ -19,9 +19,11 @@ export default function ConstructorPrice({ price, id }) {
     const [active, setActive] = React.useState(false);
     const handleToggleModal = () => {
         setActive(!active);
-        getOrder(id).then((res) => {
-            setData(res);
-        });
+        getOrder(id)
+            .then((res) => {
+                setData(res);
+            })
+            .catch((error) => console.log(error));
     };
 
     React.useEffect(() => {
