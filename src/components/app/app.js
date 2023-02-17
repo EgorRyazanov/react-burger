@@ -9,7 +9,9 @@ import { getIngredients } from '../../utils/api';
 function App() {
     const [data, setData] = React.useState([]);
     React.useEffect(() => {
-        getIngredients().then((result) => setData(result.data));
+        getIngredients()
+            .then((result) => setData(result.data))
+            .catch((error) => console.log(error));
     }, []);
 
     return (
