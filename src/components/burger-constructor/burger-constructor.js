@@ -5,7 +5,7 @@ import styles from './burger-constructor.module.css';
 import ConstructorComponent from '../constructor-component/constructor-component';
 import ConstructorPrice from '../constructor-price/constructor-price';
 import { VALUE_BUN } from '../../utils/constants';
-import { ApiContext } from '../../services/apiContext';
+import { useSelector } from 'react-redux';
 
 export default function BurgerConstructor() {
     const initialPrice = { price: 0 };
@@ -25,8 +25,7 @@ export default function BurgerConstructor() {
         }
     };
 
-    const { data } = React.useContext(ApiContext);
-    const [isLoading, setLoading] = React.useState(true);
+    const parts = useSelector((state) => state.constructorBurger.parts);
     const [ingredients, setIngridients] = React.useState({
         buns: null,
         others: [],
@@ -35,20 +34,16 @@ export default function BurgerConstructor() {
     const [totalPrice, priceDispatch] = React.useReducer(reducer, initialPrice);
     React.useEffect(() => {
         setIngridients({
-            buns: data.filter((element) => element.type === VALUE_BUN)[0],
-            others: data
+            buns: { ...parts.filter((element) => element.type === VALUE_BUN) },
+            others: parts
                 .filter((element) => element.type !== VALUE_BUN)
                 .slice(0, 6),
         });
-        if (ingredients.buns) {
-            setLoading(false);
-            priceDispatch({ type: 'ADD' });
-        }
-    }, [data]);
+    }, [parts]);
 
     return (
         <div className={`${styles.global} pt-25 pl-4`}>
-            {!isLoading && (
+            {parts.length !== 0 && (
                 <>
                     <div className={`flex ${styles.container} mb-4`}>
                         <ConstructorElement

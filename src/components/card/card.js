@@ -6,19 +6,19 @@ import {
 import styles from './card.module.css';
 import PropTypes from 'prop-types';
 import { dataElementProp } from '../../utils/prop-types';
+import { useDispatch } from 'react-redux';
+import { addDetailIngredientAction } from '../../services/actions';
 
-const Card = React.memo(({ ingredient, setModalData, setActive, active }) => {
+const Card = React.memo(({ ingredient, handleToggleModal }) => {
     const [counter, setCounter] = React.useState(Math.round(Math.random()));
-    const handleToggleModal = () => {
-        setActive(!active);
-        setModalData({ ...ingredient });
+    const dispatch = useDispatch();
+    const handleClick = () => {
+        dispatch(addDetailIngredientAction(ingredient));
+        handleToggleModal();
     };
 
     return (
-        <div
-            onClick={!active ? handleToggleModal : null}
-            className={`${styles.card} mb-8`}
-        >
+        <div onClick={handleClick} className={`${styles.card} mb-8`}>
             <div className={`pl-4 pr-4 ${styles.relative}`}>
                 {counter > 0 && (
                     <Counter count={counter} size="default" extraClass="m-1" />
@@ -42,7 +42,5 @@ export default Card;
 
 Card.propTypes = {
     ingredient: dataElementProp.isRequired,
-    active: PropTypes.bool.isRequired,
-    setActive: PropTypes.func.isRequired,
-    setModalData: PropTypes.func.isRequired,
+    handleToggleModal: PropTypes.func.isRequired,
 };
