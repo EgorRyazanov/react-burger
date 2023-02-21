@@ -7,12 +7,12 @@ import styles from './constructor-component.module.css';
 import PropTypes from 'prop-types';
 import { dataElementProp } from '../../utils/prop-types';
 
-const ConstructorComponent = React.memo(({ ingredients }) => {
+const ConstructorComponent = React.memo(({ ingredients, handleClose }) => {
     return (
         <>
             {ingredients.map((ingredient) => (
                 <div
-                    key={ingredient._id}
+                    key={ingredient.dragId}
                     className={`flex ${styles.container} ${styles.card}`}
                 >
                     <div className="pt-8 pb-8">
@@ -23,6 +23,7 @@ const ConstructorComponent = React.memo(({ ingredients }) => {
                         text={ingredient.name}
                         price={ingredient.price}
                         thumbnail={ingredient.image}
+                        handleClose={(e) => handleClose(e, ingredient)}
                     />
                 </div>
             ))}

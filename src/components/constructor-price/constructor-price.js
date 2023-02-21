@@ -6,35 +6,24 @@ import {
 import styles from './constructor-price.module.css';
 import PropTypes from 'prop-types';
 import OrderDetails from '../order-details/order-details';
-import { getOrder } from '../../utils/api';
 import Modal from '../modal/modal';
+import { useSelector, useDispatch } from 'react-redux';
+import { getFetchOrderAction } from '../../services/actions';
 
 export default function ConstructorPrice({ price, id }) {
-    const [order, setOrder] = React.useState({
-        name: '',
-        number: 0,
-        success: false,
-    });
-    const [data, setData] = React.useState('');
+    const dispatch = useDispatch();
+    const { fetchOrderRequest, fetchOrderFailed, order } = useSelector(
+        (state) => state.orderDetail
+    );
     const [active, setActive] = React.useState(false);
     const handleToggleModal = () => {
-        setActive(!active);
-        getOrder(id)
-            .then((res) => {
-                setData(res);
-            })
-            .catch((error) => console.log(error));
+        if (price !== 0) {
+            if (!active) {
+                dispatch(getFetchOrderAction(id));
+            }
+            setActive(!active);
+        }
     };
-
-    React.useEffect(() => {
-        setOrder({ ...data });
-    }, [data]);
-
-    React.useEffect(() => {
-        getOrder(id).then((res) => {
-            setData(res);
-        });
-    }, []);
 
     return (
         <div className={styles.container}>
@@ -46,11 +35,12 @@ export default function ConstructorPrice({ price, id }) {
                 onClick={!active ? handleToggleModal : null}
                 htmlType="button"
                 type="primary"
+                disabled={price === 0}
                 size="large"
             >
                 Оформить заказ
             </Button>
-            {active && (
+            {active && order && !fetchOrderRequest && !fetchOrderFailed && (
                 <Modal
                     handleToggleModal={handleToggleModal}
                     title={''}

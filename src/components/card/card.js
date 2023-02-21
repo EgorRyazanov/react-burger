@@ -8,17 +8,36 @@ import PropTypes from 'prop-types';
 import { dataElementProp } from '../../utils/prop-types';
 import { useDispatch } from 'react-redux';
 import { addDetailIngredientAction } from '../../services/actions';
+import { useDrag } from 'react-dnd';
+import { useSelector } from 'react-redux';
 
 const Card = React.memo(({ ingredient, handleToggleModal }) => {
-    const [counter, setCounter] = React.useState(Math.round(Math.random()));
+    const [counter, setCounter] = React.useState(0);
     const dispatch = useDispatch();
     const handleClick = () => {
         dispatch(addDetailIngredientAction(ingredient));
         handleToggleModal();
     };
 
+    const { parts, bun } = useSelector((state) => state.constructorBurger);
+
+    const [, drag] = useDrag(() => ({
+        type: 'ингредиент',
+        item: { ...ingredient },
+    }));
+
+    React.useEffect(() => {
+        let currentCounter = [...parts, bun]?.filter(
+            (element) => element?._id === ingredient._id
+        ).length;
+        if (bun?._id === ingredient?._id) {
+            currentCounter *= 2;
+        }
+        setCounter(currentCounter); // как исправить перерендер всех элементов?
+    }, [bun, parts]);
+
     return (
-        <div onClick={handleClick} className={`${styles.card} mb-8`}>
+        <div ref={drag} onClick={handleClick} className={`${styles.card} mb-8`}>
             <div className={`pl-4 pr-4 ${styles.relative}`}>
                 {counter > 0 && (
                     <Counter count={counter} size="default" extraClass="m-1" />
