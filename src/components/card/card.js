@@ -7,12 +7,11 @@ import styles from './card.module.css';
 import PropTypes from 'prop-types';
 import { dataElementProp } from '../../utils/prop-types';
 import { useDispatch } from 'react-redux';
-import { addDetailIngredientAction } from '../../services/actions';
+import { addDetailIngredientAction } from '../../services/actions/ingredient-details';
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
 
 const Card = React.memo(({ ingredient, handleToggleModal }) => {
-    const [counter, setCounter] = React.useState(0);
     const dispatch = useDispatch();
     const handleClick = () => {
         dispatch(addDetailIngredientAction(ingredient));
@@ -26,14 +25,10 @@ const Card = React.memo(({ ingredient, handleToggleModal }) => {
         item: { ...ingredient },
     }));
 
-    React.useEffect(() => {
-        let currentCounter = [...parts, bun]?.filter(
+    const counter = React.useMemo(() => {
+        return [...parts, bun, bun]?.filter(
             (element) => element?._id === ingredient._id
         ).length;
-        if (bun?._id === ingredient?._id) {
-            currentCounter *= 2;
-        }
-        setCounter(currentCounter); // как исправить перерендер всех элементов?
     }, [bun, parts]);
 
     return (

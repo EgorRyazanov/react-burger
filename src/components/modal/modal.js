@@ -8,7 +8,7 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 const modalContainer = document.getElementById('modal-container');
 const body = document.body;
 
-export default function Modal({ children, handleToggleModal, ...props }) {
+const Modal = React.memo(({ children, handleToggleModal, ...props }) => {
     const handleEscPressed = (event) =>
         event.code === 'Escape' ? handleToggleModal() : null;
 
@@ -45,10 +45,12 @@ export default function Modal({ children, handleToggleModal, ...props }) {
         </div>,
         modalContainer
     );
-}
+});
 
 Modal.propTypes = {
     handleToggleModal: PropTypes.func.isRequired,
     title: PropTypes.string,
     container: PropTypes.string.isRequired,
 };
+
+export default Modal;

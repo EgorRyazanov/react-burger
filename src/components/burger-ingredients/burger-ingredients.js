@@ -6,10 +6,9 @@ import { VALUE_BUN, VALUE_SAUCE, VALUE_MAIN } from '../../utils/constants';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-    getFetchIngredientsAction,
-    removeDetailIngredientAction,
-} from '../../services/actions';
+import { fetchIngredientsAction } from '../../services/actions/fetch-ingredients';
+
+import { removeDetailIngredientAction } from '../../services/actions/ingredient-details';
 
 export default function BurgerIngridients() {
     const bunsRef = React.useRef();
@@ -58,7 +57,7 @@ export default function BurgerIngridients() {
     };
 
     React.useEffect(() => {
-        dispatch(getFetchIngredientsAction());
+        dispatch(fetchIngredientsAction());
     }, []);
 
     React.useEffect(() => {

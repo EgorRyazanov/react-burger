@@ -7,9 +7,12 @@ import styles from './constructor-component.module.css';
 import PropTypes from 'prop-types';
 import { dataElementProp } from '../../utils/prop-types';
 import { useDrop, useDrag } from 'react-dnd';
+import { useDispatch } from 'react-redux';
+import { updateComponentsConstructorAction } from '../../services/actions/constructor';
 
 const ConstructorComponent = React.memo(
-    ({ ingredient, handleClose, moveCard, index }) => {
+    ({ ingredient, handleClose, index }) => {
+        const dispatch = useDispatch();
         const ref = React.useRef(null);
         const [{ handlerId }, drop] = useDrop({
             accept: 'конструктор',
@@ -38,22 +41,29 @@ const ConstructorComponent = React.memo(
                 if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
                     return;
                 }
-                moveCard(dragIndex, hoverIndex);
+                dispatch(
+                    updateComponentsConstructorAction(hoverIndex, dragIndex)
+                );
                 item.index = hoverIndex;
             },
         });
-        const [, drag] = useDrag({
+        const [{ isDragging }, drag] = useDrag({
             type: 'конструктор',
             item: () => {
                 return { ...ingredient, index: index };
             },
+            collect: (monitor) => ({
+                isDragging: monitor.isDragging(),
+            }),
         });
+        const opacity = isDragging ? 0 : 1;
         drag(drop(ref));
         return (
             <div
                 ref={ref}
                 className={`flex ${styles.container} ${styles.card}`}
                 data-handler-id={handlerId}
+                style={{ opacity }}
             >
                 <div className="pt-8 pb-8">
                     <DragIcon type="primary" />
@@ -75,6 +85,5 @@ export default ConstructorComponent;
 ConstructorComponent.propTypes = {
     ingredient: dataElementProp.isRequired,
     handleClose: PropTypes.func.isRequired,
-    moveCard: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
 };

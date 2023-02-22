@@ -8,9 +8,9 @@ import PropTypes from 'prop-types';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
 import { useSelector, useDispatch } from 'react-redux';
-import { getFetchOrderAction } from '../../services/actions';
+import { makeOrderAction } from '../../services/actions/order-details';
 
-export default function ConstructorPrice({ price, id }) {
+const ConstructorPrice = React.memo(({ price, id }) => {
     const dispatch = useDispatch();
     const { fetchOrderRequest, fetchOrderFailed, order } = useSelector(
         (state) => state.orderDetail
@@ -19,7 +19,7 @@ export default function ConstructorPrice({ price, id }) {
     const handleToggleModal = () => {
         if (price !== 0) {
             if (!active) {
-                dispatch(getFetchOrderAction(id));
+                dispatch(makeOrderAction(id));
             }
             setActive(!active);
         }
@@ -51,9 +51,11 @@ export default function ConstructorPrice({ price, id }) {
             )}
         </div>
     );
-}
+});
 
 ConstructorPrice.propTypes = {
     price: PropTypes.number.isRequired,
     id: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
+
+export default ConstructorPrice;

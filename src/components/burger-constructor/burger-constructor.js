@@ -7,14 +7,14 @@ import ConstructorPrice from '../constructor-price/constructor-price';
 import { VALUE_BUN } from '../../utils/constants';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
+import { getPrice } from '../../utils/get-price';
 import {
     addElementToConstructorAction,
     addBunToConstructorAction,
     removeElementFromConstructorAction,
     removeBunFromConstructorAction,
     updateBunInConstructorAction,
-    updateComponentsConstructorAction,
-} from '../../services/actions';
+} from '../../services/actions/constructor';
 
 export default function BurgerConstructor() {
     const { parts, bun } = useSelector((state) => state.constructorBurger);
@@ -39,39 +39,9 @@ export default function BurgerConstructor() {
             isOver: monitor.isOver(),
         }),
     });
-    const initialPrice = { price: 0 };
-    const reducer = (state, action) => {
-        switch (action.type) {
-            case 'ADD': {
-                const price =
-                    parts.reduce((acc, current) => acc + current?.price, 0) +
-                        bun?.price * 2 || 0;
-                return { ...state, price };
-            }
-            default:
-                return { ...state };
-        }
-    };
-
-    const [totalPrice, priceDispatch] = React.useReducer(reducer, initialPrice);
     const borderParts = isOver ? { outline: 'solid #4C4CFF 1px' } : null;
 
-    React.useEffect(() => {
-        priceDispatch({
-            type: 'ADD',
-        });
-    }, [parts, bun]);
-
-    const moveCard = React.useCallback(
-        (dragIndex, hoverIndex) => {
-            const dragCard = parts[dragIndex];
-            const currentCards = [...parts];
-            currentCards.splice(dragIndex, 1);
-            currentCards.splice(hoverIndex, 0, dragCard);
-            dispatch(updateComponentsConstructorAction(currentCards));
-        },
-        [parts, dispatch]
-    );
+    const price = React.useMemo(() => getPrice(parts, bun), [parts, bun]);
 
     return (
         <div ref={dropTargerRef} className={`${styles.global} pt-25 pl-4`}>
@@ -110,7 +80,6 @@ export default function BurgerConstructor() {
                                             );
                                         }}
                                         ingredient={ingredient}
-                                        moveCard={moveCard}
                                         index={index}
                                         key={ingredient.dragId}
                                     />
@@ -133,7 +102,7 @@ export default function BurgerConstructor() {
                 )}
             </div>
             <ConstructorPrice
-                price={totalPrice.price}
+                price={price}
                 id={[...parts.map((element) => element?._id), bun?._id]}
             />
         </div>

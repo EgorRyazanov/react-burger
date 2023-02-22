@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import imagePath from '../../images/order-details/done.png';
 import styles from './order-details.module.css';
 
-export default function OrderDetails(props) {
+const OrderDetails = React.memo((props) => {
     return (
         <div className={`${styles.elements_center} mt-4`}>
             <p
@@ -29,8 +29,10 @@ export default function OrderDetails(props) {
             </p>
         </div>
     );
-}
+});
 
 OrderDetails.propTypes = {
     number: PropTypes.number,
 };
+
+export default OrderDetails;
