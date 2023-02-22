@@ -14,6 +14,7 @@ import {
     GET_ORDER,
     GET_ORDER_FAILED,
     GET_ORDER_SUCCESS,
+    UPDATE_CONSTRUCTOR,
 } from '../utils/constants';
 
 const initialIngredientsState = {
@@ -84,6 +85,12 @@ const constructorReducer = (state = initialConstructor, action) => {
             return {
                 ...state,
                 bun: action.payload,
+            };
+        }
+        case UPDATE_CONSTRUCTOR: {
+            return {
+                ...state,
+                parts: action.payload,
             };
         }
 

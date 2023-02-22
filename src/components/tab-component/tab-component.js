@@ -24,4 +24,9 @@ export default TabComponent;
 TabComponent.propTypes = {
     current: PropTypes.string.isRequired,
     handleTabScroll: PropTypes.func.isRequired,
+    tab: PropTypes.shape({
+        value: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+        ref: PropTypes.string.isRequired,
+    }),
 };

@@ -13,6 +13,7 @@ import {
     removeElementFromConstructorAction,
     removeBunFromConstructorAction,
     updateBunInConstructorAction,
+    updateComponentsConstructorAction,
 } from '../../services/actions';
 
 export default function BurgerConstructor() {
@@ -61,6 +62,17 @@ export default function BurgerConstructor() {
         });
     }, [parts, bun]);
 
+    const moveCard = React.useCallback(
+        (dragIndex, hoverIndex) => {
+            const dragCard = parts[dragIndex];
+            const currentCards = [...parts];
+            currentCards.splice(dragIndex, 1);
+            currentCards.splice(hoverIndex, 0, dragCard);
+            dispatch(updateComponentsConstructorAction(currentCards));
+        },
+        [parts, dispatch]
+    );
+
     return (
         <div ref={dropTargerRef} className={`${styles.global} pt-25 pl-4`}>
             <div className={`${styles.ingredients} mb-10`}>
@@ -87,16 +99,23 @@ export default function BurgerConstructor() {
                             style={borderParts}
                             className={`mb-4 ${styles.scroll}`}
                         >
-                            <ConstructorComponent
-                                handleClose={(event, ingredient) => {
-                                    dispatch(
-                                        removeElementFromConstructorAction(
-                                            ingredient.dragId
-                                        )
-                                    );
-                                }}
-                                ingredients={parts}
-                            />
+                            {parts.map((ingredient, index) => {
+                                return (
+                                    <ConstructorComponent
+                                        handleClose={(event, ingredient) => {
+                                            dispatch(
+                                                removeElementFromConstructorAction(
+                                                    ingredient.dragId
+                                                )
+                                            );
+                                        }}
+                                        ingredient={ingredient}
+                                        moveCard={moveCard}
+                                        index={index}
+                                        key={ingredient.dragId}
+                                    />
+                                );
+                            })}
                         </div>
                         <div className={`flex ${styles.container}`}>
                             <ConstructorElement

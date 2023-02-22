@@ -12,6 +12,7 @@ import {
     GET_ORDER,
     GET_ORDER_FAILED,
     GET_ORDER_SUCCESS,
+    UPDATE_CONSTRUCTOR
 } from '../utils/constants';
 import { getIngredients, getOrder } from '../utils/api';
 import { v4 as uuid } from 'uuid';
@@ -102,6 +103,13 @@ export const updateBunInConstructorAction = (ingredient) => {
         payload: ingredient,
     };
 };
+
+export const updateComponentsConstructorAction = (ingredients) => {
+    return {
+        type: UPDATE_CONSTRUCTOR,
+        payload: ingredients,
+    };
+}
 
 export const removeDetailIngredientAction = {
     type: REMOVE_DETAIL_INGREDIENT,
