@@ -6,19 +6,35 @@ import {
 import styles from './card.module.css';
 import PropTypes from 'prop-types';
 import { dataElementProp } from '../../utils/prop-types';
+import { useDispatch } from 'react-redux';
+import { addDetailIngredientAction } from '../../services/actions/ingredient-details';
+import { useDrag } from 'react-dnd';
+import { useSelector } from 'react-redux';
 
-const Card = React.memo(({ ingredient, setModalData, setActive, active }) => {
-    const [counter, setCounter] = React.useState(Math.round(Math.random()));
-    const handleToggleModal = () => {
-        setActive(!active);
-        setModalData({ ...ingredient });
+const getConstructorFromStore = (state) => state.constructorBurger;
+
+const Card = React.memo(({ ingredient, handleToggleModal }) => {
+    const dispatch = useDispatch();
+    const handleClick = () => {
+        dispatch(addDetailIngredientAction(ingredient));
+        handleToggleModal();
     };
 
+    const { parts, bun } = useSelector(getConstructorFromStore);
+
+    const [, drag] = useDrag(() => ({
+        type: 'ингредиент',
+        item: { ...ingredient },
+    }));
+
+    const counter = React.useMemo(() => {
+        return [...parts, bun, bun]?.filter(
+            (element) => element?._id === ingredient._id
+        ).length;
+    }, [bun, parts]);
+
     return (
-        <div
-            onClick={!active ? handleToggleModal : null}
-            className={`${styles.card} mb-8`}
-        >
+        <div ref={drag} onClick={handleClick} className={`${styles.card} mb-8`}>
             <div className={`pl-4 pr-4 ${styles.relative}`}>
                 {counter > 0 && (
                     <Counter count={counter} size="default" extraClass="m-1" />
@@ -42,7 +58,5 @@ export default Card;
 
 Card.propTypes = {
     ingredient: dataElementProp.isRequired,
-    active: PropTypes.bool.isRequired,
-    setActive: PropTypes.func.isRequired,
-    setModalData: PropTypes.func.isRequired,
+    handleToggleModal: PropTypes.func.isRequired,
 };

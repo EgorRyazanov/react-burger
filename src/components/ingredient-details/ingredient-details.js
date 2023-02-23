@@ -1,9 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styles from './ingredient-details.module.css';
-import { dataElementProp } from '../../utils/prop-types';
+import { useSelector } from 'react-redux';
 
-export default function IngredientDetails({ ...ingredient }) {
+const getIngredientFromStore = (state) => state.ingredientDetails.ingredient;
+
+export default function IngredientDetails() {
+    const ingredient = useSelector(getIngredientFromStore);
     return (
         <div className={styles.elements_center}>
             <div className={styles.container}>
@@ -71,7 +73,3 @@ export default function IngredientDetails({ ...ingredient }) {
         </div>
     );
 }
-
-IngredientDetails.propTypes = {
-    ingredient: dataElementProp,
-};

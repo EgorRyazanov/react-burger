@@ -5,83 +5,108 @@ import styles from './burger-constructor.module.css';
 import ConstructorComponent from '../constructor-component/constructor-component';
 import ConstructorPrice from '../constructor-price/constructor-price';
 import { VALUE_BUN } from '../../utils/constants';
-import { ApiContext } from '../../services/apiContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { useDrop } from 'react-dnd';
+import { getPrice } from '../../utils/get-price';
+import {
+    addElementToConstructorAction,
+    addBunToConstructorAction,
+    removeElementFromConstructorAction,
+    removeBunFromConstructorAction,
+    updateBunInConstructorAction,
+} from '../../services/actions/constructor';
+
+const getConstructorFromStore = (state) => state.constructorBurger;
 
 export default function BurgerConstructor() {
-    const initialPrice = { price: 0 };
-    const reducer = (state, action) => {
-        switch (action.type) {
-            case 'ADD': {
-                const price =
-                    ingredients.others.reduce(
-                        (acc, current) => acc + current.price,
-                        0
-                    ) +
-                    ingredients.buns.price * 2;
-                return { ...state, price };
+    const { parts, bun } = useSelector(getConstructorFromStore);
+    const dispatch = useDispatch();
+    const [{ isOver }, dropTargerRef] = useDrop({
+        accept: 'ингредиент',
+        drop(item) {
+            if (!bun) {
+                if (item.type === VALUE_BUN) {
+                    dispatch(addBunToConstructorAction(item));
+                }
+            } else {
+                if (item.type !== VALUE_BUN) {
+                    dispatch(addElementToConstructorAction(item));
+                } else {
+                    dispatch(updateBunInConstructorAction(item));
+                }
             }
-            default:
-                return { ...state };
-        }
-    };
-
-    const { data } = React.useContext(ApiContext);
-    const [isLoading, setLoading] = React.useState(true);
-    const [ingredients, setIngridients] = React.useState({
-        buns: null,
-        others: [],
+            return item;
+        },
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+        }),
     });
+    const borderParts = isOver ? { outline: 'solid #4C4CFF 1px' } : null;
 
-    const [totalPrice, priceDispatch] = React.useReducer(reducer, initialPrice);
-    React.useEffect(() => {
-        setIngridients({
-            buns: data.filter((element) => element.type === VALUE_BUN)[0],
-            others: data
-                .filter((element) => element.type !== VALUE_BUN)
-                .slice(0, 6),
-        });
-        if (ingredients.buns) {
-            setLoading(false);
-            priceDispatch({ type: 'ADD' });
-        }
-    }, [data]);
+    const price = React.useMemo(() => getPrice(parts, bun), [parts, bun]);
 
     return (
-        <div className={`${styles.global} pt-25 pl-4`}>
-            {!isLoading && (
-                <>
-                    <div className={`flex ${styles.container} mb-4`}>
-                        <ConstructorElement
-                            type="top"
-                            isLocked={true}
-                            text={`${ingredients.buns.name} верх`}
-                            price={ingredients.buns.price}
-                            thumbnail={ingredients.buns.image}
-                        />
-                    </div>
-                    <div className={`mb-4 ${styles.scroll}`}>
-                        <ConstructorComponent
-                            ingredients={ingredients.others}
-                        />
-                    </div>
-                    <div className={`flex ${styles.container} mb-10`}>
-                        <ConstructorElement
-                            type="bottom"
-                            isLocked={true}
-                            text={`${ingredients.buns.name} низ`}
-                            price={ingredients.buns.price}
-                            thumbnail={ingredients.buns.image}
-                        />
-                    </div>
-                    <ConstructorPrice
-                        price={totalPrice.price}
-                        id={[
-                            ...ingredients.others.map((element) => element._id),
-                            ingredients.buns._id,
-                        ]}
-                    />
-                </>
-            )}
+        <div ref={dropTargerRef} className={`${styles.global} pt-25 pl-4`}>
+            <div className={`${styles.ingredients} mb-10`}>
+                {!bun && (
+                    <p className="text text_type_main-large pt-25">
+                        Вставьте сюда булочку
+                    </p>
+                )}
+                {bun && (
+                    <>
+                        <div className={`flex ${styles.container} mb-4`}>
+                            <ConstructorElement
+                                type="top"
+                                isLocked={false}
+                                text={`${bun.name} верх`}
+                                price={bun.price}
+                                thumbnail={bun.image}
+                                handleClose={(e) =>
+                                    dispatch(removeBunFromConstructorAction)
+                                }
+                            />
+                        </div>
+                        <div
+                            style={borderParts}
+                            className={`mb-4 ${styles.scroll}`}
+                        >
+                            {parts.map((ingredient, index) => {
+                                return (
+                                    <ConstructorComponent
+                                        handleClose={(event, ingredient) => {
+                                            dispatch(
+                                                removeElementFromConstructorAction(
+                                                    ingredient.dragId
+                                                )
+                                            );
+                                        }}
+                                        ingredient={ingredient}
+                                        index={index}
+                                        key={ingredient.dragId}
+                                    />
+                                );
+                            })}
+                        </div>
+                        <div className={`flex ${styles.container}`}>
+                            <ConstructorElement
+                                type="bottom"
+                                isLocked={false}
+                                text={`${bun.name} низ`}
+                                price={bun.price}
+                                thumbnail={bun.image}
+                                handleClose={(e) =>
+                                    dispatch(removeBunFromConstructorAction)
+                                }
+                            />
+                        </div>
+                    </>
+                )}
+            </div>
+            <ConstructorPrice
+                price={price}
+                id={[...parts.map((element) => element?._id), bun?._id]}
+            />
         </div>
     );
 }

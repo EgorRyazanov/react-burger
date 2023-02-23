@@ -3,26 +3,19 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngridients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import ErrorBoundary from '../../hoc/error-boundary';
-import { ApiContext } from '../../services/apiContext';
-import { getIngredients } from '../../utils/api';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function App() {
-    const [data, setData] = React.useState([]);
-    React.useEffect(() => {
-        getIngredients()
-            .then((result) => setData(result.data))
-            .catch((error) => console.log(error));
-    }, []);
-
     return (
         <ErrorBoundary>
             <AppHeader />
             <main>
                 <div className="container flex pl-5 pr-5x">
-                    <ApiContext.Provider value={{ data, setData }}>
+                    <DndProvider backend={HTML5Backend}>
                         <BurgerIngridients />
                         <BurgerConstructor />
-                    </ApiContext.Provider>
+                    </DndProvider>
                 </div>
             </main>
         </ErrorBoundary>
