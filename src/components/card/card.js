@@ -11,6 +11,8 @@ import { addDetailIngredientAction } from '../../services/actions/ingredient-det
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
 
+const getConstructorFromStore = (state) => state.constructorBurger;
+
 const Card = React.memo(({ ingredient, handleToggleModal }) => {
     const dispatch = useDispatch();
     const handleClick = () => {
@@ -18,7 +20,7 @@ const Card = React.memo(({ ingredient, handleToggleModal }) => {
         handleToggleModal();
     };
 
-    const { parts, bun } = useSelector((state) => state.constructorBurger);
+    const { parts, bun } = useSelector(getConstructorFromStore);
 
     const [, drag] = useDrag(() => ({
         type: 'ингредиент',

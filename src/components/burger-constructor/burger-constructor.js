@@ -16,8 +16,10 @@ import {
     updateBunInConstructorAction,
 } from '../../services/actions/constructor';
 
+const getConstructorFromStore = (state) => state.constructorBurger;
+
 export default function BurgerConstructor() {
-    const { parts, bun } = useSelector((state) => state.constructorBurger);
+    const { parts, bun } = useSelector(getConstructorFromStore);
     const dispatch = useDispatch();
     const [{ isOver }, dropTargerRef] = useDrop({
         accept: 'ингредиент',

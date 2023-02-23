@@ -28,7 +28,7 @@ const orderDetailReducer = (state = initialOrder, action) => {
         }
         case GET_ORDER_FAILED: {
             return {
-                ...state,
+                order: initialOrder.order,
                 fetchOrderFailed: true,
                 fetchOrderRequest: false,
             };

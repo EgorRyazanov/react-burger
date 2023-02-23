@@ -2,10 +2,10 @@ import React from 'react';
 import styles from './ingredient-details.module.css';
 import { useSelector } from 'react-redux';
 
+const getIngredientFromStore = (state) => state.ingredientDetails.ingredient;
+
 export default function IngredientDetails() {
-    const ingredient = useSelector(
-        (state) => state.ingredientDetails.ingredient
-    );
+    const ingredient = useSelector(getIngredientFromStore);
     return (
         <div className={styles.elements_center}>
             <div className={styles.container}>

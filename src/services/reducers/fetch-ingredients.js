@@ -28,7 +28,7 @@ const fetchIngredientsReducer = (state = initialIngredientsState, action) => {
         }
         case GET_INGREDIENTS_FAILED: {
             return {
-                ...state,
+                ingredients: initialIngredientsState.ingredients,
                 fetchIngredientsFailed: true,
                 fetchIngredientsRequest: false,
             };

@@ -10,6 +10,8 @@ import { fetchIngredientsAction } from '../../services/actions/fetch-ingredients
 
 import { removeDetailIngredientAction } from '../../services/actions/ingredient-details';
 
+const getIngredientsFromStore = (state) => state.fetchIngredients;
+
 export default function BurgerIngridients() {
     const bunsRef = React.useRef();
     const saucesRef = React.useRef();
@@ -43,7 +45,7 @@ export default function BurgerIngridients() {
         setActive(!active);
     };
     const { ingredients, fetchIngredientsRequest, fetchIngredientsFailed } =
-        useSelector((state) => state.fetchIngredients);
+        useSelector(getIngredientsFromStore);
     const [current, setCurrent] = React.useState(VALUE_BUN);
     const [sortedIngredients, setIngridients] = React.useState({
         buns: [],

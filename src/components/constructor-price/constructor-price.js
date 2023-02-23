@@ -10,11 +10,12 @@ import Modal from '../modal/modal';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeOrderAction } from '../../services/actions/order-details';
 
+const getOrderFromStore = (state) => state.orderDetail;
+
 const ConstructorPrice = React.memo(({ price, id }) => {
     const dispatch = useDispatch();
-    const { fetchOrderRequest, fetchOrderFailed, order } = useSelector(
-        (state) => state.orderDetail
-    );
+    const { fetchOrderRequest, fetchOrderFailed, order } =
+        useSelector(getOrderFromStore);
     const [active, setActive] = React.useState(false);
     const handleToggleModal = () => {
         if (price !== 0) {
