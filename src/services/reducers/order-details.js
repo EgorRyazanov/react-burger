@@ -22,7 +22,7 @@ const orderDetailReducer = (state = initialOrder, action) => {
         case GET_ORDER_SUCCESS: {
             return {
                 ...state,
-                order: action.data,
+                order: action.payload,
                 fetchOrderRequest: false,
             };
         }

@@ -3,7 +3,7 @@ import {
     GET_INGREDIENTS_FAILED,
     GET_INGREDIENTS_SUCCESS,
 } from '../../utils/constants';
-import { getIngredients } from '../../utils/api';
+import { getIngredients } from '../../utils/api/ingredients-requests';
 
 export function fetchIngredientsAction() {
     return function (dispatch) {
@@ -14,11 +14,10 @@ export function fetchIngredientsAction() {
             .then((res) => {
                 dispatch({
                     type: GET_INGREDIENTS_SUCCESS,
-                    data: res.data,
+                    payload: res.data,
                 });
             })
             .catch((error) => {
-                console.log(error);
                 dispatch({
                     type: GET_INGREDIENTS_FAILED,
                 });

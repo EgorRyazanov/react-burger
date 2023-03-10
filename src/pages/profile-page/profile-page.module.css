@@ -1,0 +1,16 @@
+.links_container {
+    width: 320px;
+    margin-right: 60px;
+    display: flex;
+    flex-direction: column;
+}
+
+.link {
+    height: 64px;
+    padding-top: 17px;
+    padding-bottom: 17px;
+}
+
+.active {
+    color: white;
+}
