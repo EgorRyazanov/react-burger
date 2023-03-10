@@ -12,7 +12,7 @@ import { makeOrderAction } from '../../services/actions/order-details';
 
 const getOrderFromStore = (state) => state.orderDetail;
 
-const ConstructorPrice = React.memo(({ price, id }) => {
+const ConstructorPrice = React.memo(({ price, id, userLoaded }) => {
     const dispatch = useDispatch();
     const { fetchOrderRequest, fetchOrderFailed, order } =
         useSelector(getOrderFromStore);
@@ -29,15 +29,15 @@ const ConstructorPrice = React.memo(({ price, id }) => {
     return (
         <div className={styles.container}>
             <div className={`${styles.price} mr-10`}>
-                <p className="text text_type_digits-medium mr-2">{price}</p>
-                <CurrencyIcon type="primary" />
+                <p className='text text_type_digits-medium mr-2'>{price}</p>
+                <CurrencyIcon type='primary' />
             </div>
             <Button
                 onClick={!active ? handleToggleModal : null}
-                htmlType="button"
-                type="primary"
-                disabled={price === 0}
-                size="large"
+                htmlType='button'
+                type='primary'
+                disabled={price === 0 || !userLoaded}
+                size='large'
             >
                 Оформить заказ
             </Button>
@@ -57,6 +57,7 @@ const ConstructorPrice = React.memo(({ price, id }) => {
 ConstructorPrice.propTypes = {
     price: PropTypes.number.isRequired,
     id: PropTypes.arrayOf(PropTypes.string).isRequired,
+    userLoaded: PropTypes.bool.isRequired,
 };
 
 export default ConstructorPrice;

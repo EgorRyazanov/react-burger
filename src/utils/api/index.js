@@ -1,7 +1,6 @@
 import { BASE_URL } from '../../utils/constants';
 
 const checkResponse = (res) => {
-    console.log(res);
     if (res.ok) {
         return res.json();
     }

@@ -11,13 +11,12 @@ const ProfilePage = () => {
     const navigate = useNavigate();
 
     const handleLogout = (e) => {
-        e.preventDefault();
         try {
             fetchLogout();
         } finally {
             localStorage.clear();
             dispatch(clearUserAction);
-            navigate('/', { replace: true });
+            navigate('/login', { replace: true });
         }
     };
     return (

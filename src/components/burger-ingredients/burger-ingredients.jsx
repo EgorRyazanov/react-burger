@@ -44,8 +44,7 @@ export default function BurgerIngridients() {
         }
         setActive(!active);
     };
-    const { ingredients, fetchIngredientsRequest, fetchIngredientsFailed } =
-        useSelector(getIngredientsFromStore);
+    const { ingredients } = useSelector(getIngredientsFromStore);
     const [current, setCurrent] = React.useState(VALUE_BUN);
     const [sortedIngredients, setIngridients] = React.useState({
         buns: [],
@@ -96,52 +95,50 @@ export default function BurgerIngridients() {
 
     return (
         <>
-            {!fetchIngredientsRequest &&
-                !fetchIngredientsFailed &&
-                ingredients && (
-                    <div className={`pt-10 mr-10 ${styles.global}`}>
-                        <p className="text text_type_main-large mb-5">
-                            Соберите бургер
-                        </p>
-                        <TabComponent
-                            tabs={tabs}
-                            handleTabScroll={handleTabScroll}
-                            current={current}
+            {ingredients && (
+                <div className={`pt-10 mr-10 ${styles.global}`}>
+                    <p className='text text_type_main-large mb-5'>
+                        Соберите бургер
+                    </p>
+                    <TabComponent
+                        tabs={tabs}
+                        handleTabScroll={handleTabScroll}
+                        current={current}
+                    />
+                    <div className={`${styles.scroll} parent`}>
+                        <IngredientBlock
+                            id={VALUE_BUN}
+                            ref={bunsRef}
+                            name='Булки'
+                            ingredients={sortedIngredients.buns}
+                            handleToggleModal={handleToggleModal}
                         />
-                        <div className={`${styles.scroll} parent`}>
-                            <IngredientBlock
-                                id={VALUE_BUN}
-                                ref={bunsRef}
-                                name="Булки"
-                                ingredients={sortedIngredients.buns}
+                        <IngredientBlock
+                            id={VALUE_SAUCE}
+                            ref={saucesRef}
+                            name='Соусы'
+                            ingredients={sortedIngredients.sauces}
+                            handleToggleModal={handleToggleModal}
+                        />
+                        <IngredientBlock
+                            id={VALUE_MAIN}
+                            ref={mainRef}
+                            name='Начинка'
+                            ingredients={sortedIngredients.main}
+                            handleToggleModal={handleToggleModal}
+                        />
+                        {active && (
+                            <Modal
+                                title={'Детали ингредиента'}
+                                container={styles.modal}
                                 handleToggleModal={handleToggleModal}
-                            />
-                            <IngredientBlock
-                                id={VALUE_SAUCE}
-                                ref={saucesRef}
-                                name="Соусы"
-                                ingredients={sortedIngredients.sauces}
-                                handleToggleModal={handleToggleModal}
-                            />
-                            <IngredientBlock
-                                id={VALUE_MAIN}
-                                ref={mainRef}
-                                name="Начинка"
-                                ingredients={sortedIngredients.main}
-                                handleToggleModal={handleToggleModal}
-                            />
-                            {active && (
-                                <Modal
-                                    title={'Детали ингредиента'}
-                                    container={styles.modal}
-                                    handleToggleModal={handleToggleModal}
-                                >
-                                    <IngredientDetails />
-                                </Modal>
-                            )}
-                        </div>
+                            >
+                                <IngredientDetails />
+                            </Modal>
+                        )}
                     </div>
-                )}
+                </div>
+            )}
         </>
     );
 }

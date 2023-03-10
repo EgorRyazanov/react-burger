@@ -23,3 +23,11 @@
 .container {
     width: 520px;
 }
+
+.detail_container_page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 85vh;
+    justify-content: center;
+}

@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { getUser, fetchRefresh } from '../../utils/api/user-request';
 import { updateUserAction, clearUserAction } from '../../services/actions/user';
 import getAccessToken from '../../utils/get-access-token';
+import PropTypes from 'prop-types';
 
 const getUserFromStore = (state) => state.user.user;
 
@@ -44,6 +45,10 @@ const ProtectedRoute = ({ element }) => {
     }
 
     return userAuth ? element : <Navigate to='/login' replace />;
+};
+
+ProtectedRoute.propTypes = {
+    element: PropTypes.element.isRequired,
 };
 
 export default ProtectedRoute;
