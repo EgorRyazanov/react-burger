@@ -3,7 +3,7 @@ import {
     ADD_BUN,
     UPDATE_BUN,
     REMOVE_CONSTRUCTOR,
-    REMOVE_BUN,
+    CLEAR_CONSTRUCTOR,
     UPDATE_CONSTRUCTOR,
 } from '../../utils/constants';
 
@@ -34,7 +34,7 @@ const constructorReducer = (state = initialConstructor, action) => {
                 ),
             };
         }
-        case REMOVE_BUN: {
+        case CLEAR_CONSTRUCTOR: {
             return initialConstructor;
         }
         case UPDATE_BUN: {

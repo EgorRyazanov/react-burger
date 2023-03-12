@@ -13,7 +13,7 @@ import {
     addElementToConstructorAction,
     addBunToConstructorAction,
     removeElementFromConstructorAction,
-    removeBunFromConstructorAction,
+    clearConstructorAction,
     updateBunInConstructorAction,
 } from '../../services/actions/constructor';
 
@@ -74,9 +74,7 @@ export default function BurgerConstructor({ userLoaded }) {
                                         price={bun.price}
                                         thumbnail={bun.image}
                                         handleClose={(e) =>
-                                            dispatch(
-                                                removeBunFromConstructorAction
-                                            )
+                                            dispatch(clearConstructorAction)
                                         }
                                     />
                                 </div>
@@ -112,9 +110,7 @@ export default function BurgerConstructor({ userLoaded }) {
                                         price={bun.price}
                                         thumbnail={bun.image}
                                         handleClose={(e) =>
-                                            dispatch(
-                                                removeBunFromConstructorAction
-                                            )
+                                            dispatch(clearConstructorAction)
                                         }
                                     />
                                 </div>

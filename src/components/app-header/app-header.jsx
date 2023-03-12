@@ -9,11 +9,14 @@ import {
 import styles from './app-header.module.css';
 import NavbarItem from '../navbar-item/navbar-item';
 import { useSelector } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const getUser = (store) => store.user.user;
 
 export default function AppHeader() {
     const profileName = useSelector(getUser)?.name || 'Личный кабинет';
+    const navigate = useNavigate();
+    const location = useLocation();
     return (
         <header className={styles.header}>
             <div className='container'>
@@ -33,7 +36,12 @@ export default function AppHeader() {
                                 link='/all-orders'
                             />
                         </li>
-                        <li className={styles.logo}>
+                        <li
+                            className={styles.logo}
+                            onClick={() =>
+                                navigate('/', { state: { from: location } })
+                            }
+                        >
                             <Logo />
                         </li>
                         <li>

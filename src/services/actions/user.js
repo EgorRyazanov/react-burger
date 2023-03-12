@@ -6,7 +6,12 @@ import {
     UPDATE_USER,
     CLEAR_USER,
 } from '../../utils/constants';
-import { fetchRegisterUser, fetchLogin } from '../../utils/api/user-request';
+import {
+    fetchRegisterUser,
+    fetchLogin,
+    getUser,
+    fetchRefresh,
+} from '../../utils/api/user-request';
 
 import getAccessToken from '../../utils/get-access-token';
 
@@ -60,6 +65,32 @@ export function fetchLoginAction(email, password) {
                     type: FETCH_USER_FAILED,
                 });
             });
+    };
+}
+
+export function loginWithToken() {
+    return async function (dispatch) {
+        try {
+            const res = await getUser();
+            const { user } = res;
+            dispatch(updateUserAction(user));
+        } catch {
+            try {
+                const refreshRes = await fetchRefresh();
+                const { accessToken, refreshToken } = refreshRes;
+                localStorage.setItem(
+                    'accessToken',
+                    getAccessToken(accessToken)
+                );
+                localStorage.setItem('refreshToken', refreshToken);
+                const resUser = await getUser();
+                const { user } = resUser;
+                dispatch(updateUserAction(user));
+            } catch {
+                localStorage.clear();
+                dispatch(clearUserAction);
+            }
+        }
     };
 }
 

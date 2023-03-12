@@ -1,50 +1,29 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-import { getUser, fetchRefresh } from '../../utils/api/user-request';
-import { updateUserAction, clearUserAction } from '../../services/actions/user';
-import getAccessToken from '../../utils/get-access-token';
+import { useSelector } from 'react-redux';
+import { Navigate, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const getUserFromStore = (state) => state.user.user;
 
-const ProtectedRoute = ({ element }) => {
+const ProtectedRoute = ({ element, anonymous }) => {
     const userAuth = useSelector(getUserFromStore);
-    const dispatch = useDispatch();
-    const [isUserLoaded, setUserLoaded] = React.useState(false);
-    const init = async () => {
-        try {
-            const res = await getUser();
-            const { user } = res;
-            dispatch(updateUserAction(user));
-        } catch {
-            try {
-                const refreshRes = await fetchRefresh();
-                const { accessToken, refreshToken } = refreshRes;
-                localStorage.setItem(
-                    'accessToken',
-                    getAccessToken(accessToken)
-                );
-                localStorage.setItem('refreshToken', refreshToken);
-                const resUser = await getUser();
-                const { user } = resUser;
-                dispatch(updateUserAction(user));
-            } catch {
-                localStorage.clear();
-                dispatch(clearUserAction);
-            }
-        }
-        setUserLoaded(true);
-    };
-    React.useEffect(() => {
-        init();
-    }, []);
-
-    if (!isUserLoaded) {
-        return null;
+    const location = useLocation();
+    const from = location.state?.from || '/';
+    if (anonymous && userAuth) {
+        return <Navigate to={from} />;
     }
 
-    return userAuth ? element : <Navigate to='/login' replace />;
+    if (!anonymous && !userAuth) {
+        return <Navigate to='/login' state={{ from: location }} />;
+    }
+
+    return element;
+    // const location = useLocation();
+    // const from = location;
+    // const userAuth = useSelector(getUserFromStore);
+    // const dispatch = useDispatch();
+
+    // return userAuth ? element : <Navigate to='/login' replace />;
 };
 
 ProtectedRoute.propTypes = {

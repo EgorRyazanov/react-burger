@@ -12,24 +12,21 @@ import {
     fetchLoginAction,
     resetErrorStatusAction,
 } from '../../services/actions/user';
+import { useForm } from '../../hooks/useForm';
 
 const getErrorStatus = (state) => state.user.status.fetchUserFailed;
 const getUser = (state) => state.user.user;
 
 const Login = () => {
+    const { values, handleChange } = useForm({
+        email: '',
+        password: '',
+    });
     const error = useSelector(getErrorStatus);
     const user = useSelector(getUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [emailValue, setEmailValue] = React.useState('');
-    const [passwordValue, setPasswordValue] = React.useState('');
     const [isError, setError] = React.useState(false);
-    const onEmailChange = (e) => {
-        setEmailValue(e.target.value);
-    };
-    const onPasswordChange = (e) => {
-        setPasswordValue(e.target.value);
-    };
 
     const handleRedirectToRegister = () => {
         navigate('/register');
@@ -38,9 +35,10 @@ const Login = () => {
         navigate('/forgot-password');
     };
 
-    const handleLogin = () => {
+    const handleLogin = (e) => {
+        e.preventDefault();
         setError(false);
-        dispatch(fetchLoginAction(emailValue, passwordValue));
+        dispatch(fetchLoginAction(values.email, values.password));
     };
     React.useEffect(() => {
         if (user) {
@@ -60,34 +58,35 @@ const Login = () => {
             <p className={`text text_type_main-medium mb-6 text-center`}>
                 Вход
             </p>
-            <EmailInput
-                onChange={onEmailChange}
-                value={emailValue}
-                name={'email'}
-                isIcon={false}
-                extraClass='mb-6'
-            />
-            <PasswordInput
-                onChange={onPasswordChange}
-                value={passwordValue}
-                name={'password'}
-                extraClass='mb-6'
-            />
-            {isError ? (
-                <p className='text text_type_main-medium text-error mb-6'>
-                    При авторизации произошла ошибка, попробуйте еще раз
-                </p>
-            ) : null}
-            <Button
-                htmlType='button'
-                type='primary'
-                size='medium'
-                disabled={!(isValidEmail(emailValue) && passwordValue)}
-                extraClass='mb-20'
-                onClick={handleLogin}
-            >
-                Войти
-            </Button>
+            <form onSubmit={handleLogin} className='form-container'>
+                <EmailInput
+                    onChange={handleChange}
+                    value={values.email}
+                    name={'email'}
+                    isIcon={false}
+                    extraClass='mb-6'
+                />
+                <PasswordInput
+                    onChange={handleChange}
+                    value={values.password}
+                    name={'password'}
+                    extraClass='mb-6'
+                />
+                {isError ? (
+                    <p className='text text_type_main-medium text-error mb-6'>
+                        При авторизации произошла ошибка, попробуйте еще раз
+                    </p>
+                ) : null}
+                <Button
+                    htmlType='submit'
+                    type='primary'
+                    size='medium'
+                    disabled={!(isValidEmail(values.email) && values.password)}
+                    extraClass='mb-20'
+                >
+                    Войти
+                </Button>
+            </form>
             <div className={`${styles.text_container} mb-4`}>
                 <p className='text text_type_main-default text_color_inactive mr-2'>
                     Вы&nbsp;&mdash; новый пользователь?

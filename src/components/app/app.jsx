@@ -9,39 +9,68 @@ import ResetPassword from '../../pages/reset-password-page/reset-password-page';
 import ProfilePage from '../../pages/profile-page/profile-page';
 import ProfileUserInformationPage from '../../pages/profile-user-information-page/profile-user-information-page';
 import ProtectedRoute from '../protected-route/protected-route';
-import UnloginRoute from '../unlogin-route/unlogin-route';
 import ModalSwitch from '../modal-switch/modal-switch';
 import NotFound from '../../pages/not-found/not-found';
 import { useLocation } from 'react-router-dom';
 import Home from '../../pages/main-page/main-page';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import { useDispatch } from 'react-redux';
+import { fetchIngredientsAction } from '../../services/actions/fetch-ingredients';
+import { loginWithToken } from '../../services/actions/user';
 
 function App() {
+    const dispatch = useDispatch();
+    React.useEffect(() => {
+        dispatch(fetchIngredientsAction());
+        dispatch(loginWithToken());
+    }, []);
     const location = useLocation();
-    let background = location.state && location.state.background;
+    const background = location.state && location.state.background;
     return (
         <ErrorBoundary>
             <AppHeader />
             <Routes location={background || location}>
                 <Route
                     path='/login'
-                    element={<UnloginRoute element={<Login />} />}
+                    element={
+                        <ProtectedRoute anonymous={true} element={<Login />} />
+                    }
                 />
                 <Route
                     path='/register'
-                    element={<UnloginRoute element={<Register />} />}
+                    element={
+                        <ProtectedRoute
+                            anonymous={true}
+                            element={<Register />}
+                        />
+                    }
                 />
                 <Route
                     path='/forgot-password'
-                    element={<UnloginRoute element={<ForgotPassword />} />}
+                    element={
+                        <ProtectedRoute
+                            anonymous={true}
+                            element={<ForgotPassword />}
+                        />
+                    }
                 />
                 <Route
                     path='/reset-password'
-                    element={<UnloginRoute element={<ResetPassword />} />}
+                    element={
+                        <ProtectedRoute
+                            anonymous={true}
+                            element={<ResetPassword />}
+                        />
+                    }
                 />
                 <Route
                     path='/profile'
-                    element={<ProtectedRoute element={<ProfilePage />} />}
+                    element={
+                        <ProtectedRoute
+                            anonymous={false}
+                            element={<ProfilePage />}
+                        />
+                    }
                 >
                     <Route index element={<ProfileUserInformationPage />} />
                 </Route>

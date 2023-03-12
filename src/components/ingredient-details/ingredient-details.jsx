@@ -1,8 +1,7 @@
 import React from 'react';
 import styles from './ingredient-details.module.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
-import { fetchIngredientsAction } from '../../services/actions/fetch-ingredients';
 
 const getIngredientsFromStore = (state) => state.fetchIngredients;
 
@@ -15,10 +14,6 @@ export default function IngredientDetails() {
         : styles.detail_container_page;
     const { ingredientId } = useParams();
     const [ingredient, setIngredient] = React.useState(null);
-    const dispatch = useDispatch();
-    React.useEffect(() => {
-        dispatch(fetchIngredientsAction());
-    }, []);
 
     React.useEffect(() => {
         setIngredient(

@@ -6,7 +6,6 @@ import { VALUE_BUN, VALUE_SAUCE, VALUE_MAIN } from '../../utils/constants';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchIngredientsAction } from '../../services/actions/fetch-ingredients';
 
 import { removeDetailIngredientAction } from '../../services/actions/ingredient-details';
 
@@ -56,10 +55,6 @@ export default function BurgerIngridients() {
         setCurrent(value);
         element.scrollIntoView({ behavior: 'smooth' });
     };
-
-    React.useEffect(() => {
-        dispatch(fetchIngredientsAction());
-    }, []);
 
     React.useEffect(() => {
         const bunsContainer = [];

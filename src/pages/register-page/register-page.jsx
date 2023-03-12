@@ -13,32 +13,32 @@ import {
     fetchRegisterUserAction,
     resetErrorStatusAction,
 } from '../../services/actions/user';
+import { useForm } from '../../hooks/useForm';
 
 const getErrorStatus = (state) => state.user.status.fetchUserFailed;
 const getUser = (state) => state.user.user;
 
 const Register = () => {
+    const { values, handleChange } = useForm({
+        email: '',
+        password: '',
+        name: '',
+    });
     const error = useSelector(getErrorStatus);
     const user = useSelector(getUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [emailValue, setEmailValue] = React.useState('');
-    const [passwordValue, setPasswordValue] = React.useState('');
     const [isError, setError] = React.useState(false);
-    const onEmailChange = (e) => {
-        setEmailValue(e.target.value);
-    };
-    const onPasswordChange = (e) => {
-        setPasswordValue(e.target.value);
-    };
-    const [nameValue, setNameValue] = React.useState('');
     const inputInputNameRef = React.useRef(null);
     const handleLogin = () => {
         navigate('/login');
     };
-    const handleResisterUser = () => {
+    const handleResisterUser = (e) => {
+        e.preventDefault();
         setError(false);
-        dispatch(fetchRegisterUserAction(emailValue, passwordValue, nameValue));
+        dispatch(
+            fetchRegisterUserAction(values.email, values.password, values.name)
+        );
     };
     React.useEffect(() => {
         if (user) {
@@ -58,46 +58,47 @@ const Register = () => {
             <p className={`text text_type_main-medium mb-6 text-center`}>
                 Регистрация
             </p>
-            <Input
-                type={'text'}
-                placeholder={'Имя'}
-                onChange={(e) => setNameValue(e.target.value)}
-                value={nameValue}
-                name={'name'}
-                error={false}
-                ref={inputInputNameRef}
-                errorText={'Ошибка'}
-                size={'default'}
-                extraClass='mb-6'
-            />
-            <EmailInput
-                onChange={onEmailChange}
-                value={emailValue}
-                name={'email'}
-                isIcon={false}
-                extraClass='mb-6'
-            />
-            <PasswordInput
-                onChange={onPasswordChange}
-                value={passwordValue}
-                name={'password'}
-                extraClass='mb-6'
-            />
-            {isError ? (
-                <p className='text text_type_main-medium text-error mb-6'>
-                    При регистристрации произошла ошибка, попробуйте еще раз
-                </p>
-            ) : null}
-            <Button
-                htmlType='button'
-                type='primary'
-                size='medium'
-                disabled={!(isValidEmail(emailValue) && passwordValue)}
-                extraClass='mb-20'
-                onClick={handleResisterUser}
-            >
-                Зарегистрироваться
-            </Button>
+            <form onSubmit={handleResisterUser} className='form-container'>
+                <Input
+                    type={'text'}
+                    placeholder={'Имя'}
+                    onChange={handleChange}
+                    value={values.name}
+                    name={'name'}
+                    error={false}
+                    ref={inputInputNameRef}
+                    errorText={'Ошибка'}
+                    size={'default'}
+                    extraClass='mb-6'
+                />
+                <EmailInput
+                    onChange={handleChange}
+                    value={values.email}
+                    name={'email'}
+                    isIcon={false}
+                    extraClass='mb-6'
+                />
+                <PasswordInput
+                    onChange={handleChange}
+                    value={values.password}
+                    name={'password'}
+                    extraClass='mb-6'
+                />
+                {isError ? (
+                    <p className='text text_type_main-medium text-error mb-6'>
+                        При регистристрации произошла ошибка, попробуйте еще раз
+                    </p>
+                ) : null}
+                <Button
+                    htmlType='submit'
+                    type='primary'
+                    size='medium'
+                    disabled={!(isValidEmail(values.email) && values.password)}
+                    extraClass='mb-20'
+                >
+                    Зарегистрироваться
+                </Button>
+            </form>
             <div className={styles.text_container}>
                 <p className='text text_type_main-default text_color_inactive mr-2'>
                     Уже зарегистрированы?
