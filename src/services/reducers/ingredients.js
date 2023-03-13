@@ -22,7 +22,7 @@ const fetchIngredientsReducer = (state = initialIngredientsState, action) => {
         case GET_INGREDIENTS_SUCCESS: {
             return {
                 ...state,
-                ingredients: action.data,
+                ingredients: action.payload,
                 fetchIngredientsRequest: false,
             };
         }

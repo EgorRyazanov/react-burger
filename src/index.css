@@ -35,6 +35,11 @@ ul {
     display: flex;
 }
 
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -64,4 +69,29 @@ a:visited {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* 1231 */
+
+.login-container {
+    margin: 0 auto;
+    padding-top: 180px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-error {
+    color: crimson;
+}
+
+.form-container {
+    margin: 0 auto;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
 }

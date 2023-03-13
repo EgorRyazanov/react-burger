@@ -16,10 +16,7 @@ const ingredientDetailsReducer = (state = initialDedailData, action) => {
             };
         }
         case REMOVE_DETAIL_INGREDIENT: {
-            return {
-                ...state,
-                ingredient: initialDedailData.ingredient,
-            };
+            return initialDedailData;
         }
         default:
             return state;

@@ -3,7 +3,7 @@ import {
     ADD_BUN,
     UPDATE_BUN,
     REMOVE_CONSTRUCTOR,
-    REMOVE_BUN,
+    CLEAR_CONSTRUCTOR,
     UPDATE_CONSTRUCTOR,
 } from '../../utils/constants';
 
@@ -36,8 +36,8 @@ export const removeElementFromConstructorAction = (id) => {
     };
 };
 
-export const removeBunFromConstructorAction = {
-    type: REMOVE_BUN,
+export const clearConstructorAction = {
+    type: CLEAR_CONSTRUCTOR,
 };
 
 export const updateBunInConstructorAction = (ingredient) => {

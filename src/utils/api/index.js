@@ -1,4 +1,4 @@
-import { BASE_URL } from '../utils/constants';
+import { BASE_URL } from '../../utils/constants';
 
 const checkResponse = (res) => {
     if (res.ok) {
@@ -21,14 +21,4 @@ const request = (endpoint, options) => {
         .then(checkSuccess);
 };
 
-export const getIngredients = () => request('ingredients');
-export const getOrder = (ingredients) =>
-    request('orders', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            ingredients: ingredients,
-        }),
-    });
+export default request;

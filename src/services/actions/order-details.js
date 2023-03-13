@@ -4,7 +4,7 @@ import {
     GET_ORDER_SUCCESS,
 } from '../../utils/constants';
 
-import { getOrder } from '../../utils/api';
+import { getOrder } from '../../utils/api/ingredients-requests';
 
 export function makeOrderAction(id) {
     return function (dispatch) {
@@ -15,11 +15,10 @@ export function makeOrderAction(id) {
             .then((res) => {
                 dispatch({
                     type: GET_ORDER_SUCCESS,
-                    data: res,
+                    payload: res,
                 });
             })
             .catch((error) => {
-                console.log(error);
                 dispatch({
                     type: GET_ORDER_FAILED,
                 });
