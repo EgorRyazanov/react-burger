@@ -7,16 +7,14 @@ import styles from './card.module.css';
 import PropTypes from 'prop-types';
 import { dataElementProp } from '../../utils/prop-types';
 import { useDrag } from 'react-dnd';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useLocation, Link } from 'react-router-dom';
-import { addDetailIngredientAction } from '../../services/actions/ingredient-details';
 
 const getConstructorFromStore = (state) => state.constructorBurger;
 
 const Card = React.memo(({ ingredient }) => {
     const location = useLocation();
     const ingredientId = ingredient['_id'];
-    const dispatch = useDispatch();
 
     const { parts, bun } = useSelector(getConstructorFromStore);
 
@@ -24,10 +22,6 @@ const Card = React.memo(({ ingredient }) => {
         type: 'ингредиент',
         item: { ...ingredient },
     }));
-
-    const handleClick = () => {
-        dispatch(addDetailIngredientAction);
-    };
 
     const counter = React.useMemo(() => {
         return [...parts, bun, bun]?.filter(
@@ -42,7 +36,7 @@ const Card = React.memo(({ ingredient }) => {
             state={{ background: location }}
             className={`${styles.card} mb-8`}
         >
-            <div ref={drag} onClick={handleClick}>
+            <div ref={drag}>
                 <div className={`pl-4 pr-4 ${styles.relative}`}>
                     {counter > 0 && (
                         <Counter

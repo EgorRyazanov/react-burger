@@ -5,9 +5,7 @@ import IngredientBlock from '../ingredient-block/ingredient-block';
 import { VALUE_BUN, VALUE_SAUCE, VALUE_MAIN } from '../../utils/constants';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { removeDetailIngredientAction } from '../../services/actions/ingredient-details';
+import { useSelector } from 'react-redux';
 
 const getIngredientsFromStore = (state) => state.fetchIngredients;
 
@@ -35,12 +33,8 @@ export default function BurgerIngridients() {
         }
     };
 
-    const dispatch = useDispatch();
     const [active, setActive] = React.useState(false);
     const handleToggleModal = () => {
-        if (active) {
-            dispatch(removeDetailIngredientAction);
-        }
         setActive(!active);
     };
     const { ingredients } = useSelector(getIngredientsFromStore);
