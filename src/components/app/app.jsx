@@ -16,13 +16,13 @@ import Home from '../../pages/main-page/main-page';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useDispatch } from 'react-redux';
 import { fetchIngredientsAction } from '../../services/actions/fetch-ingredients';
-import { loginWithToken } from '../../services/actions/user';
+import { loginWithTokenAction } from '../../services/actions/user';
 
 function App() {
     const dispatch = useDispatch();
     React.useEffect(() => {
         dispatch(fetchIngredientsAction());
-        dispatch(loginWithToken());
+        dispatch(loginWithTokenAction());
     }, []);
     const location = useLocation();
     const background = location.state && location.state.background;

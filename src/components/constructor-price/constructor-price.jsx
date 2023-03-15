@@ -56,7 +56,7 @@ const ConstructorPrice = React.memo(({ price, id, userLoaded }) => {
             >
                 Оформить заказ
             </Button>
-            {active && order && fetchOrderRequest && (
+            {active && fetchOrderRequest && (
                 <Modal
                     handleToggleModal={handleToggleModal}
                     title={''}
