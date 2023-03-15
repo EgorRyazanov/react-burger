@@ -8,8 +8,7 @@ import {
 import isValidEmail from '../../utils/validEmail';
 import styles from './profile-user-information-page.module.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUserAction } from '../../services/actions/user';
-import { patchUser } from '../../utils/api/user-request';
+import { patchWithTokenAction } from '../../services/actions/user';
 
 const getUser = (store) => store.user.user;
 
@@ -46,8 +45,7 @@ const ProfileUserInformationPage = () => {
             if (passwordValue !== 0) {
                 form['password'] = passwordValue;
             }
-            patchUser(form);
-            dispatch(updateUserAction(user));
+            dispatch(patchWithTokenAction());
         } catch {
             setError(true);
         }

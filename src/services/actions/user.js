@@ -11,6 +11,7 @@ import {
     fetchLogin,
     getUser,
     fetchRefresh,
+    patchUser,
 } from '../../utils/api/user-request';
 
 import getAccessToken from '../../utils/get-access-token';
@@ -68,10 +69,10 @@ export function fetchLoginAction(email, password) {
     };
 }
 
-export function loginWithToken() {
+export function fetchWithTokenAction(callback) {
     return async function (dispatch) {
         try {
-            const res = await getUser();
+            const res = await callback();
             const { user } = res;
             dispatch(updateUserAction(user));
         } catch {
@@ -83,7 +84,7 @@ export function loginWithToken() {
                     getAccessToken(accessToken)
                 );
                 localStorage.setItem('refreshToken', refreshToken);
-                const resUser = await getUser();
+                const resUser = await callback();
                 const { user } = resUser;
                 dispatch(updateUserAction(user));
             } catch {
@@ -93,6 +94,9 @@ export function loginWithToken() {
         }
     };
 }
+
+export const loginWithTokenAction = () => fetchWithTokenAction(getUser);
+export const patchWithTokenAction = () => fetchWithTokenAction(patchUser);
 
 export const resetErrorStatusAction = {
     type: RESET_ERROR_STATUS,
