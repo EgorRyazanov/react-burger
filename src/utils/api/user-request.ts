@@ -1,6 +1,17 @@
+import {
+    TResponseForgotPassword,
+    TResponseLogin,
+    TResponseLogout,
+    TResponseUser,
+    TResponseRefresh,
+    TResponseRegister,
+    TResponseResetPassword,
+} from '../types/api';
 import request from './index';
 
-export const fetchRecoverPassword = (email) =>
+export const fetchRecoverPassword = (
+    email: string
+): Promise<TResponseForgotPassword> =>
     request('password-reset', {
         method: 'POST',
         headers: {
@@ -11,7 +22,11 @@ export const fetchRecoverPassword = (email) =>
         }),
     });
 
-export const fetchRegisterUser = (email, password, name) =>
+export const fetchRegisterUser = (
+    email: string,
+    password: string,
+    name: string
+): Promise<TResponseRegister> =>
     request('auth/register', {
         method: 'POST',
         headers: {
@@ -24,7 +39,10 @@ export const fetchRegisterUser = (email, password, name) =>
         }),
     });
 
-export const fetchResetPassword = (password, token) =>
+export const fetchResetPassword = (
+    password: string,
+    token: string
+): Promise<TResponseResetPassword> =>
     request('password-reset/reset', {
         method: 'POST',
         headers: {
@@ -36,7 +54,10 @@ export const fetchResetPassword = (password, token) =>
         }),
     });
 
-export const fetchLogin = (email, password) =>
+export const fetchLogin = (
+    email: string,
+    password: string
+): Promise<TResponseLogin> =>
     request('auth/login', {
         method: 'POST',
         headers: {
@@ -48,7 +69,7 @@ export const fetchLogin = (email, password) =>
         }),
     });
 
-export const fetchRefresh = () =>
+export const fetchRefresh = (): Promise<TResponseRefresh> =>
     request('auth/token', {
         method: 'POST',
         headers: {
@@ -59,7 +80,7 @@ export const fetchRefresh = () =>
         }),
     });
 
-export const fetchLogout = () =>
+export const fetchLogout = (): Promise<TResponseLogout> =>
     request('auth/logout', {
         method: 'POST',
         headers: {
@@ -70,7 +91,11 @@ export const fetchLogout = () =>
         }),
     });
 
-export const patchUser = (form) =>
+export const patchUser = (form: {
+    name?: string;
+    password?: string;
+    email?: string;
+}): Promise<TResponseUser> =>
     request('auth/user', {
         method: 'PATCH',
         headers: {
@@ -80,7 +105,7 @@ export const patchUser = (form) =>
         body: JSON.stringify(form),
     });
 
-export const getUser = () =>
+export const getUser = (): Promise<TResponseUser> =>
     request('auth/user', {
         method: 'GET',
         headers: {

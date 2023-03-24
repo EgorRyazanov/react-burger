@@ -71,7 +71,7 @@ const ConstructorPrice = React.memo(({ price, id, userLoaded }) => {
                     title={''}
                     container={styles.modal}
                 >
-                    <OrderDetails number={order.order.number} />
+                    <OrderDetails number={order.number} />
                 </Modal>
             )}
         </div>

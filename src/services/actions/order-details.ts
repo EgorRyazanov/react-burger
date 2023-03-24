@@ -8,16 +8,16 @@ import {
     TOderAction,
 } from '../../utils/types/actions-types/order-details-types';
 
-export function makeOrderAction(id: string) {
+export function makeOrderAction(ingredients: string[]) {
     return async function (dispatch: Dispatch<TOderAction>) {
         dispatch({
             type: EnumOrderActionTypes.GET_ORDER,
         });
         try {
-            getOrder(id).then((res) => {
+            getOrder(ingredients).then((res) => {
                 dispatch({
                     type: EnumOrderActionTypes.GET_ORDER_SUCCESS,
-                    payload: res,
+                    payload: res.order,
                 });
             });
         } catch {
@@ -29,7 +29,7 @@ export function makeOrderAction(id: string) {
                     getAccessToken(accessToken)
                 );
                 localStorage.setItem('refreshToken', refreshToken);
-                getOrder(id).then((res) => {
+                getOrder(ingredients).then((res) => {
                     dispatch({
                         type: EnumOrderActionTypes.GET_ORDER_SUCCESS,
                         payload: res.order,

@@ -71,7 +71,7 @@ export function fetchLoginAction(email: string, password: string) {
     };
 }
 
-function fetchWithTokenAction(callback: () => Promise<any>) {
+function fetchWithTokenAction(callback: (options?: any) => any) {
     return async function (dispatch: Dispatch<TUserAction>) {
         try {
             const res = await callback();
