@@ -1,22 +1,22 @@
-import {
-    GET_ORDER,
-    GET_ORDER_FAILED,
-    GET_ORDER_SUCCESS,
-} from '../../utils/constants';
 import getAccessToken from '../../utils/get-access-token';
 import { fetchRefresh } from '../../utils/api/user-request';
 
 import { getOrder } from '../../utils/api/ingredients-requests';
+import { Dispatch } from 'redux';
+import {
+    EnumOrderActionTypes,
+    TOderAction,
+} from '../../utils/types/actions-types/order-details-types';
 
-export function makeOrderAction(id) {
-    return async function (dispatch) {
+export function makeOrderAction(id: string) {
+    return async function (dispatch: Dispatch<TOderAction>) {
         dispatch({
-            type: GET_ORDER,
+            type: EnumOrderActionTypes.GET_ORDER,
         });
         try {
             getOrder(id).then((res) => {
                 dispatch({
-                    type: GET_ORDER_SUCCESS,
+                    type: EnumOrderActionTypes.GET_ORDER_SUCCESS,
                     payload: res,
                 });
             });
@@ -31,13 +31,13 @@ export function makeOrderAction(id) {
                 localStorage.setItem('refreshToken', refreshToken);
                 getOrder(id).then((res) => {
                     dispatch({
-                        type: GET_ORDER_SUCCESS,
-                        payload: res,
+                        type: EnumOrderActionTypes.GET_ORDER_SUCCESS,
+                        payload: res.order,
                     });
                 });
             } catch {
                 dispatch({
-                    type: GET_ORDER_FAILED,
+                    type: EnumOrderActionTypes.GET_ORDER_FAILED,
                 });
             }
         }

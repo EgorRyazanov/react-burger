@@ -1,12 +1,4 @@
 import {
-    FETCH_USER_FAILED,
-    FETCH_USER_SUCCESS,
-    FETCH_USER_LOADING,
-    RESET_ERROR_STATUS,
-    UPDATE_USER,
-    CLEAR_USER,
-} from '../../utils/constants';
-import {
     fetchRegisterUser,
     fetchLogin,
     getUser,
@@ -15,11 +7,21 @@ import {
 } from '../../utils/api/user-request';
 
 import getAccessToken from '../../utils/get-access-token';
+import { Dispatch } from 'react';
+import {
+    EnumUserActionsTypes,
+    TUser,
+    TUserAction,
+} from '../../utils/types/actions-types/user-types';
 
-export function fetchRegisterUserAction(email, password, name) {
-    return function (dispatch) {
+export function fetchRegisterUserAction(
+    email: string,
+    password: string,
+    name: string
+) {
+    return function (dispatch: Dispatch<TUserAction>) {
         dispatch({
-            type: FETCH_USER_LOADING,
+            type: EnumUserActionsTypes.FETCH_USER_LOADING,
         });
         fetchRegisterUser(email, password, name)
             .then((res) => {
@@ -30,22 +32,22 @@ export function fetchRegisterUserAction(email, password, name) {
                     getAccessToken(accessToken)
                 );
                 dispatch({
-                    type: FETCH_USER_SUCCESS,
+                    type: EnumUserActionsTypes.FETCH_USER_SUCCESS,
                     payload: user,
                 });
             })
             .catch((error) => {
                 dispatch({
-                    type: FETCH_USER_FAILED,
+                    type: EnumUserActionsTypes.FETCH_USER_FAILED,
                 });
             });
     };
 }
 
-export function fetchLoginAction(email, password) {
-    return function (dispatch) {
+export function fetchLoginAction(email: string, password: string) {
+    return function (dispatch: Dispatch<TUserAction>) {
         dispatch({
-            type: FETCH_USER_LOADING,
+            type: EnumUserActionsTypes.FETCH_USER_LOADING,
         });
 
         fetchLogin(email, password)
@@ -57,20 +59,20 @@ export function fetchLoginAction(email, password) {
                     getAccessToken(accessToken)
                 );
                 dispatch({
-                    type: FETCH_USER_SUCCESS,
+                    type: EnumUserActionsTypes.FETCH_USER_SUCCESS,
                     payload: user,
                 });
             })
             .catch((error) => {
                 dispatch({
-                    type: FETCH_USER_FAILED,
+                    type: EnumUserActionsTypes.FETCH_USER_FAILED,
                 });
             });
     };
 }
 
-export function fetchWithTokenAction(callback) {
-    return async function (dispatch) {
+function fetchWithTokenAction(callback: () => Promise<any>) {
+    return async function (dispatch: Dispatch<TUserAction>) {
         try {
             const res = await callback();
             const { user } = res;
@@ -98,17 +100,17 @@ export function fetchWithTokenAction(callback) {
 export const loginWithTokenAction = () => fetchWithTokenAction(getUser);
 export const patchWithTokenAction = () => fetchWithTokenAction(patchUser);
 
-export const resetErrorStatusAction = {
-    type: RESET_ERROR_STATUS,
+export const resetErrorStatusAction: TUserAction = {
+    type: EnumUserActionsTypes.RESET_ERROR_STATUS,
 };
 
-export const updateUserAction = (user) => {
+export const updateUserAction = (user: TUser): TUserAction => {
     return {
-        type: UPDATE_USER,
+        type: EnumUserActionsTypes.UPDATE_USER,
         payload: user,
     };
 };
 
-export const clearUserAction = {
-    type: CLEAR_USER,
+export const clearUserAction: TUserAction = {
+    type: EnumUserActionsTypes.CLEAR_USER,
 };

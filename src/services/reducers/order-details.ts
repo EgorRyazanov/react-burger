@@ -1,32 +1,32 @@
 import {
-    GET_ORDER,
-    GET_ORDER_FAILED,
-    GET_ORDER_SUCCESS,
-} from '../../utils/constants';
+    TinitialOrder,
+    EnumOrderActionTypes,
+    TOderAction,
+} from '../../utils/types/actions-types/order-details-types';
 
-const initialOrder = {
+const initialOrder: TinitialOrder = {
     fetchOrderRequest: false,
     fetchOrderFailed: false,
     order: null,
 };
 
-const orderDetailReducer = (state = initialOrder, action) => {
+const orderDetailReducer = (state = initialOrder, action: TOderAction) => {
     switch (action.type) {
-        case GET_ORDER: {
+        case EnumOrderActionTypes.GET_ORDER: {
             return {
                 ...state,
                 fetchOrderRequest: true,
                 fetchOrderFailed: false,
             };
         }
-        case GET_ORDER_SUCCESS: {
+        case EnumOrderActionTypes.GET_ORDER_SUCCESS: {
             return {
                 ...state,
                 order: action.payload,
                 fetchOrderRequest: false,
             };
         }
-        case GET_ORDER_FAILED: {
+        case EnumOrderActionTypes.GET_ORDER_FAILED: {
             return {
                 order: initialOrder.order,
                 fetchOrderFailed: true,

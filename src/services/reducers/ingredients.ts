@@ -1,32 +1,35 @@
 import {
-    GET_INGREDIENTS,
-    GET_INGREDIENTS_FAILED,
-    GET_INGREDIENTS_SUCCESS,
-} from '../../utils/constants';
+    TInitialIngredients,
+    EnumIngredientsActionTypes,
+    TIngredientsAction,
+} from '../../utils/types/actions-types/ingredients-types';
 
-const initialIngredientsState = {
+const initialIngredientsState: TInitialIngredients = {
     fetchIngredientsRequest: false,
     fetchIngredientsFailed: false,
     ingredients: [],
 };
 
-const fetchIngredientsReducer = (state = initialIngredientsState, action) => {
+const fetchIngredientsReducer = (
+    state = initialIngredientsState,
+    action: TIngredientsAction
+) => {
     switch (action.type) {
-        case GET_INGREDIENTS: {
+        case EnumIngredientsActionTypes.GET_INGREDIENTS: {
             return {
                 ...state,
                 fetchIngredientsRequest: true,
                 fetchIngredientsFailed: false,
             };
         }
-        case GET_INGREDIENTS_SUCCESS: {
+        case EnumIngredientsActionTypes.GET_INGREDIENTS_SUCCESS: {
             return {
                 ...state,
                 ingredients: action.payload,
                 fetchIngredientsRequest: false,
             };
         }
-        case GET_INGREDIENTS_FAILED: {
+        case EnumIngredientsActionTypes.GET_INGREDIENTS_FAILED: {
             return {
                 ingredients: initialIngredientsState.ingredients,
                 fetchIngredientsFailed: true,

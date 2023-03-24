@@ -1,13 +1,10 @@
 import {
-    FETCH_USER_FAILED,
-    FETCH_USER_SUCCESS,
-    FETCH_USER_LOADING,
-    RESET_ERROR_STATUS,
-    UPDATE_USER,
-    CLEAR_USER,
-} from '../../utils/constants';
+    TUserAction,
+    EnumUserActionsTypes,
+    TInitialState,
+} from '../../utils/types/actions-types/user-types';
 
-const initialState = {
+const initialState: TInitialState = {
     user: null,
     status: {
         isLoading: false,
@@ -15,9 +12,9 @@ const initialState = {
     },
 };
 
-const userReducer = (state = initialState, action) => {
+const userReducer = (state = initialState, action: TUserAction) => {
     switch (action.type) {
-        case FETCH_USER_SUCCESS: {
+        case EnumUserActionsTypes.FETCH_USER_SUCCESS: {
             return {
                 ...state,
                 user: { ...action.payload },
@@ -27,7 +24,7 @@ const userReducer = (state = initialState, action) => {
                 },
             };
         }
-        case FETCH_USER_LOADING: {
+        case EnumUserActionsTypes.FETCH_USER_LOADING: {
             return {
                 ...state,
                 status: {
@@ -36,7 +33,7 @@ const userReducer = (state = initialState, action) => {
                 },
             };
         }
-        case FETCH_USER_FAILED: {
+        case EnumUserActionsTypes.FETCH_USER_FAILED: {
             return {
                 ...state,
                 status: {
@@ -45,7 +42,7 @@ const userReducer = (state = initialState, action) => {
                 },
             };
         }
-        case RESET_ERROR_STATUS: {
+        case EnumUserActionsTypes.RESET_ERROR_STATUS: {
             return {
                 ...state,
                 status: {
@@ -54,13 +51,13 @@ const userReducer = (state = initialState, action) => {
                 },
             };
         }
-        case UPDATE_USER: {
+        case EnumUserActionsTypes.UPDATE_USER: {
             return {
                 ...state,
                 user: { ...action.payload },
             };
         }
-        case CLEAR_USER: {
+        case EnumUserActionsTypes.CLEAR_USER: {
             return initialState;
         }
         default: {

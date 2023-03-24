@@ -1,32 +1,32 @@
 import {
-    ADD_CONSTRUCTOR,
-    ADD_BUN,
-    UPDATE_BUN,
-    REMOVE_CONSTRUCTOR,
-    CLEAR_CONSTRUCTOR,
-    UPDATE_CONSTRUCTOR,
-} from '../../utils/constants';
+    TInitialConstructor,
+    EnumConstructorActionTypes,
+    TConstructorAction,
+} from '../../utils/types/actions-types/constructor-types';
 
-const initialConstructor = {
+const initialConstructor: TInitialConstructor = {
     parts: [],
     bun: null,
 };
 
-const constructorReducer = (state = initialConstructor, action) => {
+const constructorReducer = (
+    state = initialConstructor,
+    action: TConstructorAction
+) => {
     switch (action.type) {
-        case ADD_CONSTRUCTOR: {
+        case EnumConstructorActionTypes.ADD_CONSTRUCTOR: {
             return {
                 ...state,
                 parts: [...state.parts, action.payload],
             };
         }
-        case ADD_BUN: {
+        case EnumConstructorActionTypes.ADD_BUN: {
             return {
                 ...state,
                 bun: action.payload,
             };
         }
-        case REMOVE_CONSTRUCTOR: {
+        case EnumConstructorActionTypes.REMOVE_CONSTRUCTOR: {
             return {
                 ...state,
                 parts: state.parts.filter(
@@ -34,16 +34,16 @@ const constructorReducer = (state = initialConstructor, action) => {
                 ),
             };
         }
-        case CLEAR_CONSTRUCTOR: {
+        case EnumConstructorActionTypes.CLEAR_CONSTRUCTOR: {
             return initialConstructor;
         }
-        case UPDATE_BUN: {
+        case EnumConstructorActionTypes.UPDATE_BUN: {
             return {
                 ...state,
                 bun: action.payload,
             };
         }
-        case UPDATE_CONSTRUCTOR: {
+        case EnumConstructorActionTypes.UPDATE_CONSTRUCTOR: {
             const { dragIndex, hoverIndex } = action.payload;
             const dragCard = state.parts[dragIndex];
             const currentCards = [...state.parts];

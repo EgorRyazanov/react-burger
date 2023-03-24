@@ -12,4 +12,6 @@ const rootReducer = combineReducers({
     user: userReducer,
 });
 
+export type TRootState = ReturnType<typeof rootReducer>;
+
 export default rootReducer;
