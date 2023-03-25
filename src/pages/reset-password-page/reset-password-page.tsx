@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useState, useEffect, useRef } from 'react';
 import {
     Input,
     PasswordInput,
@@ -9,35 +9,35 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { fetchResetPassword } from '../../utils/api/user-request';
 import { useForm } from '../../hooks/useForm';
 
-const ResetPassword = () => {
+const ResetPassword: FC = () => {
     const { values, handleChange } = useForm({
         code: '',
         password: '',
     });
     const location = useLocation();
     const navigate = useNavigate();
-    const [isError, setError] = React.useState(false);
+    const [isError, setError] = useState(false);
 
     const handleRedirectToLogin = () => {
         navigate('/login');
     };
 
-    const handleResetPassword = (e) => {
+    const handleResetPassword = (e: React.FormEvent) => {
         e.preventDefault();
         setError(false);
         fetchResetPassword(values.password, values.code)
-            .then(navigate('/login', { replace: true }))
+            .then((res) => navigate('/login', { replace: true }))
             .catch(() => {
                 setError(true);
             });
     };
-    React.useEffect(() => {
+    useEffect(() => {
         if (location.state?.from !== 'forgot-password') {
             navigate('/', { replace: true });
         }
     }, []);
 
-    const inputInputCodeRef = React.useRef(null);
+    const inputInputCodeRef = useRef(null);
 
     return (
         <div className='login-container container'>
@@ -70,7 +70,7 @@ const ResetPassword = () => {
                     </p>
                 ) : null}
                 <Button
-                    htmlType='sumbit'
+                    htmlType='submit'
                     type='primary'
                     size='medium'
                     disabled={!(values.code && values.password)}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import {
     EmailInput,
     Button,
@@ -9,20 +9,20 @@ import { useNavigate } from 'react-router-dom';
 import { fetchRecoverPassword } from '../../utils/api/user-request';
 import { useForm } from '../../hooks/useForm';
 
-const ForgotPassword = () => {
+const ForgotPassword: FC = () => {
     const { values, handleChange } = useForm({
         email: '',
     });
-    const [isError, setError] = React.useState(false);
+    const [isError, setError] = useState(false);
     const navigate = useNavigate();
     const handleRedirectToLogin = () => {
         navigate('/login');
     };
-    const handleForgotPassword = (e) => {
+    const handleForgotPassword = (e: React.FormEvent) => {
         e.preventDefault();
         setError(false);
         fetchRecoverPassword(values.email)
-            .then(
+            .then((res) =>
                 navigate('/reset-password', {
                     replace: true,
                     state: {

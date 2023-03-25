@@ -95,8 +95,8 @@ export const patchUser = (form: {
     name?: string;
     password?: string;
     email?: string;
-}): Promise<TResponseUser> =>
-    request('auth/user', {
+}): Promise<TResponseUser> => {
+    return request('auth/user', {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -104,6 +104,7 @@ export const patchUser = (form: {
         },
         body: JSON.stringify(form),
     });
+};
 
 export const getUser = (): Promise<TResponseUser> =>
     request('auth/user', {

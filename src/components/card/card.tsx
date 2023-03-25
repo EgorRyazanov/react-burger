@@ -1,29 +1,33 @@
-import React from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import {
     CurrencyIcon,
     Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './card.module.css';
-import PropTypes from 'prop-types';
-import { dataElementProp } from '../../utils/prop-types';
 import { useDrag } from 'react-dnd';
-import { useSelector } from 'react-redux';
 import { useLocation, Link } from 'react-router-dom';
+import { TRootState } from '../../services/reducers/root';
+import { TIngredient } from '../../utils/types/ingredient-type';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
-const getConstructorFromStore = (state) => state.constructorBurger;
+const getConstructorFromStore = (state: TRootState) => state.constructorBurger;
 
-const Card = React.memo(({ ingredient }) => {
+type TCard = {
+    ingredient: TIngredient;
+};
+
+const Card: FC<TCard> = memo(({ ingredient }) => {
     const location = useLocation();
     const ingredientId = ingredient['_id'];
 
-    const { parts, bun } = useSelector(getConstructorFromStore);
+    const { parts, bun } = useTypedSelector(getConstructorFromStore);
 
     const [, drag] = useDrag(() => ({
         type: 'ингредиент',
         item: { ...ingredient },
     }));
 
-    const counter = React.useMemo(() => {
+    const counter = useMemo(() => {
         return [...parts, bun, bun]?.filter(
             (element) => element?._id === ingredient._id
         ).length;
@@ -66,7 +70,3 @@ const Card = React.memo(({ ingredient }) => {
 });
 
 export default Card;
-
-Card.propTypes = {
-    ingredient: dataElementProp.isRequired,
-};

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC, useState, useRef} from 'react';
 import {
     EmailInput,
     PasswordInput,
@@ -7,25 +7,27 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import isValidEmail from '../../utils/validEmail';
 import styles from './profile-user-information-page.module.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { patchWithTokenAction } from '../../services/actions/user';
+import { TRootState } from '../../services/reducers/root';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { TForm } from '../../hooks/useForm';
+import { useAction } from '../../hooks/useAction';
 
-const getUser = (store) => store.user.user;
+const getUser = (store: TRootState) => store.user.user;
 
-const ProfileUserInformationPage = () => {
-    const [isError, setError] = React.useState(false);
-    const dispatch = useDispatch();
-    const user = useSelector(getUser);
-    const [emailValue, setEmailValue] = React.useState(user?.email || '');
+const ProfileUserInformationPage: FC = () => {
+    const { patchWithTokenAction } = useAction();
+    const [isError, setError] = useState(false);
+    const user = useTypedSelector(getUser);
+    const [emailValue, setEmailValue] = useState(user?.email || '');
     const [passwordValue, setPasswordValue] = React.useState('');
-    const onEmailChange = (e) => {
+    const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmailValue(e.target.value);
     };
-    const onPasswordChange = (e) => {
+    const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPasswordValue(e.target.value);
     };
-    const [nameValue, setNameValue] = React.useState(user?.name || '');
-    const inputInputNameRef = React.useRef(null);
+    const [nameValue, setNameValue] = useState(user?.name || '');
+    const inputInputNameRef = useRef(null);
     const handleRemoveChanges = () => {
         setPasswordValue('');
         setEmailValue(user?.email || '');
@@ -35,17 +37,17 @@ const ProfileUserInformationPage = () => {
     const handleUpdateUser = () => {
         setError(false);
         try {
-            const form = {};
+            const form: TForm = {};
             if (nameValue !== user?.name) {
                 form['name'] = nameValue;
             }
             if (emailValue !== user?.email) {
                 form['email'] = emailValue;
             }
-            if (passwordValue !== 0) {
+            if (passwordValue !== '') {
                 form['password'] = passwordValue;
             }
-            dispatch(patchWithTokenAction());
+            patchWithTokenAction(form);
         } catch {
             setError(true);
         }
@@ -71,7 +73,6 @@ const ProfileUserInformationPage = () => {
                 name={'email'}
                 isIcon={false}
                 extraClass='mb-6'
-                icon='EditIcon'
             />
             <PasswordInput
                 onChange={onPasswordChange}

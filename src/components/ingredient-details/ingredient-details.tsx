@@ -1,21 +1,25 @@
-import React from 'react';
+import React, {FC, useState, useEffect }  from 'react';
 import styles from './ingredient-details.module.css';
-import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
+import { TRootState } from '../../services/reducers/root';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { TIngredient } from '../../utils/types/ingredient-type';
 
-const getIngredientsFromStore = (state) => state.fetchIngredients;
+const getIngredientsFromStore = (state: TRootState) => state.fetchIngredients;
 
-export default function IngredientDetails() {
+const IngredientDetails: FC = () => {
     const { ingredients, fetchIngredientsRequest, fetchIngredientsFailed } =
-        useSelector(getIngredientsFromStore);
+        useTypedSelector(getIngredientsFromStore);
     const location = useLocation();
     const containerStyles = location.state?.background
         ? styles.elements_center
         : styles.detail_container_page;
     const { ingredientId } = useParams();
-    const [ingredient, setIngredient] = React.useState(null);
+    const [ingredient, setIngredient] = useState<TIngredient | null>(
+        null
+    );
 
-    React.useEffect(() => {
+    useEffect(() => {
         setIngredient(
             ingredients.filter((element) => element._id === ingredientId)[0]
         );
@@ -92,4 +96,6 @@ export default function IngredientDetails() {
                 )}
         </>
     );
-}
+};
+
+export default IngredientDetails;

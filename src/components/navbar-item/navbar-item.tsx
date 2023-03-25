@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { FC, cloneElement } from 'react';
 import style from './navbar-item.module.css';
-import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
-export default function NavbarItem(props) {
+interface INavbarItem {
+    name: string;
+    component: JSX.Element;
+    link: string;
+}
+
+const NavbarItem: FC<INavbarItem> = (props) => {
     return (
         <NavLink
             to={props.link}
@@ -13,7 +18,7 @@ export default function NavbarItem(props) {
                 <>
                     {!isActive
                         ? props.component
-                        : React.cloneElement(props.component, {
+                        : cloneElement(props.component, {
                               type: 'primary',
                           })}
                     <p
@@ -27,9 +32,6 @@ export default function NavbarItem(props) {
             )}
         </NavLink>
     );
-}
-
-NavbarItem.propTypes = {
-    name: PropTypes.string.isRequired,
-    component: PropTypes.element.isRequired,
 };
+
+export default NavbarItem;

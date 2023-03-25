@@ -1,16 +1,16 @@
-import React from 'react';
+import React, {FC} from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 import styles from './profile-page.module.css';
-import { useDispatch } from 'react-redux';
 import { clearUserAction } from '../../services/actions/user';
 import { useNavigate } from 'react-router-dom';
 import { fetchLogout } from '../../utils/api/user-request';
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 
-const ProfilePage = () => {
-    const dispatch = useDispatch();
+const ProfilePage: FC = () => {
+    const dispatch = useTypedDispatch();
     const navigate = useNavigate();
 
-    const handleLogout = (e) => {
+    const handleLogout = () => {
         try {
             fetchLogout();
         } finally {

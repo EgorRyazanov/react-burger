@@ -1,31 +1,41 @@
-import React from 'react';
+import React, { FC, memo, useRef } from 'react';
 import {
     DragIcon,
     ConstructorElement,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './constructor-component.module.css';
-import PropTypes from 'prop-types';
-import { dataElementProp } from '../../utils/prop-types';
 import { useDrop, useDrag } from 'react-dnd';
-import { useDispatch } from 'react-redux';
 import { updateComponentsConstructorAction } from '../../services/actions/constructor';
+import { TConstructorElement } from '../../utils/types/actions-types/constructor-types';
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { DropTargetMonitor } from 'react-dnd';
 
-const ConstructorComponent = React.memo(
+type TConstructorComponent = {
+    ingredient: TConstructorElement;
+    handleClose: (ingredient: TConstructorElement) => void;
+    index: number;
+};
+
+const ConstructorComponent: FC<TConstructorComponent> = memo(
     ({ ingredient, handleClose, index }) => {
-        const dispatch = useDispatch();
-        const ref = React.useRef(null);
-        const [{ handlerId }, drop] = useDrop({
+        const dispatch = useTypedDispatch();
+        const ref = useRef<HTMLDivElement>(null);
+        const [{ handlerId }, drop] = useDrop<
+            TConstructorElement,
+            HTMLDivElement,
+            any
+        >({
             accept: 'конструктор',
-            collect(monitor) {
+            collect(monitor: DropTargetMonitor) {
                 return {
                     handlerId: monitor.getHandlerId(),
                 };
             },
-            hover(item, monitor) {
+            hover(item: TConstructorElement, monitor: DropTargetMonitor) {
                 if (!ref.current) {
                     return;
                 }
-                const dragIndex = item.index;
+                const dragIndex = item.index as number;
                 const hoverIndex = index;
                 if (dragIndex === hoverIndex) {
                     return;
@@ -34,7 +44,8 @@ const ConstructorComponent = React.memo(
                 const hoverMiddleY =
                     (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
                 const clientOffset = monitor.getClientOffset();
-                const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+                const hoverClientY =
+                    (clientOffset?.y as number) - hoverBoundingRect.top;
                 if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                     return;
                 }
@@ -47,7 +58,11 @@ const ConstructorComponent = React.memo(
                 item.index = hoverIndex;
             },
         });
-        const [{ isDragging }, drag] = useDrag({
+        const [{ isDragging }, drag] = useDrag<
+            TConstructorElement,
+            HTMLDivElement,
+            any
+        >({
             type: 'конструктор',
             item: () => {
                 return { ...ingredient, index: index };
@@ -65,15 +80,15 @@ const ConstructorComponent = React.memo(
                 data-handler-id={handlerId}
                 style={{ opacity }}
             >
-                <div className="pt-8 pb-8">
-                    <DragIcon type="primary" />
+                <div className='pt-8 pb-8'>
+                    <DragIcon type='primary' />
                 </div>
                 <ConstructorElement
                     isLocked={false}
                     text={ingredient.name}
                     price={ingredient.price}
                     thumbnail={ingredient.image}
-                    handleClose={(e) => handleClose(e, ingredient)}
+                    handleClose={() => handleClose(ingredient)}
                 />
             </div>
         );
@@ -81,9 +96,3 @@ const ConstructorComponent = React.memo(
 );
 
 export default ConstructorComponent;
-
-ConstructorComponent.propTypes = {
-    ingredient: dataElementProp.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    index: PropTypes.number.isRequired,
-};

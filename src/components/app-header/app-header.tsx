@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
     BurgerIcon,
     ListIcon,
@@ -8,13 +8,14 @@ import {
 
 import styles from './app-header.module.css';
 import NavbarItem from '../navbar-item/navbar-item';
-import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { TRootState } from '../../services/reducers/root';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
-const getUser = (store) => store.user.user;
+const getUser = (store: TRootState) => store.user.user;
 
-export default function AppHeader() {
-    const profileName = useSelector(getUser)?.name || 'Личный кабинет';
+const AppHeader: FC = () => {
+    const profileName = useTypedSelector(getUser)?.name || 'Личный кабинет';
     const navigate = useNavigate();
     const location = useLocation();
     return (
@@ -56,4 +57,6 @@ export default function AppHeader() {
             </div>
         </header>
     );
-}
+};
+
+export default AppHeader;

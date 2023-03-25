@@ -1,14 +1,15 @@
-import React from 'react';
+import React, {FC} from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import BurgerIngridients from '../../components/burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../../components/burger-constructor/burger-constructor';
-import { useSelector } from 'react-redux';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { TRootState } from '../../services/reducers/root';
 
-const getUserFromStore = (state) => state.user.user;
+const getUserFromStore = (state: TRootState) => state.user.user;
 
-const Home = () => {
-    const userAuth = useSelector(getUserFromStore);
+const Home: FC = () => {
+    const userAuth = useTypedSelector(getUserFromStore);
     return (
         <main>
             <div className='container flex pl-5 pr-5x'>

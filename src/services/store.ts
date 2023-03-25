@@ -7,3 +7,5 @@ export const store = createStore(
     rootReducer,
     composeWithDevTools(applyMiddleware(thunk))
 );
+
+export type TRootDispatch = typeof store.dispatch;

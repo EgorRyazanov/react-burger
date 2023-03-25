@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useNavigate, Route, Routes } from 'react-router-dom';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import styles from './modal-switch.module.css';
-import PropTypes from 'prop-types';
 
-const ModalSwitch = ({ background }) => {
+type TModalSwitch = {
+    background: {
+        pathname: string;
+        search: string;
+        hash: string;
+        state: any;
+        key: string;
+    };
+};
+
+const ModalSwitch: FC<TModalSwitch> = ({ background }) => {
     const navigate = useNavigate();
-
     const handleToggleModal = () => {
         navigate('/', { replace: true });
     };
@@ -31,10 +39,6 @@ const ModalSwitch = ({ background }) => {
             )}
         </>
     );
-};
-
-ModalSwitch.propTypes = {
-    background: PropTypes.object,
 };
 
 export default ModalSwitch;

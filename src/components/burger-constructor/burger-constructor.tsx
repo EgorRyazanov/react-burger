@@ -1,14 +1,11 @@
-import React from 'react';
+import React, { FC, useMemo } from 'react';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-
 import styles from './burger-constructor.module.css';
 import ConstructorComponent from '../constructor-component/constructor-component';
 import ConstructorPrice from '../constructor-price/constructor-price';
 import { VALUE_BUN } from '../../utils/constants';
-import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { getPrice } from '../../utils/get-price';
-import PropTypes from 'prop-types';
 import {
     addElementToConstructorAction,
     addBunToConstructorAction,
@@ -16,18 +13,28 @@ import {
     clearConstructorAction,
     updateBunInConstructorAction,
 } from '../../services/actions/constructor';
+import { TRootState } from '../../services/reducers/root';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { TIngredient } from '../../utils/types/ingredient-type';
+import { TConstructorElement } from '../../utils/types/actions-types/constructor-types';
 
-const getConstructorFromStore = (state) => state.constructorBurger;
+type TBurgerConstructor = {
+    userLoaded: boolean;
+};
 
-const getIngredientsFromStore = (state) => state.fetchIngredients.ingredients;
+const getConstructorFromStore = (state: TRootState) => state.constructorBurger;
 
-export default function BurgerConstructor({ userLoaded }) {
-    const ingredients = useSelector(getIngredientsFromStore);
-    const { parts, bun } = useSelector(getConstructorFromStore);
-    const dispatch = useDispatch();
+const getIngredientsFromStore = (state: TRootState) =>
+    state.fetchIngredients.ingredients;
+
+const BurgerConstructor: FC<TBurgerConstructor> = ({ userLoaded }) => {
+    const ingredients = useTypedSelector(getIngredientsFromStore);
+    const { parts, bun } = useTypedSelector(getConstructorFromStore);
+    const dispatch = useTypedDispatch();
     const [{ isOver }, dropTargerRef] = useDrop({
         accept: 'ингредиент',
-        drop(item) {
+        drop(item: TIngredient) {
             if (!bun) {
                 if (item.type === VALUE_BUN) {
                     dispatch(addBunToConstructorAction(item));
@@ -45,9 +52,14 @@ export default function BurgerConstructor({ userLoaded }) {
             isOver: monitor.isOver(),
         }),
     });
-    const borderParts = isOver ? { outline: 'solid #4C4CFF 1px' } : null;
+    const borderParts = isOver ? { outline: 'solid #4C4CFF 1px' } : {};
 
-    const price = React.useMemo(() => getPrice(parts, bun), [parts, bun]);
+    const price = useMemo(() => {
+        if (bun !== null) {
+            return getPrice(parts, bun);
+        }
+        return 0;
+    }, [parts, bun]);
 
     return (
         <>
@@ -73,7 +85,7 @@ export default function BurgerConstructor({ userLoaded }) {
                                         text={`${bun.name} верх`}
                                         price={bun.price}
                                         thumbnail={bun.image}
-                                        handleClose={(e) =>
+                                        handleClose={() =>
                                             dispatch(clearConstructorAction)
                                         }
                                     />
@@ -86,8 +98,7 @@ export default function BurgerConstructor({ userLoaded }) {
                                         return (
                                             <ConstructorComponent
                                                 handleClose={(
-                                                    event,
-                                                    ingredient
+                                                    ingredient: TConstructorElement
                                                 ) => {
                                                     dispatch(
                                                         removeElementFromConstructorAction(
@@ -109,7 +120,7 @@ export default function BurgerConstructor({ userLoaded }) {
                                         text={`${bun.name} низ`}
                                         price={bun.price}
                                         thumbnail={bun.image}
-                                        handleClose={(e) =>
+                                        handleClose={() =>
                                             dispatch(clearConstructorAction)
                                         }
                                     />
@@ -120,14 +131,15 @@ export default function BurgerConstructor({ userLoaded }) {
                     <ConstructorPrice
                         price={price}
                         userLoaded={userLoaded}
-                        id={[...parts.map((element) => element?._id), bun?._id]}
+                        id={[
+                            ...parts.map((element) => element?._id),
+                            bun?._id as string,
+                        ]}
                     />
                 </div>
             )}
         </>
     );
-}
-
-BurgerConstructor.propTypes = {
-    userLoaded: PropTypes.bool.isRequired,
 };
+
+export default BurgerConstructor;

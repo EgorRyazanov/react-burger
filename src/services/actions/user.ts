@@ -71,10 +71,13 @@ export function fetchLoginAction(email: string, password: string) {
     };
 }
 
-function fetchWithTokenAction(callback: (options?: any) => any) {
+function fetchWithTokenAction(
+    callback: (options?: any) => any,
+    form: any = null
+) {
     return async function (dispatch: Dispatch<TUserAction>) {
         try {
-            const res = await callback();
+            const res = await callback(form);
             const { user } = res;
             dispatch(updateUserAction(user));
         } catch {
@@ -98,7 +101,8 @@ function fetchWithTokenAction(callback: (options?: any) => any) {
 }
 
 export const loginWithTokenAction = () => fetchWithTokenAction(getUser);
-export const patchWithTokenAction = () => fetchWithTokenAction(patchUser);
+export const patchWithTokenAction = (form: any) =>
+    fetchWithTokenAction(patchUser, form);
 
 export const resetErrorStatusAction: TUserAction = {
     type: EnumUserActionsTypes.RESET_ERROR_STATUS,

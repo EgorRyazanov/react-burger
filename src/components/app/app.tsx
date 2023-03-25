@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useEffect } from 'react';
 import AppHeader from '../app-header/app-header';
 import ErrorBoundary from '../../hoc/error-boundary';
 import { Route, Routes } from 'react-router-dom';
@@ -14,15 +14,13 @@ import NotFound from '../../pages/not-found/not-found';
 import { useLocation } from 'react-router-dom';
 import Home from '../../pages/main-page/main-page';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { useDispatch } from 'react-redux';
-import { fetchIngredientsAction } from '../../services/actions/fetch-ingredients';
-import { loginWithTokenAction } from '../../services/actions/user';
+import { useAction } from '../../hooks/useAction';
 
-function App() {
-    const dispatch = useDispatch();
-    React.useEffect(() => {
-        dispatch(fetchIngredientsAction());
-        dispatch(loginWithTokenAction());
+const App: FC = () => {
+    const { fetchIngredientsAction, loginWithTokenAction } = useAction();
+    useEffect(() => {
+        fetchIngredientsAction();
+        loginWithTokenAction();
     }, []);
     const location = useLocation();
     const background = location.state && location.state.background;
@@ -84,6 +82,6 @@ function App() {
             <ModalSwitch background={background} />
         </ErrorBoundary>
     );
-}
+};
 
 export default App;

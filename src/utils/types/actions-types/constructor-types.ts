@@ -1,6 +1,9 @@
 import { TIngredient } from '../ingredient-type';
 
-type TConstructorElement = TIngredient & { dragId: string };
+export type TConstructorElement = TIngredient & {
+    dragId: string;
+    index?: number;
+};
 
 export type TInitialConstructor = {
     parts: Array<TConstructorElement>;

@@ -1,33 +1,57 @@
-import React from 'react';
+import React, { useRef, FC, useState, useEffect } from 'react';
 import styles from './burger-ingredients.module.css';
 import TabComponent from '../tab-component/tab-component';
 import IngredientBlock from '../ingredient-block/ingredient-block';
-import { VALUE_BUN, VALUE_SAUCE, VALUE_MAIN } from '../../utils/constants';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
-import { useSelector } from 'react-redux';
+import { TRootState } from '../../services/reducers/root';
+import { TIngredient } from '../../utils/types/ingredient-type';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
-const getIngredientsFromStore = (state) => state.fetchIngredients;
+const getIngredientsFromStore = (state: TRootState) => state.fetchIngredients;
 
-export default function BurgerIngridients() {
-    const bunsRef = React.useRef();
-    const saucesRef = React.useRef();
-    const mainRef = React.useRef();
-    const tabs = [
-        { value: VALUE_BUN, ref: bunsRef, title: 'Булки' },
-        { value: VALUE_SAUCE, ref: saucesRef, title: 'Соусы' },
-        { value: VALUE_MAIN, ref: mainRef, title: 'Начинка' },
+type TVisibleHeaders = {
+    [name in TabIndexes]?: boolean;
+};
+
+export enum TabIndexes {
+    bun = 'bun',
+    sauce = 'sauce',
+    main = 'main',
+}
+
+export type TTabs = {
+    value: TabIndexes;
+    ref: React.RefObject<HTMLParagraphElement>;
+    title: string;
+}[];
+
+type TSortedIngredients = {
+    buns: Array<TIngredient>;
+    sauces: Array<TIngredient>;
+    main: Array<TIngredient>;
+};
+
+const BurgerIngridients: FC = () => {
+    const bunsRef = useRef<HTMLParagraphElement>(null);
+    const saucesRef = useRef<HTMLParagraphElement>(null);
+    const mainRef = useRef<HTMLParagraphElement>(null);
+    const tabs: TTabs = [
+        { value: TabIndexes.bun, ref: bunsRef, title: 'Булки' },
+        { value: TabIndexes.sauce, ref: saucesRef, title: 'Соусы' },
+        { value: TabIndexes.main, ref: mainRef, title: 'Начинка' },
     ];
 
-    let visibleHeaders = {};
-    const handleObserve = (entries) => {
+    let visibleHeaders: TVisibleHeaders = {};
+    const handleObserve = (entries: Array<IntersectionObserverEntry>) => {
         for (const entry of entries) {
-            visibleHeaders[entry.target.id] = entry.isIntersecting;
+            visibleHeaders[entry.target.id as TabIndexes] =
+                entry.isIntersecting;
         }
 
         for (const header in visibleHeaders) {
-            if (visibleHeaders[header]) {
-                setCurrent(header);
+            if (visibleHeaders[header as TabIndexes]) {
+                setCurrent(header as TabIndexes);
                 break;
             }
         }
@@ -37,32 +61,32 @@ export default function BurgerIngridients() {
     const handleToggleModal = () => {
         setActive(!active);
     };
-    const { ingredients } = useSelector(getIngredientsFromStore);
-    const [current, setCurrent] = React.useState(VALUE_BUN);
-    const [sortedIngredients, setIngridients] = React.useState({
+    const { ingredients } = useTypedSelector(getIngredientsFromStore);
+    const [current, setCurrent] = React.useState<TabIndexes>(TabIndexes.bun);
+    const [sortedIngredients, setIngridients] = useState<TSortedIngredients>({
         buns: [],
         sauces: [],
         main: [],
     });
 
-    const handleTabScroll = (value, element) => {
+    const handleTabScroll = (value: TabIndexes, element: Element) => {
         setCurrent(value);
         element.scrollIntoView({ behavior: 'smooth' });
     };
 
-    React.useEffect(() => {
-        const bunsContainer = [];
-        const saucesContainer = [];
-        const mainContainer = [];
+    useEffect(() => {
+        const bunsContainer: Array<TIngredient> = [];
+        const saucesContainer: Array<TIngredient> = [];
+        const mainContainer: Array<TIngredient> = [];
         ingredients.forEach((element) => {
             switch (element.type) {
-                case VALUE_BUN:
+                case TabIndexes.bun:
                     bunsContainer.push(element);
                     break;
-                case VALUE_SAUCE:
+                case TabIndexes.sauce:
                     saucesContainer.push(element);
                     break;
-                case VALUE_MAIN:
+                case TabIndexes.main:
                     mainContainer.push(element);
                     break;
                 default:
@@ -77,9 +101,9 @@ export default function BurgerIngridients() {
         const sectionObserver = new IntersectionObserver(handleObserve, {
             root: document.querySelector('.parent'),
         });
-        [bunsRef, saucesRef, mainRef].forEach((section) =>
-            sectionObserver.observe(section.current)
-        );
+        [bunsRef, saucesRef, mainRef].forEach((section) => {
+            sectionObserver.observe(section.current as Element);
+        });
     }, [ingredients]);
 
     return (
@@ -96,25 +120,22 @@ export default function BurgerIngridients() {
                     />
                     <div className={`${styles.scroll} parent`}>
                         <IngredientBlock
-                            id={VALUE_BUN}
+                            id={TabIndexes.bun}
                             ref={bunsRef}
                             name='Булки'
                             ingredients={sortedIngredients.buns}
-                            handleToggleModal={handleToggleModal}
                         />
                         <IngredientBlock
-                            id={VALUE_SAUCE}
+                            id={TabIndexes.sauce}
                             ref={saucesRef}
                             name='Соусы'
                             ingredients={sortedIngredients.sauces}
-                            handleToggleModal={handleToggleModal}
                         />
                         <IngredientBlock
-                            id={VALUE_MAIN}
+                            id={TabIndexes.main}
                             ref={mainRef}
                             name='Начинка'
                             ingredients={sortedIngredients.main}
-                            handleToggleModal={handleToggleModal}
                         />
                         {active && (
                             <Modal
@@ -130,4 +151,6 @@ export default function BurgerIngridients() {
             )}
         </>
     );
-}
+};
+
+export default BurgerIngridients;

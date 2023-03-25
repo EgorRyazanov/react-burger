@@ -6,7 +6,7 @@ import {
 
 import { Dispatch } from 'react';
 
-export function fetchIngredientsAction() {
+export const fetchIngredientsAction = () => {
     return function (dispatch: Dispatch<TIngredientsAction>) {
         dispatch({
             type: EnumIngredientsActionTypes.GET_INGREDIENTS,
@@ -24,4 +24,4 @@ export function fetchIngredientsAction() {
                 });
             });
     };
-}
+};

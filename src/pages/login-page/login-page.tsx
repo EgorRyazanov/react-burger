@@ -1,52 +1,53 @@
-import React from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import {
     EmailInput,
     PasswordInput,
     Button,
-    Input,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './register-page.module.css';
+import styles from './login-page.module.css';
 import isValidEmail from '../../utils/validEmail';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-    fetchRegisterUserAction,
-    resetErrorStatusAction,
-} from '../../services/actions/user';
+import { resetErrorStatusAction } from '../../services/actions/user';
 import { useForm } from '../../hooks/useForm';
+import { TRootState } from '../../services/reducers/root';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { useAction } from '../../hooks/useAction';
 
-const getErrorStatus = (state) => state.user.status.fetchUserFailed;
-const getUser = (state) => state.user.user;
+const getErrorStatus = (state: TRootState) => state.user.status.fetchUserFailed;
+const getUser = (state: TRootState) => state.user.user;
 
-const Register = () => {
+const Login: FC = () => {
+    const { fetchLoginAction } = useAction();
     const { values, handleChange } = useForm({
         email: '',
         password: '',
-        name: '',
     });
-    const error = useSelector(getErrorStatus);
-    const user = useSelector(getUser);
-    const dispatch = useDispatch();
+    const error = useTypedSelector(getErrorStatus);
+    const user = useTypedSelector(getUser);
+    const dispatch = useTypedDispatch();
     const navigate = useNavigate();
-    const [isError, setError] = React.useState(false);
-    const inputInputNameRef = React.useRef(null);
-    const handleLogin = () => {
-        navigate('/login');
+    const [isError, setError] = useState(false);
+
+    const handleRedirectToRegister = () => {
+        navigate('/register');
     };
-    const handleResisterUser = (e) => {
+    const handleRedirectToForgot = () => {
+        navigate('/forgot-password');
+    };
+
+    const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
         setError(false);
-        dispatch(
-            fetchRegisterUserAction(values.email, values.password, values.name)
-        );
+        fetchLoginAction(values.email, values.password);
     };
-    React.useEffect(() => {
+    useEffect(() => {
         if (user) {
             navigate('/', { replace: true });
         }
     }, [user]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (error) {
             setError(true);
             dispatch(resetErrorStatusAction);
@@ -56,21 +57,9 @@ const Register = () => {
     return (
         <div className='login-container container'>
             <p className={`text text_type_main-medium mb-6 text-center`}>
-                Регистрация
+                Вход
             </p>
-            <form onSubmit={handleResisterUser} className='form-container'>
-                <Input
-                    type={'text'}
-                    placeholder={'Имя'}
-                    onChange={handleChange}
-                    value={values.name}
-                    name={'name'}
-                    error={false}
-                    ref={inputInputNameRef}
-                    errorText={'Ошибка'}
-                    size={'default'}
-                    extraClass='mb-6'
-                />
+            <form onSubmit={handleLogin} className='form-container'>
                 <EmailInput
                     onChange={handleChange}
                     value={values.email}
@@ -86,7 +75,7 @@ const Register = () => {
                 />
                 {isError ? (
                     <p className='text text_type_main-medium text-error mb-6'>
-                        При регистристрации произошла ошибка, попробуйте еще раз
+                        При авторизации произошла ошибка, попробуйте еще раз
                     </p>
                 ) : null}
                 <Button
@@ -96,25 +85,39 @@ const Register = () => {
                     disabled={!(isValidEmail(values.email) && values.password)}
                     extraClass='mb-20'
                 >
-                    Зарегистрироваться
+                    Войти
                 </Button>
             </form>
-            <div className={styles.text_container}>
+            <div className={`${styles.text_container} mb-4`}>
                 <p className='text text_type_main-default text_color_inactive mr-2'>
-                    Уже зарегистрированы?
+                    Вы&nbsp;&mdash; новый пользователь?
                 </p>
                 <Button
                     htmlType='button'
                     type='secondary'
                     size='medium'
                     extraClass={styles.button_reset}
-                    onClick={handleLogin}
+                    onClick={handleRedirectToRegister}
                 >
-                    Войти
+                    Зарегистрироваться
+                </Button>
+            </div>
+            <div className={styles.text_container}>
+                <p className='text text_type_main-default text_color_inactive mr-2'>
+                    Забыли пароль?
+                </p>
+                <Button
+                    htmlType='button'
+                    type='secondary'
+                    size='medium'
+                    extraClass={styles.button_reset}
+                    onClick={handleRedirectToForgot}
+                >
+                    Восстановить пароль
                 </Button>
             </div>
         </div>
     );
 };
 
-export default Register;
+export default Login;

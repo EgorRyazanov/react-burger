@@ -1,9 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { FC, memo } from 'react';
 import imagePath from '../../images/order-details/done.png';
 import styles from './order-details.module.css';
 
-const OrderDetails = React.memo((props) => {
+type TOrderDetails = {
+    number: number;
+};
+
+const OrderDetails: FC<TOrderDetails> = memo((props) => {
     return (
         <div className={`${styles.elements_center} mt-4`}>
             <p
@@ -16,7 +19,7 @@ const OrderDetails = React.memo((props) => {
             >
                 идентификатор заказа
             </p>
-            <img className="mb-15" src={imagePath} alt="картинка" />
+            <img className='mb-15' src={imagePath} alt='картинка' />
             <p
                 className={`text text_type_main-default ${styles.text_center} mb-2`}
             >
@@ -30,9 +33,5 @@ const OrderDetails = React.memo((props) => {
         </div>
     );
 });
-
-OrderDetails.propTypes = {
-    number: PropTypes.number,
-};
 
 export default OrderDetails;
