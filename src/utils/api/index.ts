@@ -18,7 +18,7 @@ const checkSuccess = <T extends TResponse>(res: T): T | Promise<never> => {
 
 const request = <T extends TResponse>(
     endpoint: string,
-    options?: any
+    options?: RequestInit
 ): Promise<T> => {
     return fetch(`${BASE_URL}${endpoint}`, options)
         .then((res) => checkResponse<T>(res))
