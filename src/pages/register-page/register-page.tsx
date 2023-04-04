@@ -12,15 +12,14 @@ import { resetErrorStatusAction } from '../../services/actions/user';
 import { useForm } from '../../hooks/useForm';
 import { TRootState } from '../../services/reducers/root';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { useAction } from '../../hooks/useAction';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { fetchRegisterUserAction } from '../../services/actions/user';
 
 const getErrorStatus = (state: TRootState) => state.user.status.fetchUserFailed;
 const getUser = (state: TRootState) => state.user.user;
 
 const Register: FC = () => {
     const dispatch = useTypedDispatch();
-    const { fetchRegisterUserAction } = useAction();
     const { values, handleChange } = useForm({
         email: '',
         password: '',
@@ -37,7 +36,9 @@ const Register: FC = () => {
     const handleResisterUser = (e: React.FormEvent) => {
         e.preventDefault();
         setError(false);
-        fetchRegisterUserAction(values.email, values.password, values.name);
+        dispatch(
+            fetchRegisterUserAction(values.email, values.password, values.name)
+        );
     };
     useEffect(() => {
         if (user) {

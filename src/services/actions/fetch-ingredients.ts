@@ -1,26 +1,57 @@
 import { getIngredients } from '../../utils/api/ingredients-requests';
+import { TIngredient } from '../../utils/types/ingredient-type';
+import { ThunkAction } from 'redux-thunk';
+import { TApplicationActions, TRootState } from '../reducers/root';
 import {
-    TIngredientsAction,
-    EnumIngredientsActionTypes,
-} from '../../utils/types/actions-types/ingredients-types';
+    GET_INGREDIENTS_SUCCESS,
+    GET_INGREDIENTS,
+    GET_INGREDIENTS_FAILED,
+} from '../constants/fetch-ingredients';
 
-import { Dispatch } from 'react';
+export type TInitialIngredients = {
+    fetchIngredientsRequest: boolean;
+    fetchIngredientsFailed: boolean;
+    ingredients: Array<TIngredient>;
+};
 
-export const fetchIngredientsAction = () => {
-    return function (dispatch: Dispatch<TIngredientsAction>) {
+export interface GET_INGREDIENTS_ACTION {
+    readonly type: typeof GET_INGREDIENTS;
+}
+
+export interface GET_INGREDIENTS_SUCCESS_ACTION {
+    readonly type: typeof GET_INGREDIENTS_SUCCESS;
+    readonly payload: Array<TIngredient>;
+}
+
+export interface GET_INGREDIENTS_FAILED_ACTION {
+    readonly type: typeof GET_INGREDIENTS_FAILED;
+}
+
+export type TIngredientsAction =
+    | GET_INGREDIENTS_FAILED_ACTION
+    | GET_INGREDIENTS_SUCCESS_ACTION
+    | GET_INGREDIENTS_ACTION;
+
+export const fetchIngredientsAction = (): ThunkAction<
+    void,
+    TRootState,
+    unknown,
+    TApplicationActions
+> => {
+    return function (dispatch) {
         dispatch({
-            type: EnumIngredientsActionTypes.GET_INGREDIENTS,
+            type: GET_INGREDIENTS,
         });
         getIngredients()
             .then((res) => {
                 dispatch({
-                    type: EnumIngredientsActionTypes.GET_INGREDIENTS_SUCCESS,
+                    type: GET_INGREDIENTS_SUCCESS,
                     payload: res.data,
                 });
             })
             .catch((error) => {
                 dispatch({
-                    type: EnumIngredientsActionTypes.GET_INGREDIENTS_FAILED,
+                    type: GET_INGREDIENTS_FAILED,
                 });
             });
     };

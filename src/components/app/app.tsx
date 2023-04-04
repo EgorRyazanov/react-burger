@@ -14,13 +14,15 @@ import NotFound from '../../pages/not-found/not-found';
 import { useLocation } from 'react-router-dom';
 import Home from '../../pages/main-page/main-page';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { useAction } from '../../hooks/useAction';
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { fetchIngredientsAction } from '../../services/actions/fetch-ingredients';
+import { loginWithTokenAction } from '../../services/actions/user';
 
 const App: FC = () => {
-    const { fetchIngredientsAction, loginWithTokenAction } = useAction();
+    const dispatch = useTypedDispatch();
     useEffect(() => {
-        fetchIngredientsAction();
-        loginWithTokenAction();
+        dispatch(fetchIngredientsAction());
+        dispatch(loginWithTokenAction());
     }, []);
     const location = useLocation();
     const background = location.state && location.state.background;

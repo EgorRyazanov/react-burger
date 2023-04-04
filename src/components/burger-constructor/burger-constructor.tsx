@@ -17,7 +17,7 @@ import { TRootState } from '../../services/reducers/root';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { TIngredient } from '../../utils/types/ingredient-type';
-import { TConstructorElement } from '../../utils/types/actions-types/constructor-types';
+import { TConstructorElement } from '../../services/actions/constructor';
 
 type TBurgerConstructor = {
     userLoaded: boolean;
