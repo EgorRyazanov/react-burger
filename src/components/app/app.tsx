@@ -17,12 +17,16 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { fetchIngredientsAction } from '../../services/actions/fetch-ingredients';
 import { loginWithTokenAction } from '../../services/actions/user';
+import Feed from '../../pages/feed/feed';
+import FeedOrder from '../feed-order/feed-details';
+import { WS_CONNECTION_START } from '../../services/constants/websocket';
 
 const App: FC = () => {
     const dispatch = useTypedDispatch();
     useEffect(() => {
         dispatch(fetchIngredientsAction());
         dispatch(loginWithTokenAction());
+        dispatch({ type: WS_CONNECTION_START });
     }, []);
     const location = useLocation();
     const background = location.state && location.state.background;
@@ -80,6 +84,8 @@ const App: FC = () => {
                     path='/ingredients/:ingredientId'
                     element={<IngredientDetails />}
                 />
+                <Route path='/feed/:id' element={<FeedOrder />} />
+                <Route path='feed' element={<Feed />} />
             </Routes>
             <ModalSwitch background={background} />
         </ErrorBoundary>

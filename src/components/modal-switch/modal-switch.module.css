@@ -1,4 +1,9 @@
-.modal {
+.modal__ingredient_details {
     width: 720px;
     height: 539px;
+}
+
+.modal__feed_order {
+    width: 680px;
+    max-height: 722px;
 }

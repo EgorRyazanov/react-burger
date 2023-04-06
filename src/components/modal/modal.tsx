@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useParams } from 'react-router-dom';
 
 const modalContainer = document.getElementById(
     'modal-container'
@@ -11,7 +12,7 @@ const body = document.body;
 
 type TModal = {
     handleToggleModal: () => void;
-    title: string;
+    title?: string;
     container: string;
     children: ReactNode;
 };
@@ -19,7 +20,7 @@ type TModal = {
 const Modal: FC<TModal> = memo(({ children, handleToggleModal, ...props }) => {
     const handleEscPressed = (event: KeyboardEvent) =>
         event.code === 'Escape' ? handleToggleModal() : null;
-
+    const { id } = useParams();
     useEffect(() => {
         body.style.overflow = 'hidden';
         modalContainer.classList.add('modal-container--active');
@@ -43,7 +44,7 @@ const Modal: FC<TModal> = memo(({ children, handleToggleModal, ...props }) => {
             <ModalOverlay handleToggleModal={handleToggleModal} />
             <div className='flex'>
                 <p className={`text text_type_main-large ${styles.title} mr-9`}>
-                    {props.title || ''}
+                    {id ? `#000${id}` : props.title || ''}
                 </p>
                 <button className={styles.button} onClick={handleToggleModal}>
                     <CloseIcon type='primary' />

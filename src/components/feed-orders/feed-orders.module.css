@@ -1,0 +1,116 @@
+.container {
+    width: 600px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    height: 570px;
+    margin-right: 60px;
+}
+
+.card_container {
+    width: 584px;
+    background-color: #1c1c21;
+    padding: 24px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06),
+        0px 0px 1px rgba(0, 0, 0, 0.04);
+    border-radius: 40px;
+    cursor: pointer;
+    color: #f2f2f3;
+    display: block;
+}
+
+.card_container:not(:last-child) {
+    margin-bottom: 16px;
+}
+
+.card__footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.card__text {
+    color: #8585ad;
+}
+
+.card__images {
+    display: flex;
+    position: relative;
+}
+
+.card__image_special {
+    position: relative;
+    border-radius: 100px;
+    right: 26px;
+    top: 4px;
+    width: 112px;
+    height: 56px;
+    opacity: 1;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.5;
+}
+
+.image__container {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    border: 2px solid #801ab3;
+    background-color: #1c1c21;
+    position: relative;
+    display: flex;
+}
+.card__image {
+    position: relative;
+    border-radius: 100px;
+    right: 26px;
+    top: 4px;
+    width: 112px;
+    height: 56px;
+    opacity: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.image__container:nth-child(1) {
+    z-index: 6;
+}
+
+.image__container:nth-child(2) {
+    z-index: 5;
+    right: 20px;
+}
+.image__container:nth-child(3) {
+    z-index: 4;
+    right: 40px;
+}
+.image__container:nth-child(4) {
+    z-index: 3;
+    right: 60px;
+}
+
+.image__container:nth-child(5) {
+    z-index: 2;
+    right: 80px;
+}
+.image__container:nth-child(6) {
+    z-index: 1;
+    right: 100px;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+}
+
+.image_counter {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

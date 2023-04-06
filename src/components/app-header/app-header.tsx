@@ -34,7 +34,7 @@ const AppHeader: FC = () => {
                             <NavbarItem
                                 component={<ListIcon type='secondary' />}
                                 name='Лента Заказов'
-                                link='/all-orders'
+                                link='/feed'
                             />
                         </li>
                         <li
