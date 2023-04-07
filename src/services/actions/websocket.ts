@@ -7,9 +7,26 @@ import {
     WS_CONNECTION_START,
 } from '../constants/websocket';
 
+export type TOrderDetails = {
+    _id: string;
+    ingredients: Array<string>;
+    status: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+    number: number;
+};
+
+export type TOrderWS = {
+    success: boolean;
+    orders: Array<TOrderDetails>;
+    total: number;
+    totalToday: number;
+};
+
 export type TWSState = {
     wsConnected: boolean;
-    orders_information: any[];
+    ordersInformation: TOrderWS | null;
 
     error?: Event;
 };
@@ -21,7 +38,7 @@ export interface WS_SEND_MESSAGE_ACTION {
 
 export interface WS_GET_MESSAGE_ACTION {
     readonly type: typeof WS_GET_MESSAGE;
-    readonly payload: any;
+    readonly payload: TOrderWS;
 }
 
 export interface WS_CONNECTION_CLOSED_ACTION {

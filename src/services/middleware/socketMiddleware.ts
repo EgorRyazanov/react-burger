@@ -7,11 +7,11 @@ export const socketMiddleware = (wsUrl: string): Middleware => {
         let socket: WebSocket | null = null;
 
         return (next) => (action: AnyAction) => {
-            const { dispatch, getState } = store;
+            const { dispatch } = store;
             const { type, payload } = action;
 
             if (type === 'WS_CONNECTION_START') {
-                socket = new WebSocket(wsUrl);
+                socket = new WebSocket(payload);
             }
             if (socket) {
                 socket.onopen = (event) => {

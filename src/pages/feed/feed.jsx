@@ -7,10 +7,10 @@ import { useTypedSelector } from '../../hooks/useTypedSelector';
 const getWS = (state) => state.websocket;
 
 const Feed = () => {
-    const { wsConnected, orders_information } = useTypedSelector(getWS);
+    const { wsConnected, ordersInformation } = useTypedSelector(getWS);
     return (
         <>
-            {orders_information?.orders && wsConnected && (
+            {ordersInformation?.orders && wsConnected && (
                 <div className={`container pl-4 pt-10`}>
                     <p className='text text_type_main-large mb-5'>
                         Лента заказов
@@ -19,10 +19,10 @@ const Feed = () => {
                         {
                             <>
                                 <FeedOrders
-                                    orders_information={orders_information}
+                                    ordersInformation={ordersInformation}
                                 />
                                 <InformationTable
-                                    orders_information={orders_information}
+                                    ordersInformation={ordersInformation}
                                 />
                             </>
                         }

@@ -9,7 +9,7 @@ import {
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import styles from './modal-switch.module.css';
-import FeedOrder from '../feed-order/feed-details';
+import FeedOrder from '../feed-details/feed-details';
 
 type TModalSwitch = {
     background: {

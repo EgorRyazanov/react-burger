@@ -1,10 +1,6 @@
 import React, { FC } from 'react';
 import styles from './information-table.module.css';
 
-const data = {
-    numbers: [123, 124, 125, 126],
-};
-
 const cutOrders = (array) => {
     if (array.length > 20) {
         array = array.slice(0, 20);
@@ -25,11 +21,11 @@ const filterOrders = (orders) => {
     return { done: cutOrders(done), pending: cutOrders(pending) };
 };
 
-const InformationTable = ({ orders_information }) => {
+const InformationTable = ({ ordersInformation }) => {
     const [numbers, setNumbers] = React.useState(null);
     React.useEffect(() => {
-        setNumbers(filterOrders(orders_information.orders));
-    }, [orders_information]);
+        setNumbers(filterOrders(ordersInformation.orders));
+    }, [ordersInformation]);
     return (
         <>
             {numbers && (
@@ -39,31 +35,97 @@ const InformationTable = ({ orders_information }) => {
                             <p className={`text text_type_main-medium mb-6`}>
                                 Готовы:
                             </p>
-                            <div className={`mr-9 ${styles.order_numbers}`}>
-                                {numbers.done.map((element) => (
-                                    <p
-                                        key={element}
-                                        className={`text text_type_digits-default ${styles.text_colored}`}
+                            {numbers.done.length > 10 ? (
+                                <div className='flex'>
+                                    <div
+                                        className={`mr-9 ${styles.order_numbers}`}
                                     >
-                                        {element}
-                                    </p>
-                                ))}
-                            </div>
+                                        {numbers.done
+                                            .slice(0, 10)
+                                            .map((element) => (
+                                                <p
+                                                    key={element}
+                                                    className={`text text_type_digits-default ${styles.text_colored}`}
+                                                >
+                                                    {element}
+                                                </p>
+                                            ))}
+                                    </div>
+                                    <div
+                                        className={`mr-9 ${styles.order_numbers}`}
+                                    >
+                                        {numbers.done
+                                            .slice(10)
+                                            .map((element) => (
+                                                <p
+                                                    key={element}
+                                                    className={`text text_type_digits-default ${styles.text_colored}`}
+                                                >
+                                                    {element}
+                                                </p>
+                                            ))}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className={`mr-9 ${styles.order_numbers}`}>
+                                    {numbers.done.map((element) => (
+                                        <p
+                                            key={element}
+                                            className={`text text_type_digits-default ${styles.text_colored}`}
+                                        >
+                                            {element}
+                                        </p>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                         <div className={styles.mini_table}>
                             <p className={`text text_type_main-medium mb-6`}>
                                 В работе:
                             </p>
-                            <div className={`${styles.order_numbers}`}>
-                                {numbers.pending.map((element) => (
-                                    <p
-                                        key={element}
-                                        className={`text text_type_digits-default`}
+                            {numbers.pending.length > 10 ? (
+                                <div className='flex'>
+                                    <div
+                                        className={`mr-9 ${styles.order_numbers}`}
                                     >
-                                        {element}
-                                    </p>
-                                ))}
-                            </div>
+                                        {numbers.pending
+                                            .slice(0, 10)
+                                            .map((element) => (
+                                                <p
+                                                    key={element}
+                                                    className={`text text_type_digits-default`}
+                                                >
+                                                    {element}
+                                                </p>
+                                            ))}
+                                    </div>
+                                    <div
+                                        className={`mr-9 ${styles.order_numbers}`}
+                                    >
+                                        {numbers.pending
+                                            .slice(10)
+                                            .map((element) => (
+                                                <p
+                                                    key={element}
+                                                    className={`text text_type_digits-default`}
+                                                >
+                                                    {element}
+                                                </p>
+                                            ))}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className={`mr-9 ${styles.order_numbers}`}>
+                                    {numbers.pending.map((element) => (
+                                        <p
+                                            key={element}
+                                            className={`text text_type_digits-default`}
+                                        >
+                                            {element}
+                                        </p>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                     <p
@@ -74,7 +136,7 @@ const InformationTable = ({ orders_information }) => {
                     <p
                         className={`${styles.text_light} text text_type_digits-large mb-15`}
                     >
-                        {orders_information.total}
+                        {ordersInformation.total}
                     </p>
                     <p
                         className={`text text_type_main-medium ${styles.text_light}`}
@@ -84,7 +146,7 @@ const InformationTable = ({ orders_information }) => {
                     <p
                         className={`${styles.text_light} text text_type_digits-large mb-15`}
                     >
-                        {orders_information.totalToday}
+                        {ordersInformation.totalToday}
                     </p>
                 </div>
             )}

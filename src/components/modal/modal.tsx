@@ -4,6 +4,8 @@ import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useParams } from 'react-router-dom';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { TRootState } from '../../services/reducers/root';
 
 const modalContainer = document.getElementById(
     'modal-container'
@@ -17,11 +19,26 @@ type TModal = {
     children: ReactNode;
 };
 
+const getWS = (state: TRootState) => state.websocket;
+
 const Modal: FC<TModal> = memo(({ children, handleToggleModal, ...props }) => {
     const handleEscPressed = (event: KeyboardEvent) =>
         event.code === 'Escape' ? handleToggleModal() : null;
     const { id } = useParams();
+    const [title, setTitle] = React.useState<string | null>(null);
+    const { ordersInformation } = useTypedSelector(getWS);
     useEffect(() => {
+        if (id && ordersInformation) {
+            setTitle(
+                `#000${
+                    ordersInformation.orders.filter(
+                        (order) => order._id === id
+                    )[0].number
+                }`
+            );
+        } else {
+            setTitle(props.title || '');
+        }
         body.style.overflow = 'hidden';
         modalContainer.classList.add('modal-container--active');
         document.addEventListener('keydown', handleEscPressed);
@@ -44,7 +61,7 @@ const Modal: FC<TModal> = memo(({ children, handleToggleModal, ...props }) => {
             <ModalOverlay handleToggleModal={handleToggleModal} />
             <div className='flex'>
                 <p className={`text text_type_main-large ${styles.title} mr-9`}>
-                    {id ? `#000${id}` : props.title || ''}
+                    {title}
                 </p>
                 <button className={styles.button} onClick={handleToggleModal}>
                     <CloseIcon type='primary' />

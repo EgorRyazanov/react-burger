@@ -18,8 +18,9 @@ import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { fetchIngredientsAction } from '../../services/actions/fetch-ingredients';
 import { loginWithTokenAction } from '../../services/actions/user';
 import Feed from '../../pages/feed/feed';
-import FeedOrder from '../feed-order/feed-details';
+import FeedOrder from '../feed-details/feed-details';
 import { WS_CONNECTION_START } from '../../services/constants/websocket';
+import FeedOrders from '../feed-orders/feed-orders';
 
 const App: FC = () => {
     const dispatch = useTypedDispatch();
@@ -77,6 +78,7 @@ const App: FC = () => {
                     }
                 >
                     <Route index element={<ProfileUserInformationPage />} />
+                    <Route path='/profile/orders' element={<FeedOrders />} />
                 </Route>
                 <Route path='*' element={<NotFound />} />
                 <Route path='/' element={<Home />} />

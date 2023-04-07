@@ -134,6 +134,7 @@ const BurgerConstructor: FC<TBurgerConstructor> = ({ userLoaded }) => {
                         id={[
                             ...parts.map((element) => element?._id),
                             bun?._id as string,
+                            bun?._id as string,
                         ]}
                     />
                 </div>

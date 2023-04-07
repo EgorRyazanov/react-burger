@@ -9,7 +9,7 @@ import {
 
 const initialState: TWSState = {
     wsConnected: false,
-    orders_information: [],
+    ordersInformation: null,
 };
 
 export const wsReducer = (state = initialState, action: TWsActions) => {
@@ -36,7 +36,7 @@ export const wsReducer = (state = initialState, action: TWsActions) => {
             return {
                 ...state,
                 error: undefined,
-                orders_information: action.payload,
+                ordersInformation: action.payload,
             };
         default:
             return state;
