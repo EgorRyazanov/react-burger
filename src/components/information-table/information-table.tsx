@@ -1,16 +1,21 @@
 import React, { FC } from 'react';
 import styles from './information-table.module.css';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { TRootState } from '../../services/reducers/root';
+import { TOrderDetails } from '../../services/actions/websocket';
 
-const cutOrders = (array) => {
+const cutOrders = (array: any) => {
     if (array.length > 20) {
         array = array.slice(0, 20);
     }
     return array;
 };
 
-const filterOrders = (orders) => {
-    const done = [];
-    const pending = [];
+const filterOrders = (
+    orders: Array<TOrderDetails>
+): { done: Array<number>; pending: Array<number> } => {
+    const done: Array<number> = [];
+    const pending: Array<number> = [];
     orders.forEach((element) => {
         if (element.status === 'done') {
             done.push(element.number);
@@ -21,10 +26,18 @@ const filterOrders = (orders) => {
     return { done: cutOrders(done), pending: cutOrders(pending) };
 };
 
-const InformationTable = ({ ordersInformation }) => {
-    const [numbers, setNumbers] = React.useState(null);
+const getWS = (state: TRootState) => state.websocket;
+
+const InformationTable: FC = () => {
+    const { ordersInformation } = useTypedSelector(getWS);
+    const [numbers, setNumbers] = React.useState<{
+        done: number[];
+        pending: number[];
+    } | null>(null);
     React.useEffect(() => {
-        setNumbers(filterOrders(ordersInformation.orders));
+        if (ordersInformation) {
+            setNumbers(filterOrders(ordersInformation.orders));
+        }
     }, [ordersInformation]);
     return (
         <>
@@ -136,7 +149,7 @@ const InformationTable = ({ ordersInformation }) => {
                     <p
                         className={`${styles.text_light} text text_type_digits-large mb-15`}
                     >
-                        {ordersInformation.total}
+                        {ordersInformation?.total}
                     </p>
                     <p
                         className={`text text_type_main-medium ${styles.text_light}`}
@@ -146,7 +159,7 @@ const InformationTable = ({ ordersInformation }) => {
                     <p
                         className={`${styles.text_light} text text_type_digits-large mb-15`}
                     >
-                        {ordersInformation.totalToday}
+                        {ordersInformation?.totalToday}
                     </p>
                 </div>
             )}

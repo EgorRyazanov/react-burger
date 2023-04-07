@@ -1,11 +1,5 @@
 import React, { FC } from 'react';
-import {
-    useNavigate,
-    Route,
-    Routes,
-    useParams,
-    useLocation,
-} from 'react-router-dom';
+import { useNavigate, Route, Routes } from 'react-router-dom';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import styles from './modal-switch.module.css';
@@ -32,6 +26,17 @@ const ModalSwitch: FC<TModalSwitch> = ({ background }) => {
                 <Routes>
                     <Route
                         path='/feed/:id'
+                        element={
+                            <Modal
+                                container={styles.modal__feed_order}
+                                handleToggleModal={handleToggleModal}
+                            >
+                                <FeedOrder />
+                            </Modal>
+                        }
+                    />
+                    <Route
+                        path='/profile/orders/:id'
                         element={
                             <Modal
                                 container={styles.modal__feed_order}

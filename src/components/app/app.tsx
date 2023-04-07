@@ -19,7 +19,6 @@ import { fetchIngredientsAction } from '../../services/actions/fetch-ingredients
 import { loginWithTokenAction } from '../../services/actions/user';
 import Feed from '../../pages/feed/feed';
 import FeedOrder from '../feed-details/feed-details';
-import { WS_CONNECTION_START } from '../../services/constants/websocket';
 import FeedOrders from '../feed-orders/feed-orders';
 
 const App: FC = () => {
@@ -27,7 +26,6 @@ const App: FC = () => {
     useEffect(() => {
         dispatch(fetchIngredientsAction());
         dispatch(loginWithTokenAction());
-        dispatch({ type: WS_CONNECTION_START });
     }, []);
     const location = useLocation();
     const background = location.state && location.state.background;

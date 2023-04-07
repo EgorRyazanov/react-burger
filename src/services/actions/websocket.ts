@@ -5,6 +5,7 @@ import {
     WS_CONNECTION_ERROR,
     WS_CONNECTION_SUCCESS,
     WS_CONNECTION_START,
+    WS_CONNECTION_CLOSE,
 } from '../constants/websocket';
 
 export type TOrderDetails = {
@@ -58,6 +59,11 @@ export interface WS_CONNECTION_SUCCESS_ACTION {
 
 export interface WS_CONNECTION_START_ACTION {
     readonly type: typeof WS_CONNECTION_START;
+    readonly payload: string;
+}
+
+export interface WS_CONNECTION_CLOSE_ACTION {
+    readonly type: typeof WS_CONNECTION_CLOSE;
 }
 
 export type TWsActions =
@@ -66,4 +72,5 @@ export type TWsActions =
     | WS_CONNECTION_ERROR_ACTION
     | WS_CONNECTION_CLOSED_ACTION
     | WS_GET_MESSAGE_ACTION
-    | WS_SEND_MESSAGE_ACTION;
+    | WS_SEND_MESSAGE_ACTION
+    | WS_CONNECTION_CLOSE_ACTION;

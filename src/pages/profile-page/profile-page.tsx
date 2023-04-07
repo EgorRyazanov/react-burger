@@ -1,14 +1,28 @@
-import React, {FC} from 'react';
-import { Outlet, NavLink } from 'react-router-dom';
+import React, { FC } from 'react';
+import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import styles from './profile-page.module.css';
 import { clearUserAction } from '../../services/actions/user';
 import { useNavigate } from 'react-router-dom';
 import { fetchLogout } from '../../utils/api/user-request';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import {
+    WS_CONNECTION_CLOSE,
+    WS_CONNECTION_START,
+} from '../../services/constants/websocket';
 
 const ProfilePage: FC = () => {
+    const location = useLocation();
     const dispatch = useTypedDispatch();
     const navigate = useNavigate();
+    React.useEffect(() => {
+        dispatch({ type: WS_CONNECTION_CLOSE });
+        dispatch({
+            type: WS_CONNECTION_START,
+            payload: `wss://norma.nomoreparties.space/orders?token=${localStorage.getItem(
+                'accessToken'
+            )}`,
+        });
+    }, []);
 
     const handleLogout = () => {
         try {
@@ -24,6 +38,10 @@ const ProfilePage: FC = () => {
             <div className={styles.links_container}>
                 <NavLink to='/profile'>
                     {({ isActive }) => {
+                        if (location.pathname !== '/profile') {
+                            isActive = false;
+                        }
+
                         return (
                             <p
                                 className={`text text_type_main-medium ${
@@ -63,11 +81,22 @@ const ProfilePage: FC = () => {
                         Выход
                     </p>
                 </a>
-                <p
-                    className={`text text_type_main-default text_color_inactive`}
-                >
-                    В этом разделе вы можете изменить свои персональные данные
-                </p>
+                {location.pathname === '/profile' && (
+                    <p
+                        className={`text text_type_main-default text_color_inactive`}
+                    >
+                        В этом разделе вы можете изменить свои персональные
+                        данные
+                    </p>
+                )}
+                {location.pathname === '/profile/orders' && (
+                    <p
+                        className={`text text_type_main-default text_color_inactive`}
+                    >
+                        В этом разделе вы можете просмотреть свою историю
+                        заказов
+                    </p>
+                )}
             </div>
             <Outlet />
         </div>

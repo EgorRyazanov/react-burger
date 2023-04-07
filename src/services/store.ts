@@ -6,17 +6,7 @@ import { socketMiddleware } from './middleware/socketMiddleware';
 
 export const store = createStore(
     rootReducer,
-    composeWithDevTools(
-        applyMiddleware(
-            thunk,
-            socketMiddleware('wss://norma.nomoreparties.space/orders/all'),
-            socketMiddleware(
-                `wss://norma.nomoreparties.space/orders?token=${localStorage.getItem(
-                    'accessToken'
-                )}`
-            )
-        )
-    )
+    composeWithDevTools(applyMiddleware(thunk, socketMiddleware()))
 );
 
 export type TRootDispatch = typeof store.dispatch;

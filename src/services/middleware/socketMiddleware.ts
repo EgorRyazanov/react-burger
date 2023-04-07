@@ -2,7 +2,7 @@ import type { AnyAction, Middleware, MiddlewareAPI } from 'redux';
 import { TRootDispatch } from '../store';
 import { TRootState } from '../reducers/root';
 
-export const socketMiddleware = (wsUrl: string): Middleware => {
+export const socketMiddleware = (): Middleware => {
     return ((store: MiddlewareAPI<TRootDispatch, TRootState>) => {
         let socket: WebSocket | null = null;
 
@@ -12,6 +12,9 @@ export const socketMiddleware = (wsUrl: string): Middleware => {
 
             if (type === 'WS_CONNECTION_START') {
                 socket = new WebSocket(payload);
+            }
+            if (type === 'WS_CONNECTION_CLOSE') {
+                socket?.close();
             }
             if (socket) {
                 socket.onopen = (event) => {

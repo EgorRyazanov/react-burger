@@ -7,7 +7,7 @@
     margin-right: 60px;
 }
 
-.card_container {
+.card_container_feed {
     width: 584px;
     background-color: #1c1c21;
     padding: 24px;
@@ -19,7 +19,19 @@
     display: block;
 }
 
-.card_container:not(:last-child) {
+.card_container_profile {
+    background-color: #1c1c21;
+    padding: 24px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06),
+        0px 0px 1px rgba(0, 0, 0, 0.04);
+    border-radius: 40px;
+    cursor: pointer;
+    color: #f2f2f3;
+    display: block;
+}
+
+.card_container_profile:not(:last-child),
+.card_container_feed:not(:last-child) {
     margin-bottom: 16px;
 }
 

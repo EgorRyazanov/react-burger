@@ -2,34 +2,46 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useParams } from 'react-router-dom';
-import LoadingModal from '../loading-modal/loading-modal';
 import styles from './feed-details.module.css';
 import {
     CurrencyIcon,
     FormattedDate,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { TRootState } from '../../services/reducers/root';
+import { TOrderDetails } from '../../services/actions/websocket';
+import { TIngredient } from '../../utils/types/ingredient-type';
 
-const sort_by_count = (a, b) => {
+const sort_by_count = (
+    a: { ingredient: TIngredient; count: number },
+    b: { ingredient: TIngredient; count: number }
+): number => {
     return b.count - a.count;
 };
-const getPrice = (elements) => {
+const getPrice = (
+    elements: Array<{ ingredient: TIngredient; count: number }>
+) => {
     return elements.reduce(
         (acc, current) => acc + current.ingredient.price * current.count,
         0
     );
 };
 
-const getWS = (state) => state.websocket;
+const getWS = (state: TRootState) => state.websocket;
 
-const FeedOrder = () => {
+const FeedOrder: React.FC = () => {
     const { ordersInformation } = useTypedSelector(getWS);
     const { id } = useParams();
     const location = useLocation();
     const background = location.state && location.state.background;
-    const [price, setPrice] = React.useState(null);
-    const [order, setOrder] = React.useState(null);
-    const [pieces, setPieces] = React.useState(null);
-    const [orderIngredients, setOrderIngredients] = React.useState(null);
+    const [price, setPrice] = React.useState<number | null>(null);
+    const [order, setOrder] = React.useState<TOrderDetails | null>(null);
+    const [pieces, setPieces] = React.useState<Map<string, number> | null>(
+        null
+    );
+    const [orderIngredients, setOrderIngredients] = React.useState<Array<{
+        ingredient: TIngredient;
+        count: number;
+    }> | null>(null);
     const { ingredients } = useTypedSelector((store) => store.fetchIngredients);
 
     React.useEffect(() => {
@@ -43,7 +55,6 @@ const FeedOrder = () => {
     }, [ordersInformation]);
 
     React.useEffect(() => {
-        console.log(order);
         if (order) {
             const map = new Map();
             for (let ingredient of order.ingredients) {
@@ -65,7 +76,7 @@ const FeedOrder = () => {
                 })[0];
                 temp.push({
                     ingredient: ingredient,
-                    count: pieces.get(key),
+                    count: pieces.get(key) as number,
                 });
             }
         }

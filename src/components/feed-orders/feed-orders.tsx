@@ -5,22 +5,33 @@ import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { TRootState } from '../../services/reducers/root';
+import { TIngredient } from '../../utils/types/ingredient-type';
 
-const getIngredients = (state) => state.fetchIngredients;
-const getWS = (state) => state.websocket;
+const getIngredients = (state: TRootState) => state.fetchIngredients;
+const getWS = (state: TRootState) => state.websocket;
 
-const FeedOrders = () => {
+type TOrder = {
+    orderIngredients: Array<TIngredient>;
+    price: number;
+    name: string;
+    _id: string;
+    number: number;
+    createdAt: string;
+    status: { text: string; style: { color: string } };
+};
+
+const FeedOrders: FC = () => {
     const location = useLocation();
-    console.log(location);
     const { ordersInformation } = useTypedSelector(getWS);
     const { ingredients } = useTypedSelector(getIngredients);
-    const [orders, setOrders] = React.useState(null);
+    const [orders, setOrders] = React.useState<Array<TOrder> | null>(null);
     React.useEffect(() => {
-        const localOrders = [];
-        if (ordersInformation && ingredients.length > 0) {
+        const localOrders: Array<TOrder> = [];
+        if (ordersInformation?.orders && ingredients.length > 0) {
             ordersInformation.orders.forEach((order) => {
                 let price = 0;
-                const orderIngredients = [];
+                const orderIngredients: Array<TIngredient> = [];
                 order.ingredients.forEach((id) => {
                     const ingredient = ingredients.filter(
                         (element) => element._id === id
@@ -28,6 +39,25 @@ const FeedOrders = () => {
                     orderIngredients.push(ingredient);
                     price += ingredient.price;
                 });
+                let status = null;
+                if (order.status === 'done') {
+                    status = {
+                        text: 'Выполнен',
+                        style: {
+                            color: 'rgb(0, 204, 204)',
+                        },
+                    };
+                } else if (order.status === 'pending') {
+                    status = {
+                        text: 'Готовится',
+                        style: { color: 'red' },
+                    };
+                } else {
+                    status = {
+                        text: 'Создан',
+                        style: { color: 'white' },
+                    };
+                }
                 localOrders.push({
                     orderIngredients,
                     price,
@@ -35,16 +65,25 @@ const FeedOrders = () => {
                     _id: order._id,
                     number: order.number,
                     createdAt: order.createdAt,
+                    status,
                 });
             });
         }
         if (localOrders.length > 0) {
-            setOrders(localOrders);
+            setOrders(
+                location.pathname === '/profile/orders'
+                    ? localOrders.reverse()
+                    : localOrders
+            );
         }
     }, [ordersInformation, ingredients]);
     return (
         orders && (
-            <div className={styles.container}>
+            <div
+                className={
+                    location.pathname === '/feed' ? styles.container : ''
+                }
+            >
                 {orders.map((order) => {
                     const count = order.orderIngredients.length;
                     const isCountCrowded = count > 6;
@@ -55,10 +94,14 @@ const FeedOrders = () => {
                     );
                     return (
                         <Link
-                            to={`/feed/${order._id}`}
+                            to={`${location.pathname}/${order._id}`}
                             state={{ background: location }}
                             key={order._id}
-                            className={styles.card_container}
+                            className={
+                                location.pathname === '/feed'
+                                    ? styles.card_container_feed
+                                    : styles.card_container_profile
+                            }
                         >
                             <div className={styles.card__header}>
                                 <p className='text text_type_digits-default'>
@@ -72,6 +115,14 @@ const FeedOrders = () => {
                             <p className='text text_type_main-medium mb-6'>
                                 {order.name}
                             </p>
+                            {location.pathname === '/profile/orders' && (
+                                <p
+                                    className={`text text_type_main-default mb-6`}
+                                    style={order.status.style}
+                                >
+                                    {order.status.text}
+                                </p>
+                            )}
                             <div className={styles.card__footer}>
                                 <ul className={styles.card__images}>
                                     {ingredientsToShow.map(
