@@ -4,6 +4,7 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import styles from './modal-switch.module.css';
 import FeedOrder from '../feed-details/feed-details';
+import ProtectedRoute from '../protected-route/protected-route';
 
 type TModalSwitch = {
     background: {
@@ -27,12 +28,17 @@ const ModalSwitch: FC<TModalSwitch> = ({ background }) => {
                     <Route
                         path='/feed/:id'
                         element={
-                            <Modal
-                                container={styles.modal__feed_order}
-                                handleToggleModal={handleToggleModal}
-                            >
-                                <FeedOrder />
-                            </Modal>
+                            <ProtectedRoute
+                                element={
+                                    <Modal
+                                        container={styles.modal__feed_order}
+                                        handleToggleModal={handleToggleModal}
+                                    >
+                                        <FeedOrder />
+                                    </Modal>
+                                }
+                                anonymous={false}
+                            />
                         }
                     />
                     <Route
