@@ -14,13 +14,18 @@ import NotFound from '../../pages/not-found/not-found';
 import { useLocation } from 'react-router-dom';
 import Home from '../../pages/main-page/main-page';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { useAction } from '../../hooks/useAction';
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { fetchIngredientsAction } from '../../services/actions/fetch-ingredients';
+import { loginWithTokenAction } from '../../services/actions/user';
+import Feed from '../../pages/feed/feed';
+import FeedOrder from '../feed-details/feed-details';
+import FeedOrders from '../feed-orders/feed-orders';
 
 const App: FC = () => {
-    const { fetchIngredientsAction, loginWithTokenAction } = useAction();
+    const dispatch = useTypedDispatch();
     useEffect(() => {
-        fetchIngredientsAction();
-        loginWithTokenAction();
+        dispatch(fetchIngredientsAction());
+        dispatch(loginWithTokenAction());
     }, []);
     const location = useLocation();
     const background = location.state && location.state.background;
@@ -71,6 +76,7 @@ const App: FC = () => {
                     }
                 >
                     <Route index element={<ProfileUserInformationPage />} />
+                    <Route path='/profile/orders' element={<FeedOrders />} />
                 </Route>
                 <Route path='*' element={<NotFound />} />
                 <Route path='/' element={<Home />} />
@@ -78,6 +84,17 @@ const App: FC = () => {
                     path='/ingredients/:ingredientId'
                     element={<IngredientDetails />}
                 />
+                <Route path='/feed/:id' element={<FeedOrder />} />
+                <Route
+                    path='/profile/orders/:id'
+                    element={
+                        <ProtectedRoute
+                            anonymous={false}
+                            element={<FeedOrder />}
+                        />
+                    }
+                />
+                <Route path='feed' element={<Feed />} />
             </Routes>
             <ModalSwitch background={background} />
         </ErrorBoundary>

@@ -12,13 +12,12 @@ import { useForm } from '../../hooks/useForm';
 import { TRootState } from '../../services/reducers/root';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
-import { useAction } from '../../hooks/useAction';
+import { fetchLoginAction } from '../../services/actions/user';
 
 const getErrorStatus = (state: TRootState) => state.user.status.fetchUserFailed;
 const getUser = (state: TRootState) => state.user.user;
 
 const Login: FC = () => {
-    const { fetchLoginAction } = useAction();
     const { values, handleChange } = useForm({
         email: '',
         password: '',
@@ -39,7 +38,7 @@ const Login: FC = () => {
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
         setError(false);
-        fetchLoginAction(values.email, values.password);
+        dispatch(fetchLoginAction(values.email, values.password));
     };
     useEffect(() => {
         if (user) {

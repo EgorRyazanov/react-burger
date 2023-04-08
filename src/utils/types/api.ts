@@ -1,4 +1,4 @@
-import { TUser } from './actions-types/user-types';
+import { TUser } from '../../services/actions/user';
 import { TIngredient } from './ingredient-type';
 import { TOrder } from './order-type';
 

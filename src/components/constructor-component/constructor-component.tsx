@@ -6,7 +6,7 @@ import {
 import styles from './constructor-component.module.css';
 import { useDrop, useDrag } from 'react-dnd';
 import { updateComponentsConstructorAction } from '../../services/actions/constructor';
-import { TConstructorElement } from '../../utils/types/actions-types/constructor-types';
+import { TConstructorElement } from '../../services/actions/constructor';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 import { DropTargetMonitor } from 'react-dnd';
 

@@ -1,8 +1,12 @@
+import { TUserAction, TInitialState } from '../actions/user';
 import {
-    TUserAction,
-    EnumUserActionsTypes,
-    TInitialState,
-} from '../../utils/types/actions-types/user-types';
+    CLEAR_USER,
+    FETCH_USER_FAILED,
+    FETCH_USER_LOADING,
+    FETCH_USER_SUCCESS,
+    RESET_ERROR_STATUS,
+    UPDATE_USER,
+} from '../constants/user';
 
 const initialState: TInitialState = {
     user: null,
@@ -14,7 +18,7 @@ const initialState: TInitialState = {
 
 const userReducer = (state = initialState, action: TUserAction) => {
     switch (action.type) {
-        case EnumUserActionsTypes.FETCH_USER_SUCCESS: {
+        case FETCH_USER_SUCCESS: {
             return {
                 ...state,
                 user: { ...action.payload },
@@ -24,7 +28,7 @@ const userReducer = (state = initialState, action: TUserAction) => {
                 },
             };
         }
-        case EnumUserActionsTypes.FETCH_USER_LOADING: {
+        case FETCH_USER_LOADING: {
             return {
                 ...state,
                 status: {
@@ -33,7 +37,7 @@ const userReducer = (state = initialState, action: TUserAction) => {
                 },
             };
         }
-        case EnumUserActionsTypes.FETCH_USER_FAILED: {
+        case FETCH_USER_FAILED: {
             return {
                 ...state,
                 status: {
@@ -42,7 +46,7 @@ const userReducer = (state = initialState, action: TUserAction) => {
                 },
             };
         }
-        case EnumUserActionsTypes.RESET_ERROR_STATUS: {
+        case RESET_ERROR_STATUS: {
             return {
                 ...state,
                 status: {
@@ -51,13 +55,13 @@ const userReducer = (state = initialState, action: TUserAction) => {
                 },
             };
         }
-        case EnumUserActionsTypes.UPDATE_USER: {
+        case UPDATE_USER: {
             return {
                 ...state,
                 user: { ...action.payload },
             };
         }
-        case EnumUserActionsTypes.CLEAR_USER: {
+        case CLEAR_USER: {
             return initialState;
         }
         default: {

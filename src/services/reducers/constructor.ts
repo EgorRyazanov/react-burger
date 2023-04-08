@@ -1,8 +1,15 @@
 import {
     TInitialConstructor,
-    EnumConstructorActionTypes,
     TConstructorAction,
-} from '../../utils/types/actions-types/constructor-types';
+} from '../actions/constructor';
+import {
+    ADD_BUN,
+    ADD_CONSTRUCTOR,
+    CLEAR_CONSTRUCTOR,
+    REMOVE_CONSTRUCTOR,
+    UPDATE_BUN,
+    UPDATE_CONSTRUCTOR,
+} from '../constants/constructor';
 
 const initialConstructor: TInitialConstructor = {
     parts: [],
@@ -14,19 +21,19 @@ const constructorReducer = (
     action: TConstructorAction
 ) => {
     switch (action.type) {
-        case EnumConstructorActionTypes.ADD_CONSTRUCTOR: {
+        case ADD_CONSTRUCTOR: {
             return {
                 ...state,
                 parts: [...state.parts, action.payload],
             };
         }
-        case EnumConstructorActionTypes.ADD_BUN: {
+        case ADD_BUN: {
             return {
                 ...state,
                 bun: action.payload,
             };
         }
-        case EnumConstructorActionTypes.REMOVE_CONSTRUCTOR: {
+        case REMOVE_CONSTRUCTOR: {
             return {
                 ...state,
                 parts: state.parts.filter(
@@ -34,16 +41,16 @@ const constructorReducer = (
                 ),
             };
         }
-        case EnumConstructorActionTypes.CLEAR_CONSTRUCTOR: {
+        case CLEAR_CONSTRUCTOR: {
             return initialConstructor;
         }
-        case EnumConstructorActionTypes.UPDATE_BUN: {
+        case UPDATE_BUN: {
             return {
                 ...state,
                 bun: action.payload,
             };
         }
-        case EnumConstructorActionTypes.UPDATE_CONSTRUCTOR: {
+        case UPDATE_CONSTRUCTOR: {
             const { dragIndex, hoverIndex } = action.payload;
             const dragCard = state.parts[dragIndex];
             const currentCards = [...state.parts];

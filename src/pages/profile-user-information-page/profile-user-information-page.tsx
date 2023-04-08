@@ -1,4 +1,4 @@
-import React, {FC, useState, useRef} from 'react';
+import React, { FC, useState, useRef } from 'react';
 import {
     EmailInput,
     PasswordInput,
@@ -10,12 +10,13 @@ import styles from './profile-user-information-page.module.css';
 import { TRootState } from '../../services/reducers/root';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { TForm } from '../../hooks/useForm';
-import { useAction } from '../../hooks/useAction';
+import { patchWithTokenAction } from '../../services/actions/user';
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 
 const getUser = (store: TRootState) => store.user.user;
 
 const ProfileUserInformationPage: FC = () => {
-    const { patchWithTokenAction } = useAction();
+    const dispatch = useTypedDispatch();
     const [isError, setError] = useState(false);
     const user = useTypedSelector(getUser);
     const [emailValue, setEmailValue] = useState(user?.email || '');
@@ -47,7 +48,7 @@ const ProfileUserInformationPage: FC = () => {
             if (passwordValue !== '') {
                 form['password'] = passwordValue;
             }
-            patchWithTokenAction(form);
+            dispatch(patchWithTokenAction(form));
         } catch {
             setError(true);
         }

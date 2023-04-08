@@ -1,8 +1,9 @@
+import { TinitialOrder, TOderAction } from '../actions/order-details';
 import {
-    TinitialOrder,
-    EnumOrderActionTypes,
-    TOderAction,
-} from '../../utils/types/actions-types/order-details-types';
+    GET_ORDER,
+    GET_ORDER_FAILED,
+    GET_ORDER_SUCCESS,
+} from '../constants/order-details';
 
 const initialOrder: TinitialOrder = {
     fetchOrderRequest: false,
@@ -12,21 +13,21 @@ const initialOrder: TinitialOrder = {
 
 const orderDetailReducer = (state = initialOrder, action: TOderAction) => {
     switch (action.type) {
-        case EnumOrderActionTypes.GET_ORDER: {
+        case GET_ORDER: {
             return {
                 ...state,
                 fetchOrderRequest: true,
                 fetchOrderFailed: false,
             };
         }
-        case EnumOrderActionTypes.GET_ORDER_SUCCESS: {
+        case GET_ORDER_SUCCESS: {
             return {
                 ...state,
                 order: action.payload,
                 fetchOrderRequest: false,
             };
         }
-        case EnumOrderActionTypes.GET_ORDER_FAILED: {
+        case GET_ORDER_FAILED: {
             return {
                 order: initialOrder.order,
                 fetchOrderFailed: true,

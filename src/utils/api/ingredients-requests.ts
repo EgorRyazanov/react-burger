@@ -1,6 +1,5 @@
 import request from './index';
 import { TResponseIngredients, TResponseOrder } from '../types/api';
-import { TIngredient } from '../types/ingredient-type';
 
 export const getIngredients = (): Promise<TResponseIngredients> =>
     request('ingredients');

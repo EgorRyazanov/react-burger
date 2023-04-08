@@ -1,8 +1,12 @@
 import {
     TInitialIngredients,
-    EnumIngredientsActionTypes,
     TIngredientsAction,
-} from '../../utils/types/actions-types/ingredients-types';
+} from '../actions/fetch-ingredients';
+import {
+    GET_INGREDIENTS,
+    GET_INGREDIENTS_FAILED,
+    GET_INGREDIENTS_SUCCESS,
+} from '../constants/fetch-ingredients';
 
 const initialIngredientsState: TInitialIngredients = {
     fetchIngredientsRequest: false,
@@ -15,21 +19,21 @@ const fetchIngredientsReducer = (
     action: TIngredientsAction
 ) => {
     switch (action.type) {
-        case EnumIngredientsActionTypes.GET_INGREDIENTS: {
+        case GET_INGREDIENTS: {
             return {
                 ...state,
                 fetchIngredientsRequest: true,
                 fetchIngredientsFailed: false,
             };
         }
-        case EnumIngredientsActionTypes.GET_INGREDIENTS_SUCCESS: {
+        case GET_INGREDIENTS_SUCCESS: {
             return {
                 ...state,
                 ingredients: action.payload,
                 fetchIngredientsRequest: false,
             };
         }
-        case EnumIngredientsActionTypes.GET_INGREDIENTS_FAILED: {
+        case GET_INGREDIENTS_FAILED: {
             return {
                 ingredients: initialIngredientsState.ingredients,
                 fetchIngredientsFailed: true,

@@ -1,15 +1,66 @@
 import { TIngredient } from '../../utils/types/ingredient-type';
-import {
-    EnumConstructorActionTypes,
-    TConstructorAction,
-} from '../../utils/types/actions-types/constructor-types';
 import uuid from 'react-uuid';
+import {
+    ADD_BUN,
+    ADD_CONSTRUCTOR,
+    UPDATE_BUN,
+    REMOVE_CONSTRUCTOR,
+    CLEAR_CONSTRUCTOR,
+    UPDATE_CONSTRUCTOR,
+} from '../constants/constructor';
+
+export type TConstructorElement = TIngredient & {
+    dragId: string;
+    index?: number;
+};
+
+export type TInitialConstructor = {
+    parts: Array<TConstructorElement>;
+    bun: TConstructorElement | null;
+};
+
+export type ADD_BUN_ACTION = {
+    readonly type: typeof ADD_BUN;
+    readonly payload: TConstructorElement;
+};
+
+export interface ADD_CONSTRUCTOR_ACTION {
+    readonly type: typeof ADD_CONSTRUCTOR;
+    readonly payload: TConstructorElement;
+}
+
+export interface REMOVE_CONSTRUCTOR_ACTION {
+    readonly type: typeof REMOVE_CONSTRUCTOR;
+    readonly payload: string;
+}
+
+export interface CLEAR_CONSTRUCTOR_ACTION {
+    readonly type: typeof CLEAR_CONSTRUCTOR;
+}
+
+export interface UPDATE_BUN_ACTION {
+    readonly type: typeof UPDATE_BUN;
+    readonly payload: TConstructorElement;
+}
+
+export interface UPDATE_CONSTRUCTOR_ACTION {
+    readonly type: typeof UPDATE_CONSTRUCTOR;
+    readonly payload: { dragIndex: number; hoverIndex: number };
+}
+
+export type TConstructorAction =
+    | UPDATE_CONSTRUCTOR_ACTION
+    | ADD_BUN_ACTION
+    | ADD_CONSTRUCTOR_ACTION
+    | REMOVE_CONSTRUCTOR_ACTION
+    | CLEAR_CONSTRUCTOR_ACTION
+    | UPDATE_BUN_ACTION;
 
 export const addElementToConstructorAction = (
     ingredient: TIngredient
-): TConstructorAction => {
+): ADD_CONSTRUCTOR_ACTION => {
     return {
-        type: EnumConstructorActionTypes.ADD_CONSTRUCTOR,
+        type: ADD_CONSTRUCTOR,
         payload: {
             ...ingredient,
             dragId: uuid(),
@@ -19,9 +70,9 @@ export const addElementToConstructorAction = (
 
 export const addBunToConstructorAction = (
     ingredient: TIngredient
-): TConstructorAction => {
+): ADD_BUN_ACTION => {
     return {
-        type: EnumConstructorActionTypes.ADD_BUN,
+        type: ADD_BUN,
         payload: {
             ...ingredient,
             dragId: uuid(),
@@ -31,22 +82,22 @@ export const addBunToConstructorAction = (
 
 export const removeElementFromConstructorAction = (
     id: string
-): TConstructorAction => {
+): REMOVE_CONSTRUCTOR_ACTION => {
     return {
-        type: EnumConstructorActionTypes.REMOVE_CONSTRUCTOR,
+        type: REMOVE_CONSTRUCTOR,
         payload: id,
     };
 };
 
 export const clearConstructorAction: TConstructorAction = {
-    type: EnumConstructorActionTypes.CLEAR_CONSTRUCTOR,
+    type: CLEAR_CONSTRUCTOR,
 };
 
 export const updateBunInConstructorAction = (
     ingredient: TIngredient
-): TConstructorAction => {
+): UPDATE_BUN_ACTION => {
     return {
-        type: EnumConstructorActionTypes.UPDATE_BUN,
+        type: UPDATE_BUN,
         payload: {
             ...ingredient,
             dragId: uuid(),
@@ -57,9 +108,9 @@ export const updateBunInConstructorAction = (
 export const updateComponentsConstructorAction = (
     hoverIndex: number,
     dragIndex: number
-): TConstructorAction => {
+): UPDATE_CONSTRUCTOR_ACTION => {
     return {
-        type: EnumConstructorActionTypes.UPDATE_CONSTRUCTOR,
+        type: UPDATE_CONSTRUCTOR,
         payload: { hoverIndex: hoverIndex, dragIndex: dragIndex },
     };
 };

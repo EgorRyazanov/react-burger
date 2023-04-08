@@ -10,9 +10,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { clearConstructorAction } from '../../services/actions/constructor';
 import LoadingModal from '../loading-modal/loading-modal';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
-import { useAction } from '../../hooks/useAction';
 import { TRootState } from '../../services/reducers/root';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { makeOrderAction } from '../../services/actions/order-details';
 
 const getOrderFromStore = (state: TRootState) => state.orderDetail;
 
@@ -25,7 +25,6 @@ type TConstructorPrice = {
 const ConstructorPrice: FC<TConstructorPrice> = memo(
     ({ price, id, userLoaded }) => {
         const location = useLocation();
-        const { makeOrderAction } = useAction();
         const navigate = useNavigate();
         const dispatch = useTypedDispatch();
         const { fetchOrderRequest, fetchOrderFailed, order } =
@@ -41,7 +40,7 @@ const ConstructorPrice: FC<TConstructorPrice> = memo(
             } else {
                 if (price !== 0) {
                     if (!active) {
-                        makeOrderAction(id);
+                        dispatch(makeOrderAction(id));
                     } else {
                         dispatch(clearConstructorAction);
                     }
