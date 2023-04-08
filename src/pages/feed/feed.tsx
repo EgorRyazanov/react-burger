@@ -8,19 +8,23 @@ import {
     WS_CONNECTION_START,
 } from '../../services/constants/websocket';
 import { TRootState } from '../../services/reducers/root';
+import { WS_BASE_URL } from '../../utils/constants';
 
 const getWS = (state: TRootState) => state.websocket;
 
 const Feed: FC = () => {
     const dispatch = useTypedDispatch();
+    const { wsConnected, ordersInformation } = useTypedSelector(getWS);
+
     React.useEffect(() => {
-        dispatch({ type: WS_CONNECTION_CLOSE });
         dispatch({
             type: WS_CONNECTION_START,
-            payload: 'wss://norma.nomoreparties.space/orders/all',
+            payload: `${WS_BASE_URL}/all`,
         });
+        return () => {
+            dispatch({ type: WS_CONNECTION_CLOSE });
+        };
     }, []);
-    const { wsConnected, ordersInformation } = useTypedSelector(getWS);
     return (
         <>
             {ordersInformation?.orders && wsConnected ? (

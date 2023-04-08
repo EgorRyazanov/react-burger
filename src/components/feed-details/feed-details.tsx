@@ -10,6 +10,12 @@ import {
 import { TRootState } from '../../services/reducers/root';
 import { TOrderDetails } from '../../services/actions/websocket';
 import { TIngredient } from '../../utils/types/ingredient-type';
+import {
+    WS_CONNECTION_CLOSE,
+    WS_CONNECTION_START,
+} from '../../services/constants/websocket';
+import { WS_BASE_URL } from '../../utils/constants';
+import { useTypedDispatch } from '../../hooks/useTypedDispatch';
 
 const sort_by_count = (
     a: { ingredient: TIngredient; count: number },
@@ -30,6 +36,21 @@ const getWS = (state: TRootState) => state.websocket;
 
 const FeedOrder: React.FC = () => {
     const { ordersInformation } = useTypedSelector(getWS);
+
+    const dispatch = useTypedDispatch();
+    React.useEffect(() => {
+        if (!ordersInformation) {
+            dispatch({
+                type: WS_CONNECTION_START,
+                payload: `${WS_BASE_URL}/all`,
+            });
+        }
+        return () => {
+            if (!location?.state?.background) {
+                dispatch({ type: WS_CONNECTION_CLOSE });
+            }
+        };
+    }, []);
     const { id } = useParams();
     const location = useLocation();
     const background = location.state && location.state.background;

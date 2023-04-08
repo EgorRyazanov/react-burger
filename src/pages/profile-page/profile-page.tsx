@@ -5,6 +5,7 @@ import { clearUserAction } from '../../services/actions/user';
 import { useNavigate } from 'react-router-dom';
 import { fetchLogout } from '../../utils/api/user-request';
 import { useTypedDispatch } from '../../hooks/useTypedDispatch';
+import { WS_BASE_URL } from '../../utils/constants';
 import {
     WS_CONNECTION_CLOSE,
     WS_CONNECTION_START,
@@ -15,13 +16,15 @@ const ProfilePage: FC = () => {
     const dispatch = useTypedDispatch();
     const navigate = useNavigate();
     React.useEffect(() => {
-        dispatch({ type: WS_CONNECTION_CLOSE });
         dispatch({
             type: WS_CONNECTION_START,
-            payload: `wss://norma.nomoreparties.space/orders?token=${localStorage.getItem(
+            payload: `${WS_BASE_URL}?token=${localStorage.getItem(
                 'accessToken'
             )}`,
         });
+        return () => {
+            dispatch({ type: WS_CONNECTION_CLOSE });
+        };
     }, []);
 
     const handleLogout = () => {

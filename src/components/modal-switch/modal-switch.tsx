@@ -26,7 +26,7 @@ const ModalSwitch: FC<TModalSwitch> = ({ background }) => {
             {background && (
                 <Routes>
                     <Route
-                        path='/feed/:id'
+                        path='/profile/orders/:id'
                         element={
                             <ProtectedRoute
                                 element={
@@ -42,7 +42,7 @@ const ModalSwitch: FC<TModalSwitch> = ({ background }) => {
                         }
                     />
                     <Route
-                        path='/profile/orders/:id'
+                        path='/feed/:id'
                         element={
                             <Modal
                                 container={styles.modal__feed_order}

@@ -85,6 +85,15 @@ const App: FC = () => {
                     element={<IngredientDetails />}
                 />
                 <Route path='/feed/:id' element={<FeedOrder />} />
+                <Route
+                    path='/profile/orders/:id'
+                    element={
+                        <ProtectedRoute
+                            anonymous={false}
+                            element={<FeedOrder />}
+                        />
+                    }
+                />
                 <Route path='feed' element={<Feed />} />
             </Routes>
             <ModalSwitch background={background} />
