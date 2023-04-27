@@ -11,7 +11,7 @@ import {
     UPDATE_CONSTRUCTOR,
 } from '../constants/constructor';
 
-const initialConstructor: TInitialConstructor = {
+export const initialConstructor: TInitialConstructor = {
     parts: [],
     bun: null,
 };

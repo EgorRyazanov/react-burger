@@ -8,7 +8,7 @@ import {
     UPDATE_USER,
 } from '../constants/user';
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
     user: null,
     status: {
         isLoading: false,

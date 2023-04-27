@@ -28,6 +28,7 @@
     cursor: pointer;
     color: #f2f2f3;
     display: block;
+    width: 800px;
 }
 
 .card_container_profile:not(:last-child),

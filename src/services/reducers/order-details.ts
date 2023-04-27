@@ -5,7 +5,7 @@ import {
     GET_ORDER_SUCCESS,
 } from '../constants/order-details';
 
-const initialOrder: TinitialOrder = {
+export const initialOrder: TinitialOrder = {
     fetchOrderRequest: false,
     fetchOrderFailed: false,
     order: null,
