@@ -5,9 +5,10 @@ import {
     WS_CONNECTION_ERROR,
     WS_CONNECTION_CLOSED,
     WS_GET_MESSAGE,
+    WS_CONNECTION_CLOSE,
 } from '../constants/websocket';
 
-const initialState: TWSState = {
+export const initialState: TWSState = {
     wsConnected: false,
     ordersInformation: null,
 };
@@ -32,6 +33,8 @@ export const wsReducer = (state = initialState, action: TWsActions) => {
                 error: undefined,
                 wsConnected: false,
             };
+        case WS_CONNECTION_CLOSE:
+            return initialState;
         case WS_GET_MESSAGE:
             return {
                 ...state,

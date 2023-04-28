@@ -20,7 +20,10 @@ const IngredientBlock = memo(
                     >
                         {props.name}
                     </p>
-                    <div className={`flex pt-6 pl-4 pr-2 ${styles.container}`}>
+                    <div
+                        id={`${props.id}-container`}
+                        className={`flex pt-6 pl-4 pr-2 ${styles.container}`}
+                    >
                         {props.ingredients.map((ingredient) => (
                             <Card
                                 key={ingredient._id}

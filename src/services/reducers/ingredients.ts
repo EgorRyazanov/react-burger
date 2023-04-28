@@ -8,7 +8,7 @@ import {
     GET_INGREDIENTS_SUCCESS,
 } from '../constants/fetch-ingredients';
 
-const initialIngredientsState: TInitialIngredients = {
+export const initialIngredientsState: TInitialIngredients = {
     fetchIngredientsRequest: false,
     fetchIngredientsFailed: false,
     ingredients: [],

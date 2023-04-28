@@ -9,6 +9,8 @@ import {
 } from '../../services/constants/websocket';
 import { TRootState } from '../../services/reducers/root';
 import { WS_BASE_URL } from '../../utils/constants';
+import preloader from '../../assets/images/preloader.svg';
+import styles from './feed.module.css';
 
 const getWS = (state: TRootState) => state.websocket;
 
@@ -42,10 +44,8 @@ const Feed: FC = () => {
                     </div>
                 </div>
             ) : (
-                <div className={`container pl-4 pt-10`}>
-                    <p className='text text_type_main-large mb-5'>
-                        Загрузка...
-                    </p>
+                <div className={`container pl-4 pt-10 ${styles.preloader}`}>
+                    <img src={preloader} alt='загрузочная картинка' />
                 </div>
             )}
         </>

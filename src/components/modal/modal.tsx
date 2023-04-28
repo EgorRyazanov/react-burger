@@ -51,6 +51,7 @@ const Modal: FC<TModal> = memo(({ children, handleToggleModal, ...props }) => {
 
     return ReactDOM.createPortal(
         <div
+            data-testid='modal'
             className={`${styles.modal} ${props.container} pt-10 pl-10 pb-10 pr-10`}
             onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) => {
                 if (event.key === 'Enter') {
@@ -63,7 +64,11 @@ const Modal: FC<TModal> = memo(({ children, handleToggleModal, ...props }) => {
                 <p className={`text text_type_main-large ${styles.title} mr-9`}>
                     {title}
                 </p>
-                <button className={styles.button} onClick={handleToggleModal}>
+                <button
+                    data-testid='close-button'
+                    className={styles.button}
+                    onClick={handleToggleModal}
+                >
                     <CloseIcon type='primary' />
                 </button>
             </div>

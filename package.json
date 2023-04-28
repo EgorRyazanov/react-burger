@@ -1,56 +1,62 @@
 {
-  "name": "react-burger",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@redux-devtools/extension": "^3.2.5",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.12",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
-    "@ya.praktikum/react-developer-burger-ui-components": "^1.14.0",
-    "prop-types": "^15.8.1",
-    "react": "^18.2.0",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
-    "react-dom": "^18.2.0",
-    "react-redux": "^8.0.5",
-    "react-router-dom": "^6.8.2",
-    "react-scripts": "5.0.1",
-    "react-uuid": "^2.0.0",
-    "redux": "^4.2.1",
-    "redux-thunk": "^2.4.2",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "prettier": "2.8.3"
-  }
+    "name": "react-burger",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@redux-devtools/extension": "^3.2.5",
+        "@testing-library/jest-dom": "^5.16.5",
+        "@testing-library/user-event": "^13.5.0",
+        "@types/jest": "^27.5.2",
+        "@types/node": "^16.18.12",
+        "@types/react": "^18.0.27",
+        "@types/react-dom": "^18.0.10",
+        "@ya.praktikum/react-developer-burger-ui-components": "^1.14.0",
+        "prop-types": "^15.8.1",
+        "react": "^18.2.0",
+        "react-dnd": "^16.0.1",
+        "react-dnd-html5-backend": "^16.0.1",
+        "react-dom": "^18.2.0",
+        "react-redux": "^8.0.5",
+        "react-router-dom": "^6.8.2",
+        "react-scripts": "5.0.1",
+        "react-uuid": "^2.0.0",
+        "redux": "^4.2.1",
+        "redux-thunk": "^2.4.2",
+        "typescript": "^4.9.5",
+        "web-vitals": "^2.1.4"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "cypress:open": "cypress open",
+        "cypress:run": "cypress run",
+        "deploy-script": "npm run build && scp -r ./build/* aricsy@158.160.48.220:/home/aricsy/stellar-frontend"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@testing-library/react": "^14.0.0",
+        "cypress": "^12.11.0",
+        "eslint-plugin-cypress": "^2.13.2",
+        "fetch-mock": "^9.11.0",
+        "prettier": "2.8.3"
+    }
 }
