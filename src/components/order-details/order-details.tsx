@@ -1,5 +1,5 @@
 import React, { FC, memo } from 'react';
-import imagePath from '../../images/order-details/done.png';
+import imagePath from '../../assets/images/order-details/done.png';
 import styles from './order-details.module.css';
 
 type TOrderDetails = {
