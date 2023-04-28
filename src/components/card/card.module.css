@@ -22,3 +22,11 @@
 .relative {
     position: relative;
 }
+
+.image {
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover .image {
+    transform: scale(1.15);
+}

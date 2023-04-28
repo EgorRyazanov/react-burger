@@ -50,7 +50,7 @@ const Card: FC<TCard> = memo(({ ingredient }) => {
                         />
                     )}
                     <img
-                        className='mb-1'
+                        className={`mb-1 ${styles.image}`}
                         src={ingredient.image}
                         alt='ингредиет'
                     />
