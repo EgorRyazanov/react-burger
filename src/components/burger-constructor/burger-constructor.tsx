@@ -65,6 +65,7 @@ const BurgerConstructor: FC<TBurgerConstructor> = ({ userLoaded }) => {
         <>
             {ingredients && (
                 <div
+                    data-testid='drag-external-container'
                     ref={dropTargerRef}
                     className={`${styles.global} pt-25 pl-4`}
                 >

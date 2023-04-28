@@ -56,6 +56,7 @@ const ConstructorPrice: FC<TConstructorPrice> = memo(
                     <CurrencyIcon type='primary' />
                 </div>
                 <Button
+                    data-testid='order-button'
                     onClick={!active ? handleToggleModal : () => {}}
                     htmlType='button'
                     type='primary'

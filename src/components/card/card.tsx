@@ -40,7 +40,7 @@ const Card: FC<TCard> = memo(({ ingredient }) => {
             state={{ background: location }}
             className={`${styles.card} mb-8`}
         >
-            <div ref={drag}>
+            <div data-testid='ingredient' ref={drag}>
                 <div className={`pl-4 pr-4 ${styles.relative}`}>
                     {counter > 0 && (
                         <Counter
