@@ -36,7 +36,7 @@ describe('constructor', () => {
             expect(loc.pathname).to.eq('/login');
         });
         cy.get('input[type="email"]').type('user12345@gmail.com');
-        cy.get('input[type="password"]').type('qwertyu');
+        cy.get('input[type="password"]').type('qwerty');
         cy.contains('Войти').click();
         cy.wait(1000); // ждем ожидания перехода на главную страницу
         cy.location().should((loc) => {

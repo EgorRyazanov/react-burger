@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styles from './feed-orders.module.css';
 import { FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
@@ -23,6 +23,7 @@ type TOrder = {
 };
 
 const FeedOrders: FC = () => {
+    console.log('peq');
     const location = useLocation();
     const { ordersInformation } = useTypedSelector(getWS);
     const { ingredients } = useTypedSelector(getIngredients);
@@ -34,11 +35,13 @@ const FeedOrders: FC = () => {
                 let price = 0;
                 const orderIngredients: Array<TIngredient> = [];
                 order.ingredients.forEach((id) => {
-                    const ingredient = ingredients.filter(
-                        (element) => element._id === id
-                    )[0];
-                    orderIngredients.push(ingredient);
-                    price += ingredient.price;
+                    if (id) {
+                        const ingredient = ingredients.filter(
+                            (element) => element._id === id
+                        )[0];
+                        orderIngredients.push(ingredient);
+                        price += ingredient.price;
+                    }
                 });
                 let status = null;
                 if (order.status === 'done') {
@@ -175,7 +178,7 @@ const FeedOrders: FC = () => {
                                     </ul>
                                     <div className={styles.price}>
                                         <p className='text text_type_digits-default text-center mr-2'>
-                                            {order.price}
+                                            {order.price || 0}
                                         </p>
                                         <CurrencyIcon type='primary' />
                                     </div>

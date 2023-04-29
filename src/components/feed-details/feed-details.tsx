@@ -79,10 +79,12 @@ const FeedOrder: React.FC = () => {
         if (order) {
             const map = new Map();
             for (let ingredient of order.ingredients) {
-                if (!map.has(ingredient)) {
-                    map.set(ingredient, 0);
+                if (ingredient) {
+                    if (!map.has(ingredient)) {
+                        map.set(ingredient, 0);
+                    }
+                    map.set(ingredient, map.get(ingredient) + 1);
                 }
-                map.set(ingredient, map.get(ingredient) + 1);
             }
             setPieces(map);
         }
